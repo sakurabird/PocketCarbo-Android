@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableList;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,8 +32,12 @@ public class FoodListFragment extends BaseFragment {
     @Inject
     FoodListViewModel viewModel;
 
-    public static FoodListFragment newInstance() {
-        return new FoodListFragment();
+    public static FoodListFragment newInstance(@IntRange(from = 1, to = 6) int type) {
+        FoodListFragment fragment = new FoodListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
 
@@ -71,6 +76,7 @@ public class FoodListFragment extends BaseFragment {
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        viewModel.setType(getArguments().getInt("type"));
         viewModel.renderFoods();
     }
 

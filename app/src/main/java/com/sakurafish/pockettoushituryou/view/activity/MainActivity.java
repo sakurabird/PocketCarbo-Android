@@ -108,9 +108,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         TypesData typesData = gson.fromJson(json, TypesData.class);
 
         for (TypesData.Types type : typesData.types) {
-            tag(TAG).d("name:" + type.name);
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText(type.name), false);
-            adapter.addFragment(FoodListFragment.newInstance(), type.name);
+            adapter.addFragment(FoodListFragment.newInstance(type.id), type.name);
         }
 
         binding.pager.setAdapter(adapter);
