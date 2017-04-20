@@ -4,7 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 
-import com.sakurafish.pockettoushituryou.network.FoodsData;
+import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 
 import java.util.ArrayList;

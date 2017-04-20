@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
-import com.sakurafish.pockettoushituryou.network.TypesData;
+import com.sakurafish.pockettoushituryou.model.TypesData;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;

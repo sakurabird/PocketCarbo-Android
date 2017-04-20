@@ -1,7 +1,7 @@
 package com.sakurafish.pockettoushituryou.api;
 
-import com.sakurafish.pockettoushituryou.network.FoodsData;
-import com.sakurafish.pockettoushituryou.network.KindsData;
+import com.sakurafish.pockettoushituryou.model.FoodsData;
+import com.sakurafish.pockettoushituryou.model.KindsData;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

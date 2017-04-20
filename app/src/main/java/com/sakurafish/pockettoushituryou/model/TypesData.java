@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.network;
+package com.sakurafish.pockettoushituryou.model;
 
 import java.util.ArrayList;
 

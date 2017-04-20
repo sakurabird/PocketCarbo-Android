@@ -1,6 +1,6 @@
 package com.sakurafish.pockettoushituryou.viewmodel;
 
-import com.sakurafish.pockettoushituryou.network.FoodsData;
+import com.sakurafish.pockettoushituryou.model.FoodsData;
 
 public class FoodViewModel {
 
