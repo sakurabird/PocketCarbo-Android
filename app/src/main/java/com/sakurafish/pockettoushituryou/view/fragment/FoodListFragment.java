@@ -11,12 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
 import com.sakurafish.pockettoushituryou.view.adapter.ArrayRecyclerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.BindingHolder;
+import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodListViewModel;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodViewModel;
 
@@ -27,7 +29,7 @@ public class FoodListFragment extends BaseFragment {
     public static final String TAG = FoodListFragment.class.getSimpleName();
 
     private FragmentFoodlistBinding binding;
-    private Adapter adapter;
+    private FoodListAdapter adapter;
 
     @Inject
     FoodListViewModel viewModel;
@@ -72,18 +74,34 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void initView() {
-        adapter = new Adapter(getContext(), viewModel.getFoodViewModels());
+        adapter = new FoodListAdapter(getContext(), viewModel.getFoodViewModels());
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         viewModel.setType(getArguments().getInt("type"));
         viewModel.renderFoods();
+
+        // Creating adapter for spinner
+        KindSpinnerAdapter dataAdapter = new KindSpinnerAdapter(getActivity());
+        dataAdapter.setData(viewModel.getKindsList());
+        binding.spinner.setAdapter(dataAdapter);
+        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.setKind(viewModel.getKindsList().get(position).id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
-    private static class Adapter
+    private static class FoodListAdapter
             extends ArrayRecyclerAdapter<FoodViewModel, BindingHolder<ItemFoodlistBinding>> {
 
-        public Adapter(@NonNull Context context, @NonNull ObservableList<FoodViewModel> list) {
+        public FoodListAdapter(@NonNull Context context, @NonNull ObservableList<FoodViewModel> list) {
             super(context, list);
 
             list.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<FoodViewModel>>() {

@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.sakurafish.pockettoushituryou.viewmodel.FoodListViewModel" />
@@ -12,10 +13,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="change kind" />
+            android:layout_marginBottom="@dimen/space_12dp"
+            android:layout_marginLeft="@dimen/space_16dp"
+            android:layout_marginRight="@dimen/space_16dp"
+            android:layout_marginTop="@dimen/space_12dp"
+            android:background="@drawable/kind_spinner"
+            android:padding="@dimen/space_8dp"
+            android:spinnerMode="dropdown" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

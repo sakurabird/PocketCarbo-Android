@@ -30,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static timber.log.Timber.tag;
 
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void loadPocketCarboData() {
+        Timber.tag(TAG).d("loadPocketCarboData");
         Disposable disposable = Single.zip(foodsRepository.findKindsData(), foodsRepository.findFoodsData(),
                 (kindsData, foodsData) -> io.reactivex.Observable.empty())
                 .subscribeOn(Schedulers.io())

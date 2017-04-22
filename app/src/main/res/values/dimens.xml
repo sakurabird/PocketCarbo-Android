@@ -1,9 +1,63 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <!--<dimen name="fab_margin">16dp</dimen>-->
+
+    <!-- space -->
+    <dimen name="space_4dp">4dp</dimen>
+    <dimen name="space_8dp">8dp</dimen>
+    <dimen name="space_12dp">12dp</dimen>
+    <dimen name="space_16dp">16dp</dimen>
+    <dimen name="space_24dp">24dp</dimen>
+    <dimen name="space_32dp">32dp</dimen>
+    <dimen name="space_minus_4dp">-4dp</dimen>
+
+    <dimen name="icon_space_4dp">4dp</dimen>
+    <dimen name="icon_space_8dp">8dp</dimen>
+
+    <dimen name="line_space_1dp">1dp</dimen>
+    <dimen name="line_space_2dp">2dp</dimen>
+
+
+    <!-- Text -->
+    <dimen name="text_12sp">12sp</dimen>
+    <dimen name="text_14sp">14sp</dimen>
+    <dimen name="text_16sp">16sp</dimen>
+    <dimen name="text_20sp">20sp</dimen>
+    <dimen name="text_24sp">24sp</dimen>
+    <dimen name="text_drawable_12dp">12dp</dimen>
+
+    <!-- Line -->
+    <dimen name="line_1dp">1dp</dimen>
+    <dimen name="line_2dp">2dp</dimen>
+
+
+    <!-- Border -->
+    <dimen name="border_1dp">1dp</dimen>
+
+
+    <!-- Elevation -->
+    <dimen name="elevation_2dp">2dp</dimen>
+    <dimen name="elevation_4dp">4dp</dimen>
+    <dimen name="elevation_6dp">6dp</dimen>
+
+
+    <!-- Radius -->
+    <dimen name="radius_4dp">4dp</dimen>
+
+    <!-- icon -->
+    <dimen name="icon_36dp">36dp</dimen>
+    <dimen name="icon_48dp">48dp</dimen>
+
+    <!-- Component -->
+    <dimen name="bottom_nav_height">56dp</dimen>
+
+    <dimen name="tag_radius">4dp</dimen>
+    <dimen name="tag_padding_horizontal">8dp</dimen>
+    <dimen name="tag_padding_vertical">4dp</dimen>
+    <dimen name="tag_border_width">1dp</dimen>
+
 </resources>
