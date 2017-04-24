@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
+import com.sakurafish.pockettoushituryou.model.FoodsData;
+import com.sakurafish.pockettoushituryou.model.KindsData;
 import com.sakurafish.pockettoushituryou.model.TypesData;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
@@ -25,6 +27,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import icepick.Icepick;
+import icepick.State;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -49,6 +53,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Inject
     ResourceResolver resourceResolver;
 
+    @State
+    FoodsData foodsData;
+
+    @State
+    KindsData kindsData;
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -58,6 +68,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.tag(TAG).d("onCreate");
+
+        Icepick.restoreInstanceState(this, savedInstanceState);
 
         getComponent().inject(this);
 
@@ -67,7 +80,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         loadPocketCarboData();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
     public void loadPocketCarboData() {
+        if (this.kindsData != null && this.foodsData != null) {
+            initTabs();
+            return;
+        }
+
         Timber.tag(TAG).d("loadPocketCarboData");
         Disposable disposable = Single.zip(foodsRepository.findKindsData(), foodsRepository.findFoodsData(),
                 (kindsData, foodsData) -> io.reactivex.Observable.empty())
@@ -75,6 +99,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observable -> {
                             tag(TAG).d("Succeeded in loading sessions.");
+                            this.kindsData = foodsRepository.getKindsData();
+                            this.foodsData = foodsRepository.getFoodsData();
                             initTabs();
                         },
                         throwable -> {
@@ -111,7 +137,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         for (TypesData.Types type : typesData.types) {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText(type.name), false);
-            adapter.addFragment(FoodListFragment.newInstance(type.id), type.name);
+            adapter.addFragment(FoodListFragment.newInstance(type.id,
+                    this.kindsData,
+                    this.foodsData),
+                    type.name);
         }
 
         binding.pager.setAdapter(adapter);

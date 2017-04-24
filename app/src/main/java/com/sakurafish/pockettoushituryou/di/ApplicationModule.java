@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.google.gson.GsonBuilder;
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.api.DummyDataService;
 import com.sakurafish.pockettoushituryou.api.PocketCarboService;
 
 import javax.inject.Singleton;
@@ -71,17 +70,5 @@ public class ApplicationModule {
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
                 .build()
                 .create(PocketCarboService.class);
-    }
-
-//    TODO
-    @Singleton
-    @Provides
-    public DummyDataService provideDummyDataService(OkHttpClient client) {
-        return new Retrofit.Builder().client(client)
-                .baseUrl("https://sakurabird1-grape-example.herokuapp.com")
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
-                .build()
-                .create(DummyDataService.class);
     }
 }

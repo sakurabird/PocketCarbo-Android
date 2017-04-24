@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
+import com.sakurafish.pockettoushituryou.model.FoodsData;
+import com.sakurafish.pockettoushituryou.model.KindsData;
 import com.sakurafish.pockettoushituryou.view.adapter.ArrayRecyclerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.BindingHolder;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
@@ -30,18 +32,23 @@ public class FoodListFragment extends BaseFragment {
 
     private FragmentFoodlistBinding binding;
     private FoodListAdapter adapter;
+    private FoodsData foodsData;
+    private KindsData kindsData;
 
     @Inject
     FoodListViewModel viewModel;
 
-    public static FoodListFragment newInstance(@IntRange(from = 1, to = 6) int type) {
+    public static FoodListFragment newInstance(@IntRange(from = 1, to = 6) int type,
+                                               @NonNull KindsData kindsData,
+                                               @NonNull FoodsData foodsData) {
         FoodListFragment fragment = new FoodListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
+        bundle.putParcelable("kindsData", kindsData);
+        bundle.putParcelable("foodsData", foodsData);
         fragment.setArguments(bundle);
         return fragment;
     }
-
 
     public FoodListFragment() {
     }
@@ -78,6 +85,11 @@ public class FoodListFragment extends BaseFragment {
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        kindsData = getArguments().getParcelable("kindsData");
+        foodsData = getArguments().getParcelable("foodsData");
+
+        viewModel.setKindsData(kindsData);
+        viewModel.setFoodsData(foodsData);
         viewModel.setType(getArguments().getInt("type"));
         viewModel.renderFoods();
 

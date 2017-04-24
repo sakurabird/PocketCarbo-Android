@@ -1,7 +1,5 @@
 package com.sakurafish.pockettoushituryou.repository;
 
-import com.sakurafish.pockettoushituryou.api.DummyData;
-import com.sakurafish.pockettoushituryou.api.DummyDataService;
 import com.sakurafish.pockettoushituryou.api.PocketCarboService;
 import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.model.KindsData;
@@ -18,15 +16,14 @@ import static android.content.ContentValues.TAG;
 public class FoodsRepository {
 
     private PocketCarboService pocketCarboService;
-    private DummyDataService dummyDataService;
+
     private KindsData kindsData;
 
     private FoodsData foodsData;
 
     @Inject
-    FoodsRepository(PocketCarboService pocketCarboService, DummyDataService dummyDataService) {
+    FoodsRepository(PocketCarboService pocketCarboService) {
         this.pocketCarboService = pocketCarboService;
-        this.dummyDataService = dummyDataService;
     }
 
     public KindsData getKindsData() {
@@ -56,14 +53,4 @@ public class FoodsRepository {
                 .retry(3)
                 .doOnError(Throwable::printStackTrace);
     }
-
-    // TODO
-    public Single<DummyData> requestDummyData() {
-        return dummyDataService.getDummyData()
-                .doOnSuccess(dummyData -> {
-                    Timber.tag(TAG).d("dummy data:" + dummyData.code);
-                })
-                .doOnError(Throwable::printStackTrace);
-    }
-
 }
