@@ -41,7 +41,7 @@ public class FoodsData implements Parcelable {
         public String name;
         public int weight;
         public String weight_hint;
-        public float carbohydrate_per_100;
+        public float carbohydrate_per_100g;
         public float carbohydrate_per_weight;
         public float calory;
         public float protein;
@@ -61,7 +61,7 @@ public class FoodsData implements Parcelable {
             dest.writeString(name);
             dest.writeInt(weight);
             dest.writeString(weight_hint);
-            dest.writeFloat(carbohydrate_per_100);
+            dest.writeFloat(carbohydrate_per_100g);
             dest.writeFloat(carbohydrate_per_weight);
             dest.writeFloat(calory);
             dest.writeFloat(protein);
@@ -86,7 +86,7 @@ public class FoodsData implements Parcelable {
             name = in.readString();
             weight = in.readInt();
             weight_hint = in.readString();
-            carbohydrate_per_100 = in.readFloat();
+            carbohydrate_per_100g = in.readFloat();
             carbohydrate_per_weight = in.readFloat();
             calory = in.readFloat();
             protein = in.readFloat();
