@@ -1,7 +1,7 @@
 package com.sakurafish.pockettoushituryou.viewmodel;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.IntRange;
@@ -20,6 +20,8 @@ import timber.log.Timber;
 public final class FoodListViewModel extends BaseObservable implements ViewModel {
     final static String TAG = "FoodListViewModel";
 
+    private Context context;
+
     private ObservableList<FoodViewModel> viewModels;
 
     private int type;
@@ -31,7 +33,8 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private int selectedKindId;
 
     @Inject
-    FoodListViewModel() {
+    FoodListViewModel(Context context) {
+        this.context = context;
         this.viewModels = new ObservableArrayList<>();
 
         this.selectedKindId = 0;
@@ -83,7 +86,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         for (FoodsData.Foods foods : this.foodsData.foods) {
             if (foods.type_id == this.type) {
                 if (this.selectedKindId == 0 || foods.kind_id == this.selectedKindId) {
-                    foodViewModels.add(new FoodViewModel(foods));
+                    foodViewModels.add(new FoodViewModel(context, foods));
                 }
             }
         }

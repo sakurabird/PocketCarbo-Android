@@ -152,10 +152,30 @@ public class FoodListFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(BindingHolder<ItemFoodlistBinding> holder, int position) {
-            FoodViewModel viewModel = getItem(position);
-            ItemFoodlistBinding itemBinding = holder.binding;
-            itemBinding.setViewModel(viewModel);
-            itemBinding.executePendingBindings();
+
+            final FoodViewModel viewModel = getItem(position);
+            if (viewModel.isExpanded()) {
+                holder.binding.expandArrow.setSelected(false);
+                holder.binding.expandableLayout.expand(true);
+            } else {
+                holder.binding.expandArrow.setSelected(false);
+                holder.binding.expandableLayout.collapse(true);
+            }
+
+            // collapse or expand card
+            viewModel.setOnClickListener(v -> {
+                if (viewModel.isExpanded()) {
+                    holder.binding.expandArrow.setSelected(false);
+                    holder.binding.expandableLayout.collapse(true);
+                } else {
+                    holder.binding.expandArrow.setSelected(true);
+                    holder.binding.expandableLayout.expand(true);
+                }
+                viewModel.setExpanded(!viewModel.isExpanded());
+            });
+
+            holder.binding.setViewModel(viewModel);
+            holder.binding.executePendingBindings();
         }
     }
 }
