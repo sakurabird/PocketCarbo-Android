@@ -1,5 +1,6 @@
 package com.sakurafish.pockettoushituryou.view.fragment;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableList;
@@ -158,7 +159,7 @@ public class FoodListFragment extends BaseFragment {
                 holder.binding.expandArrow.setSelected(false);
                 holder.binding.expandableLayout.expand(true);
             } else {
-                holder.binding.expandArrow.setSelected(false);
+                holder.binding.expandArrow.setSelected(true);
                 holder.binding.expandableLayout.collapse(true);
             }
 
@@ -171,6 +172,10 @@ public class FoodListFragment extends BaseFragment {
                     holder.binding.expandArrow.setSelected(true);
                     holder.binding.expandableLayout.expand(true);
                 }
+                ObjectAnimator anim = ObjectAnimator.ofFloat(holder.binding.expandArrow, "rotation", 0, 180);
+                anim.setDuration(150);
+                anim.start();
+
                 viewModel.setExpanded(!viewModel.isExpanded());
             });
 
