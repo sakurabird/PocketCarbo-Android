@@ -64,12 +64,11 @@ public class KindSpinnerAdapter extends BaseAdapter {
                                 View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.item_kind_spinner, null);
+            convertView = inflater.inflate(R.layout.item_kind_spinner_dropdown, null);
         }
         TextView tv = (TextView) convertView.findViewById(R.id.name);
         KindsData.Kinds kinds = (KindsData.Kinds) getItem(position);
         tv.setText(kinds.name);
-        tv.setTextColor(context.getResources().getColor(R.color.grey600));
 
         return convertView;
     }
