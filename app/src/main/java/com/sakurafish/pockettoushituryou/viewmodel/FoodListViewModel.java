@@ -5,7 +5,7 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.IntRange;
-import android.support.annotation.MainThread;
+import android.support.annotation.UiThread;
 
 import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.model.KindsData;
@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 public final class FoodListViewModel extends BaseObservable implements ViewModel {
     final static String TAG = "FoodListViewModel";
@@ -71,15 +69,15 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         });
     }
 
-    @MainThread
+    @UiThread
     public void setKind(int selectedKindId) {
         this.selectedKindId = selectedKindId;
-        renderFoods();
+        createFoodViewModels();
     }
 
-    @MainThread
-    public void renderFoods() {
-        Timber.tag(TAG).d("start renderFoods type:" + type);
+    @UiThread
+    public void createFoodViewModels() {
+//        Timber.tag(TAG).d("start createFoodViewModels type:" + type);
         if (kindsData == null || foodsData == null) return;
 
         List<FoodViewModel> foodViewModels = new ArrayList<>();
@@ -90,7 +88,6 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                 }
             }
         }
-
         viewModels.clear();
         viewModels.addAll(foodViewModels);
     }

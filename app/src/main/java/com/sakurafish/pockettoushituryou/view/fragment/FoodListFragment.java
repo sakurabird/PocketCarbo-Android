@@ -1,9 +1,7 @@
 package com.sakurafish.pockettoushituryou.view.fragment;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -82,7 +80,7 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void initView() {
-        adapter = new FoodListAdapter(getContext(), viewModel.getFoodViewModels());
+        adapter = new FoodListAdapter(getContext());
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -92,7 +90,9 @@ public class FoodListFragment extends BaseFragment {
         viewModel.setKindsData(kindsData);
         viewModel.setFoodsData(foodsData);
         viewModel.setType(getArguments().getInt("type"));
-        viewModel.renderFoods();
+        viewModel.createFoodViewModels();
+
+        adapter.reset(viewModel.getFoodViewModels());
 
         // Creating adapter for spinner
         KindSpinnerAdapter dataAdapter = new KindSpinnerAdapter(getActivity());
@@ -102,11 +102,13 @@ public class FoodListFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setKind(viewModel.getKindsList().get(position).id);
+                adapter.reset(viewModel.getFoodViewModels());
+                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
+                layoutManager.scrollToPositionWithOffset(0, 0);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -114,37 +116,11 @@ public class FoodListFragment extends BaseFragment {
     private static class FoodListAdapter
             extends ArrayRecyclerAdapter<FoodViewModel, BindingHolder<ItemFoodlistBinding>> {
 
-        public FoodListAdapter(@NonNull Context context, @NonNull ObservableList<FoodViewModel> list) {
-            super(context, list);
-
-            list.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<FoodViewModel>>() {
-                @Override
-                public void onChanged(ObservableList<FoodViewModel> contributorViewModels) {
-                    notifyDataSetChanged();
-                }
-
-                @Override
-                public void onItemRangeChanged(ObservableList<FoodViewModel> contributorViewModels, int i, int i1) {
-                    notifyItemRangeChanged(i, i1);
-                }
-
-                @Override
-                public void onItemRangeInserted(ObservableList<FoodViewModel> contributorViewModels, int i, int i1) {
-                    notifyItemRangeInserted(i, i1);
-                }
-
-                @Override
-                public void onItemRangeMoved(ObservableList<FoodViewModel> contributorViewModels, int i, int i1,
-                                             int i2) {
-                    notifyItemMoved(i, i1);
-                }
-
-                @Override
-                public void onItemRangeRemoved(ObservableList<FoodViewModel> contributorViewModels, int i, int i1) {
-                    notifyItemRangeRemoved(i, i1);
-                }
-            });
+        FoodListAdapter(@NonNull Context context) {
+            super(context);
         }
+
+        int rotationAngle = 0;
 
         @Override
         public BindingHolder<ItemFoodlistBinding> onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -153,30 +129,27 @@ public class FoodListFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(BindingHolder<ItemFoodlistBinding> holder, int position) {
-
             final FoodViewModel viewModel = getItem(position);
             if (viewModel.isExpanded()) {
-                holder.binding.expandArrow.setSelected(false);
+                holder.binding.expandArrow.setSelected(true);
                 holder.binding.expandableLayout.expand(true);
             } else {
-                holder.binding.expandArrow.setSelected(true);
+                holder.binding.expandArrow.setSelected(false);
                 holder.binding.expandableLayout.collapse(true);
             }
 
             // collapse or expand card
             viewModel.setOnClickListener(v -> {
+
                 if (viewModel.isExpanded()) {
                     holder.binding.expandArrow.setSelected(false);
                     holder.binding.expandableLayout.collapse(true);
+                    viewModel.setExpanded(false);
                 } else {
                     holder.binding.expandArrow.setSelected(true);
                     holder.binding.expandableLayout.expand(true);
+                    viewModel.setExpanded(true);
                 }
-                ObjectAnimator anim = ObjectAnimator.ofFloat(holder.binding.expandArrow, "rotation", 0, 180);
-                anim.setDuration(150);
-                anim.start();
-
-                viewModel.setExpanded(!viewModel.isExpanded());
             });
 
             holder.binding.setViewModel(viewModel);

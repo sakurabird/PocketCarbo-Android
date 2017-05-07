@@ -42,7 +42,7 @@
                     app:tabMode="scrollable"
                     app:tabSelectedTextColor="@color/colorAccent"
                     app:tabTextAppearance="@style/CustomTabText"
-                    app:tabTextColor="@color/grey600" />
+                    app:tabTextColor="@color/black_alpha_87" />
 
             </android.support.design.widget.AppBarLayout>
 
