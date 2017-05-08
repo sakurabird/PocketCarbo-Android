@@ -47,6 +47,7 @@ public class FoodsData implements Parcelable {
         public float protein;
         public float fat;
         public float sodium;
+        public String search_word;
         public int type_id;
         public int kind_id;
 
@@ -67,6 +68,7 @@ public class FoodsData implements Parcelable {
             dest.writeFloat(protein);
             dest.writeFloat(fat);
             dest.writeFloat(sodium);
+            dest.writeString(search_word);
             dest.writeInt(type_id);
             dest.writeInt(kind_id);
         }
@@ -92,6 +94,7 @@ public class FoodsData implements Parcelable {
             protein = in.readFloat();
             fat = in.readFloat();
             sodium = in.readFloat();
+            search_word = in.readString();
             type_id = in.readInt();
             kind_id = in.readInt();
         }
