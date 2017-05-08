@@ -1,5 +1,7 @@
 package com.sakurafish.pockettoushituryou.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -58,6 +60,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @State
     KindsData kindsData;
+
+    public static Intent createIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
 
     @Override
     protected void onStop() {
