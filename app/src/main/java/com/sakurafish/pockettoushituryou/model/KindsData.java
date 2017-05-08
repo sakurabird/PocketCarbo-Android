@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class KindsData implements Parcelable {
+    public static final int KINDS_ALL = 0;
     public ArrayList<Kinds> kinds;
 
     @Override

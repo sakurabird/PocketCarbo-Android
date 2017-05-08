@@ -2,6 +2,7 @@ package com.sakurafish.pockettoushituryou.view.adapter;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class KindSpinnerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return kindsList.size();
+        return kindsList.size() + 1;
     }
 
     @Override
@@ -52,10 +53,7 @@ public class KindSpinnerAdapter extends BaseAdapter {
             convertView = inflater.
                     inflate(R.layout.item_kind_spinner, null);
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.name);
-        KindsData.Kinds kinds = (KindsData.Kinds) getItem(position);
-        tv.setText(kinds.name);
-
+        setNameString(convertView, position);
         return convertView;
     }
 
@@ -66,10 +64,17 @@ public class KindSpinnerAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.item_kind_spinner_dropdown, null);
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.name);
-        KindsData.Kinds kinds = (KindsData.Kinds) getItem(position);
-        tv.setText(kinds.name);
-
+        setNameString(convertView, position);
         return convertView;
+    }
+
+    private void setNameString(@NonNull View convertView, int position) {
+        TextView tv = (TextView) convertView.findViewById(R.id.name);
+        if (position == 0) {
+            tv.setText(context.getString(R.string.kind_all));
+        } else {
+            KindsData.Kinds kinds = (KindsData.Kinds) getItem(position - 1);
+            tv.setText(kinds.name);
+        }
     }
 }

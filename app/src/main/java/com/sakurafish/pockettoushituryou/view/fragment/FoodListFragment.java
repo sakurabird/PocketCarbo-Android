@@ -25,6 +25,8 @@ import com.sakurafish.pockettoushituryou.viewmodel.FoodViewModel;
 
 import javax.inject.Inject;
 
+import static com.sakurafish.pockettoushituryou.model.KindsData.KINDS_ALL;
+
 public class FoodListFragment extends BaseFragment {
 
     public static final String TAG = FoodListFragment.class.getSimpleName();
@@ -101,7 +103,11 @@ public class FoodListFragment extends BaseFragment {
         binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setKind(viewModel.getKindsList().get(position).id);
+                if (position == 0) {
+                    viewModel.setKind(KINDS_ALL);
+                } else {
+                    viewModel.setKind(viewModel.getKindsList().get(position - 1).id);
+                }
                 adapter.reset(viewModel.getFoodViewModels());
                 LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
                 layoutManager.scrollToPositionWithOffset(0, 0);

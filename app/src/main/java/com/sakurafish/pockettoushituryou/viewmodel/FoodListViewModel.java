@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.sakurafish.pockettoushituryou.model.KindsData.KINDS_ALL;
+
 public final class FoodListViewModel extends BaseObservable implements ViewModel {
     final static String TAG = "FoodListViewModel";
 
@@ -83,7 +85,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         List<FoodViewModel> foodViewModels = new ArrayList<>();
         for (FoodsData.Foods foods : this.foodsData.foods) {
             if (foods.type_id == this.type) {
-                if (this.selectedKindId == 0 || foods.kind_id == this.selectedKindId) {
+                if (KINDS_ALL == this.selectedKindId || foods.kind_id == this.selectedKindId) {
                     foodViewModels.add(new FoodViewModel(context, foods));
                 }
             }
