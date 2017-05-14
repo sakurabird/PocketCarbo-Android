@@ -17,10 +17,7 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
-import com.sakurafish.pockettoushituryou.model.FoodsData;
-import com.sakurafish.pockettoushituryou.model.KindsData;
 import com.sakurafish.pockettoushituryou.model.TypesData;
-import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 
@@ -29,16 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import icepick.Icepick;
-import icepick.State;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static timber.log.Timber.tag;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,28 +35,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     ActivityMainBinding binding;
 
     @Inject
-    CompositeDisposable compositeDisposable;
-
-    @Inject
-    FoodsRepository foodsRepository;
-
-    @Inject
     ResourceResolver resourceResolver;
-
-    @State
-    FoodsData foodsData;
-
-    @State
-    KindsData kindsData;
 
     public static Intent createIntent(Context context) {
         return new Intent(context, MainActivity.class);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        compositeDisposable.dispose();
     }
 
     @Override
@@ -76,43 +46,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         Timber.tag(TAG).d("onCreate");
 
-        Icepick.restoreInstanceState(this, savedInstanceState);
-
         getComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         initView();
-        loadPocketCarboData();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
-    }
-
-    public void loadPocketCarboData() {
-        if (this.kindsData != null && this.foodsData != null) {
-            initTabs();
-            return;
-        }
-
-        Timber.tag(TAG).d("loadPocketCarboData");
-        Disposable disposable = Single.zip(foodsRepository.findKindsData(), foodsRepository.findFoodsData(),
-                (kindsData, foodsData) -> io.reactivex.Observable.empty())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observable -> {
-                            tag(TAG).d("Succeeded in loading sessions.");
-                            this.kindsData = foodsRepository.getKindsData();
-                            this.foodsData = foodsRepository.getFoodsData();
-                            initTabs();
-                        },
-                        throwable -> {
-                            tag(TAG).e(throwable, "Failed to load sessions.");
-                        });
-        compositeDisposable.add(disposable);
     }
 
     private void initTabs() {
@@ -143,9 +81,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         for (TypesData.Types type : typesData.types) {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText(type.name), false);
-            adapter.addFragment(FoodListFragment.newInstance(type.id,
-                    this.kindsData,
-                    this.foodsData),
+            adapter.addFragment(FoodListFragment.newInstance(type.id),
                     type.name);
         }
 
@@ -166,6 +102,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         toggle.syncState();
 
         binding.navView.setNavigationItemSelectedListener(this);
+
+        initTabs();
     }
 
     @Override
