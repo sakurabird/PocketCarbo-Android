@@ -21,13 +21,9 @@ public class Kinds {
     @SerializedName("type_id")
     public int type_id;
 
-    public Foods_Relation getFoods(OrmaDatabase orma) {
-        return orma.relationOfFoods().kind_idEq(id);
-    }
-
     @Override
     public String toString() {
-        return "Kinds id:" + id + " name:" + name;
+        return "Kinds id:" + id + " name:" + name + " type_id:" + type_id;
     }
 
     @Override
