@@ -2,95 +2,64 @@ package com.sakurafish.pockettoushituryou.viewmodel;
 
 import android.content.Context;
 import android.databinding.BaseObservable;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
 import android.support.annotation.IntRange;
-import android.support.annotation.UiThread;
 
-import com.sakurafish.pockettoushituryou.model.FoodsData;
-import com.sakurafish.pockettoushituryou.model.KindsData;
+import com.sakurafish.pockettoushituryou.model.Foods;
+import com.sakurafish.pockettoushituryou.model.Kinds;
+import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.repository.KindsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.sakurafish.pockettoushituryou.model.KindsData.KINDS_ALL;
+import io.reactivex.Single;
+import timber.log.Timber;
 
 public final class FoodListViewModel extends BaseObservable implements ViewModel {
-    final static String TAG = "FoodListViewModel";
+    final static String TAG = FoodListViewModel.class.getSimpleName();
 
     private Context context;
+    private KindsRepository kindsRepository;
+    private FoodsRepository foodsRepository;
 
-    private ObservableList<FoodViewModel> viewModels;
-
-    private int type;
-    private FoodsData foodsData;
-    private KindsData kindsData;
-
-    private ArrayList<KindsData.Kinds> kindsList;
-
-    private int selectedKindId;
+    private List<Kinds> kindsList;
+    private List<Foods> foodsList;
 
     @Inject
-    FoodListViewModel(Context context) {
+    FoodListViewModel(Context context, KindsRepository kindsRepository, FoodsRepository foodsRepository) {
         this.context = context;
-        this.viewModels = new ObservableArrayList<>();
+        this.kindsRepository = kindsRepository;
+        this.foodsRepository = foodsRepository;
 
-        this.selectedKindId = 0;
+        this.kindsList = new ArrayList<>();
+        this.foodsList = new ArrayList<>();
     }
 
     @Override
     public void destroy() {
     }
 
-    public ObservableList<FoodViewModel> getFoodViewModels() {
-        return this.viewModels;
-    }
-
-    public ArrayList<KindsData.Kinds> getKindsList() {
+    public List<Kinds> getKindsList() {
         return this.kindsList;
     }
 
-    public void setKindsData(KindsData kindsData) {
-        this.kindsData = kindsData;
-    }
+    public Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId) {
+        return Single.zip(kindsRepository.findFromLocal(typeId),
+                foodsRepository.findFromLocal(typeId, kindId),
+                (kindsList1, foodsList1) -> {
+                    Timber.tag(TAG).d("getFoodViewModelList local data loaded kinds size:" + kindsList1.size() + " foods size:" + foodsList1.size());
+                    kindsList.clear();
+                    kindsList.addAll(kindsList1);
+                    foodsList.clear();
+                    foodsList.addAll(foodsList1);
 
-    public void setFoodsData(FoodsData foodsData) {
-        this.foodsData = foodsData;
-    }
-
-    public void setType(@IntRange(from = 1, to = 6) int type) {
-        this.type = type;
-
-        this.kindsList = new ArrayList<>();
-        ArrayList<String> list = new ArrayList<>();
-        this.kindsData.kinds.stream().filter(kinds -> kinds.type_id == this.type).forEach(kinds -> {
-            list.add(kinds.name);
-            this.kindsList.add(kinds);
-        });
-    }
-
-    @UiThread
-    public void setKind(int selectedKindId) {
-        this.selectedKindId = selectedKindId;
-        createFoodViewModels();
-    }
-
-    @UiThread
-    public void createFoodViewModels() {
-//        Timber.tag(TAG).d("start createFoodViewModels type:" + type);
-        if (kindsData == null || foodsData == null) return;
-
-        List<FoodViewModel> foodViewModels = new ArrayList<>();
-        for (FoodsData.Foods foods : this.foodsData.foods) {
-            if (foods.type_id == this.type) {
-                if (KINDS_ALL == this.selectedKindId || foods.kind_id == this.selectedKindId) {
-                    foodViewModels.add(new FoodViewModel(context, foods));
-                }
-            }
-        }
-        viewModels.clear();
-        viewModels.addAll(foodViewModels);
+                    List<FoodViewModel> foodViewModels = new ArrayList<>();
+                    for (Foods foods : foodsList) {
+                        foodViewModels.add(new FoodViewModel(context, foods));
+                    }
+                    return foodViewModels;
+                });
     }
 }

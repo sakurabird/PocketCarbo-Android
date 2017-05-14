@@ -10,14 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.model.KindsData;
+import com.sakurafish.pockettoushituryou.model.Kinds;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class KindSpinnerAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<KindsData.Kinds> kindsList;
+    private List<Kinds> kindsList;
 
     public KindSpinnerAdapter(Context context) {
         super();
@@ -25,12 +25,14 @@ public class KindSpinnerAdapter extends BaseAdapter {
         kindsList = null;
     }
 
-    public void setData(ArrayList<KindsData.Kinds> data) {
+    public void setData(List<Kinds> data) {
         kindsList = data;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
+        if (kindsList == null) return 0;
         return kindsList.size() + 1;
     }
 
@@ -73,7 +75,7 @@ public class KindSpinnerAdapter extends BaseAdapter {
         if (position == 0) {
             tv.setText(context.getString(R.string.kind_all));
         } else {
-            KindsData.Kinds kinds = (KindsData.Kinds) getItem(position - 1);
+            Kinds kinds = (Kinds) getItem(position - 1);
             tv.setText(kinds.name);
         }
     }

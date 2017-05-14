@@ -3,15 +3,18 @@ package com.sakurafish.pockettoushituryou.view.activity;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.repository.KindsRepository;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class SplashActivity extends BaseActivity {
 
@@ -21,6 +24,9 @@ public class SplashActivity extends BaseActivity {
 
     @Inject
     CompositeDisposable compositeDisposable;
+
+    @Inject
+    KindsRepository kindsRepository;
 
     @Inject
     FoodsRepository foodsRepository;
@@ -41,12 +47,6 @@ public class SplashActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         loadPocketCarboDataForCache();
-
-        // TODO 後で消す
-        new Handler().postDelayed(() -> {
-            startActivity(MainActivity.createIntent(SplashActivity.this));
-           SplashActivity.this.finish();
-        }, MINIMUM_LOADING_TIME);
     }
 
     @Override
@@ -56,11 +56,31 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadPocketCarboDataForCache() {
-        // TODO 後でDBにキャッシュするよう実装する
-//        Disposable disposable = Single.zip(sessionsRepository.findAll(Locale.getDefault()),
-//                mySessionsRepository.findAll(),
+        Timber.tag(TAG).d("test1");
+        kindsRepository.findAll()
+                .subscribeOn(Schedulers.io())
+                .flatMap(kindsData -> {
+                    Timber.tag(TAG).d("test2");
+                    return foodsRepository.findAll();
+                })
+                .doOnError(throwable -> {
+                    Timber.tag(TAG).d("test3");
+                    foodsRepository.findAll();
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> {
+                    if (isFinishing()) return;
+                    startActivity(MainActivity.createIntent(SplashActivity.this));
+                    SplashActivity.this.finish();
+                })
+                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading data."),
+                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load data."));
+
+
+//        Disposable disposable = Single.zip(kindsRepository.findAll(),
+//                foodsRepository.findAll(),
 //                Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
-//                (sessions, mySessions, obj) -> Observable.empty())
+//                (kindsData, foodsData, obj) -> Observable.empty())
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .doFinally(() -> {
@@ -72,5 +92,4 @@ public class SplashActivity extends BaseActivity {
 //                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load sessions."));
 //        compositeDisposable.add(disposable);
     }
-
 }

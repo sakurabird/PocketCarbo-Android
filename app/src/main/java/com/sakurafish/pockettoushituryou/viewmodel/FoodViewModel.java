@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.model.FoodsData;
+import com.sakurafish.pockettoushituryou.model.Foods;
 
 public class FoodViewModel extends BaseObservable {
 
@@ -27,12 +27,12 @@ public class FoodViewModel extends BaseObservable {
     @ColorRes
     private int carboRatedColorResId = R.color.black_alpha_87;
 
-    FoodViewModel(@NonNull Context context, @NonNull FoodsData.Foods foods) {
+    FoodViewModel(@NonNull Context context, @NonNull Foods foods) {
         this.context = context;
         setViewValues(foods);
     }
 
-    private void setViewValues(@NonNull FoodsData.Foods foods) {
+    private void setViewValues(@NonNull Foods foods) {
         this.name = foods.name;
         this.carbohydrate_per_100g = String.valueOf(foods.carbohydrate_per_100g) + " g";
 
