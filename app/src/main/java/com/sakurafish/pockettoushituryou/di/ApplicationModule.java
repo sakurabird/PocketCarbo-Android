@@ -6,6 +6,7 @@ import android.content.Context;
 import com.google.gson.GsonBuilder;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.api.PocketCarboService;
+import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
 
 import javax.inject.Singleton;
 
@@ -37,6 +38,12 @@ public class ApplicationModule {
     @Provides
     public CompositeDisposable provideCompositeDisposable() {
         return new CompositeDisposable();
+    }
+
+    @Singleton
+    @Provides
+    public OrmaDatabase provideOrmaDatabase(Context context) {
+        return OrmaDatabase.builder(context).build();
     }
 
     @Singleton
