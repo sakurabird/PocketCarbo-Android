@@ -16,7 +16,6 @@ import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
-import com.sakurafish.pockettoushituryou.repository.KindsRepository;
 import com.sakurafish.pockettoushituryou.view.adapter.ArrayRecyclerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.BindingHolder;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
@@ -33,7 +32,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.sakurafish.pockettoushituryou.model.KindsData.KINDS_ALL;
+import static com.sakurafish.pockettoushituryou.model.FoodsData.KINDS_ALL;
 
 public class FoodListFragment extends BaseFragment {
 
@@ -51,9 +50,6 @@ public class FoodListFragment extends BaseFragment {
 
     @Inject
     CompositeDisposable compositeDisposable;
-
-    @Inject
-    KindsRepository kindsRepository;
 
     @Inject
     FoodsRepository foodsRepository;
@@ -136,6 +132,7 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void showFoods() {
+        Timber.tag(TAG).d("showFoods start");
         Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -147,6 +144,7 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void renderFoods(List<FoodViewModel> foodViewModels) {
+        Timber.tag(TAG).d("renderFoods start foodViewModels.size" + foodViewModels.size());
         if (binding.recyclerView.getLayoutManager() == null) {
             LinearLayoutManager lm = new LinearLayoutManager(getContext());
             binding.recyclerView.setLayoutManager(lm);

@@ -7,12 +7,16 @@ import android.view.View;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
-import com.sakurafish.pockettoushituryou.repository.KindsRepository;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -24,9 +28,6 @@ public class SplashActivity extends BaseActivity {
 
     @Inject
     CompositeDisposable compositeDisposable;
-
-    @Inject
-    KindsRepository kindsRepository;
 
     @Inject
     FoodsRepository foodsRepository;
@@ -56,40 +57,18 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadPocketCarboDataForCache() {
-        Timber.tag(TAG).d("test1");
-        kindsRepository.findAll()
+        Disposable disposable = Single.zip(foodsRepository.findAll(),
+                Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
+                (foodsData, obj) -> Observable.empty())
                 .subscribeOn(Schedulers.io())
-                .flatMap(kindsData -> {
-                    Timber.tag(TAG).d("test2");
-                    return foodsRepository.findAll();
-                })
-                .doOnError(throwable -> {
-                    Timber.tag(TAG).d("test3");
-                    foodsRepository.findAll();
-                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> {
                     if (isFinishing()) return;
                     startActivity(MainActivity.createIntent(SplashActivity.this));
                     SplashActivity.this.finish();
                 })
-                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading data."),
-                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load data."));
-
-
-//        Disposable disposable = Single.zip(kindsRepository.findAll(),
-//                foodsRepository.findAll(),
-//                Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
-//                (kindsData, foodsData, obj) -> Observable.empty())
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doFinally(() -> {
-//                    if (isFinishing()) return;
-//                    startActivity(MainActivity.createIntent(SplashActivity.this));
-//                    SplashActivity.this.finish();
-//                })
-//                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading sessions."),
-//                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load sessions."));
-//        compositeDisposable.add(disposable);
+                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading sessions."),
+                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load sessions."));
+        compositeDisposable.add(disposable);
     }
 }

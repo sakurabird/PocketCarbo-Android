@@ -7,7 +7,6 @@ import android.support.annotation.IntRange;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
-import com.sakurafish.pockettoushituryou.repository.KindsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +20,14 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     final static String TAG = FoodListViewModel.class.getSimpleName();
 
     private Context context;
-    private KindsRepository kindsRepository;
     private FoodsRepository foodsRepository;
 
     private List<Kinds> kindsList;
     private List<Foods> foodsList;
 
     @Inject
-    FoodListViewModel(Context context, KindsRepository kindsRepository, FoodsRepository foodsRepository) {
+    FoodListViewModel(Context context, FoodsRepository foodsRepository) {
         this.context = context;
-        this.kindsRepository = kindsRepository;
         this.foodsRepository = foodsRepository;
 
         this.kindsList = new ArrayList<>();
@@ -46,14 +43,13 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     }
 
     public Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId) {
-        return Single.zip(kindsRepository.findFromLocal(typeId),
-                foodsRepository.findFromLocal(typeId, kindId),
-                (kindsList1, foodsList1) -> {
-                    Timber.tag(TAG).d("getFoodViewModelList local data loaded kinds size:" + kindsList1.size() + " foods size:" + foodsList1.size());
+        return foodsRepository.findFromLocal(typeId, kindId)
+                .map(foodsData -> {
+                    Timber.tag(TAG).d("getFoodViewModelList local data loaded kinds size:" + foodsData.getKinds().size() + " foods size:" + foodsData.getFoods().size());
                     kindsList.clear();
-                    kindsList.addAll(kindsList1);
+                    kindsList.addAll(foodsData.getKinds());
                     foodsList.clear();
-                    foodsList.addAll(foodsList1);
+                    foodsList.addAll(foodsData.getFoods());
 
                     List<FoodViewModel> foodViewModels = new ArrayList<>();
                     for (Foods foods : foodsList) {
