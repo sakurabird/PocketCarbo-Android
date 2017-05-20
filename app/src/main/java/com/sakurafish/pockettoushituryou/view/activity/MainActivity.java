@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -51,6 +50,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         initView();
+    }
+
+    private void initView() {
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle(R.string.list_title);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        binding.navView.setNavigationItemSelectedListener(this);
+
+        initTabs();
     }
 
     private void initTabs() {
@@ -93,19 +106,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    private void initView() {
-        setSupportActionBar(binding.toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        binding.drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-        binding.navView.setNavigationItemSelectedListener(this);
-
-        initTabs();
-    }
-
     @Override
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -113,28 +113,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
