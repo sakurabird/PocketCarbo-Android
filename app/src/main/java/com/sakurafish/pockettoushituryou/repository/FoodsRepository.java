@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.api.PocketCarboService;
+import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.FoodsData;
+import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 
@@ -149,8 +151,12 @@ public class FoodsRepository {
         return orma.transactionAsCompletable(() -> {
             orma.relationOfFoods().deleter().execute();
             orma.relationOfKinds().deleter().execute();
-            foodsData.getFoods().forEach(orma.relationOfFoods()::upsert);
-            foodsData.getKinds().forEach(orma.relationOfKinds()::upsert);
+            for (Foods foods : foodsData.getFoods()) {
+                orma.relationOfFoods().upsert(foods);
+            }
+            for (Kinds kinds : foodsData.getKinds()) {
+                orma.relationOfKinds().upsert(kinds);
+            }
         })
                 .subscribe();
     }
