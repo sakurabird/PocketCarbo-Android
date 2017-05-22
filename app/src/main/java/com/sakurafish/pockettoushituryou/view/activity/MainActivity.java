@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import br.com.mauker.materialsearchview.MaterialSearchView;
 import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,6 +54,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                binding.searchView.openSearch();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initView() {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(R.string.list_title);
@@ -62,6 +81,29 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         toggle.syncState();
 
         binding.navView.setNavigationItemSelectedListener(this);
+
+        // 音声入力による検索を行わない
+        binding.searchView.setVoiceIcon(0);
+
+
+        binding.searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Timber.tag(TAG).d("onQueryTextSubmit query:" + query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        binding.searchView.setOnItemClickListener((parent, view, position, id) -> {
+            // the suggestion list is clicked.
+            String suggestion = binding.searchView.getSuggestionAtPosition(position);
+            binding.searchView.setQuery(suggestion, false);
+        });
 
         initTabs();
     }
@@ -110,6 +152,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (binding.searchView.isOpen()) {
+            binding.searchView.closeSearch();
         } else {
             super.onBackPressed();
         }

@@ -3,7 +3,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_search">検索</string>
+    <string name="action_search_hint">検索したい語句を入力して下さい</string>
 
     <string name="list_title">糖質量一覧・検索</string>
     <string name="kind_all">全ての種類</string>

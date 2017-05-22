@@ -20,4 +20,11 @@
     <style name="CustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="MaterialSearchViewStyle">
+        <item name="searchSuggestionBackground">@color/grey300</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray_50</item>
+        <item name="android:hint">@string/action_search_hint</item>
+    </style>
 </resources>
