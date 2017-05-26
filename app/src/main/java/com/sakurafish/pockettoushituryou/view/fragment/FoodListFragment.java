@@ -128,7 +128,7 @@ public class FoodListFragment extends BaseFragment {
     private void initKindsSpinner() {
         if (!this.query.isEmpty()) {
             kindId = KINDS_ALL;
-            binding.spinner.setVisibility(View.GONE);
+            viewModel.setKindSpinnerVisibility(View.GONE);
             return;
         }
 
@@ -183,7 +183,7 @@ public class FoodListFragment extends BaseFragment {
         }
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
         layoutManager.scrollToPositionWithOffset(0, 0);
-        if (binding.spinner.getVisibility() == View.VISIBLE) {
+        if (viewModel.getKindSpinnerVisibility() == View.VISIBLE) {
             kindSpinnerAdapter.setData(viewModel.getKindsList());
         }
         foodListAdapter.reset(foodViewModels);

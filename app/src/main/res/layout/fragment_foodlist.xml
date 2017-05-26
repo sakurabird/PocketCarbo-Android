@@ -6,6 +6,8 @@
         <variable
             name="viewModel"
             type="com.sakurafish.pockettoushituryou.viewmodel.FoodListViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -13,6 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Kinds selector -->
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
@@ -23,12 +26,43 @@
             android:layout_marginTop="@dimen/space_12dp"
             android:background="@drawable/kind_spinner"
             android:dropDownWidth="match_parent"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:visibility="@{viewModel.kindSpinnerVisibility}" />
 
+        <!-- Foods list -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.isEmpty ? View.GONE : View.VISIBLE}" />
+
+        <!-- empty message -->
+        <RelativeLayout
+            android:id="@+id/empty_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_16dp"
+            android:background="@color/grey200"
+            android:padding="@dimen/space_16dp"
+            android:visibility="@{viewModel.isEmpty ? View.VISIBLE : View.GONE}">
+
+            <ImageView
+                android:id="@+id/img_tamagogohan"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/img_tamagogohan" />
+
+            <TextView
+                android:id="@+id/empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/space_4dp"
+                android:layout_toRightOf="@+id/img_tamagogohan"
+                android:text="@string/empty_text"
+                android:textSize="@dimen/text_16sp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>

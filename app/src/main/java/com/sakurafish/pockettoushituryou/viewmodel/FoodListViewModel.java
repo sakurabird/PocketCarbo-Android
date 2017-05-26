@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.Kinds;
@@ -27,6 +28,8 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private List<Kinds> kindsList;
     private List<Foods> foodsList;
 
+    private int kindSpinnerVisibility;
+
     @Inject
     FoodListViewModel(Context context, FoodsRepository foodsRepository) {
         this.context = context;
@@ -34,10 +37,24 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
 
         this.kindsList = new ArrayList<>();
         this.foodsList = new ArrayList<>();
+
+        this.kindSpinnerVisibility = View.VISIBLE;
     }
 
     @Override
     public void destroy() {
+    }
+
+    public int getKindSpinnerVisibility() {
+        return kindSpinnerVisibility;
+    }
+
+    public void setKindSpinnerVisibility(int kindSpinnerVisibility) {
+        this.kindSpinnerVisibility = kindSpinnerVisibility;
+    }
+
+    public boolean isEmpty() {
+        return this.foodsList.size() == 0;
     }
 
     public List<Kinds> getKindsList() {
