@@ -5,6 +5,7 @@
 
     <string name="action_search">検索</string>
     <string name="action_search_hint">検索したい語句を入力して下さい</string>
+    <string name="search_result_title">検索結果</string>
 
     <string name="list_title">糖質量一覧・検索</string>
     <string name="kind_all">全ての種類</string>

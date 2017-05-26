@@ -13,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
@@ -85,11 +86,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 音声入力による検索を行わない
         binding.searchView.setVoiceIcon(0);
 
-
         binding.searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Timber.tag(TAG).d("onQueryTextSubmit query:" + query);
+                if (query.replaceAll("　", " ").trim().isEmpty()) {
+                    Toast.makeText(MainActivity.this, getString(R.string.action_search_hint), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                startActivity(SearchResultActivity.createIntent(MainActivity.this, query));
                 return false;
             }
 

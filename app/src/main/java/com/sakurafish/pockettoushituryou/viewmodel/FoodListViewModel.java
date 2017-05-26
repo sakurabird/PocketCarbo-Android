@@ -3,6 +3,8 @@ package com.sakurafish.pockettoushituryou.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.Kinds;
@@ -51,11 +53,28 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     foodsList.clear();
                     foodsList.addAll(foodsData.getFoods());
 
-                    List<FoodViewModel> foodViewModels = new ArrayList<>();
-                    for (Foods foods : foodsList) {
-                        foodViewModels.add(new FoodViewModel(context, foods));
-                    }
-                    return foodViewModels;
+                    return getFoodViewModels();
                 });
+    }
+
+    public Single<List<FoodViewModel>> getFoodViewModelList(@Nullable String query) {
+        return foodsRepository.findFromLocal(query)
+                .map(foodsData -> {
+                    Timber.tag(TAG).d("getFoodViewModelList local data loaded foods size:" + foodsData.getFoods().size());
+                    kindsList.clear();
+                    foodsList.clear();
+                    foodsList.addAll(foodsData.getFoods());
+
+                    return getFoodViewModels();
+                });
+    }
+
+    @NonNull
+    private List<FoodViewModel> getFoodViewModels() {
+        List<FoodViewModel> foodViewModels = new ArrayList<>();
+        for (Foods foods : foodsList) {
+            foodViewModels.add(new FoodViewModel(context, foods));
+        }
+        return foodViewModels;
     }
 }

@@ -16,6 +16,7 @@ import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity;
 import com.sakurafish.pockettoushituryou.view.adapter.ArrayRecyclerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.BindingHolder;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
@@ -44,6 +45,7 @@ public class FoodListFragment extends BaseFragment {
 
     private int typeId;
     private int kindId = KINDS_ALL;
+    private String query;
 
     @Inject
     FoodListViewModel viewModel;
@@ -58,6 +60,14 @@ public class FoodListFragment extends BaseFragment {
         FoodListFragment fragment = new FoodListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static FoodListFragment newInstance(@Nullable String query) {
+        FoodListFragment fragment = new FoodListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(SearchResultActivity.EXTRA_QUERY, query);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -82,7 +92,8 @@ public class FoodListFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_foodlist, container, false);
         binding.setViewModel(viewModel);
 
-        this.typeId = getArguments().getInt("type");
+        this.query = getArguments().getString(SearchResultActivity.EXTRA_QUERY, "");
+        this.typeId = getArguments().getInt("type", 0);
         initView();
         return binding.getRoot();
     }
@@ -111,6 +122,16 @@ public class FoodListFragment extends BaseFragment {
         binding.recyclerView.setAdapter(foodListAdapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        initKindsSpinner();
+    }
+
+    private void initKindsSpinner() {
+        if (!this.query.isEmpty()) {
+            kindId = KINDS_ALL;
+            binding.spinner.setVisibility(View.GONE);
+            return;
+        }
+
         // Creating foodListAdapter for spinner
         kindSpinnerAdapter = new KindSpinnerAdapter(getActivity());
         binding.spinner.setAdapter(kindSpinnerAdapter);
@@ -133,14 +154,25 @@ public class FoodListFragment extends BaseFragment {
 
     private void showFoods() {
         Timber.tag(TAG).d("showFoods start");
-        Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        this::renderFoods,
-                        throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
-                );
-        compositeDisposable.add(disposable);
+        if (this.query.isEmpty()) {
+            Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            this::renderFoods,
+                            throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
+                    );
+            compositeDisposable.add(disposable);
+        } else {
+            Disposable disposable = viewModel.getFoodViewModelList(query)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            this::renderFoods,
+                            throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
+                    );
+            compositeDisposable.add(disposable);
+        }
     }
 
     private void renderFoods(List<FoodViewModel> foodViewModels) {
@@ -151,7 +183,9 @@ public class FoodListFragment extends BaseFragment {
         }
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
         layoutManager.scrollToPositionWithOffset(0, 0);
-        kindSpinnerAdapter.setData(viewModel.getKindsList());
+        if (binding.spinner.getVisibility() == View.VISIBLE) {
+            kindSpinnerAdapter.setData(viewModel.getKindsList());
+        }
         foodListAdapter.reset(foodViewModels);
     }
 

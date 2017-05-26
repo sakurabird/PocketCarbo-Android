@@ -1,7 +1,9 @@
 package com.sakurafish.pockettoushituryou.repository;
 
+import android.database.Cursor;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
@@ -11,6 +13,9 @@ import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,17 +52,14 @@ public class FoodsRepository {
     public Single<FoodsData> findAll() {
         Timber.tag(TAG).d("findAll start");
         if (foodsData.getFoods() != null && !foodsData.getFoods().isEmpty()) {
-            Timber.tag(TAG).d("findAll start2");
             return Single.create(emitter -> {
                 emitter.onSuccess(foodsData);
             });
         }
 
         if (isDirty) {
-            Timber.tag(TAG).d("findAll start3");
             return findAllFromRemote();
         } else {
-            Timber.tag(TAG).d("findAll start4");
             return findAllFromLocal();
         }
     }
@@ -144,6 +146,49 @@ public class FoodsRepository {
                         return Single.create(emitter -> emitter.onSuccess(this.foodsData));
                     });
         }
+    }
+
+    public Single<FoodsData> findFromLocal(@Nullable String query) {
+        Timber.tag(TAG).d("findFromLocal start query:" + query);
+        String[] word = query.trim().replaceAll("　", " ").split(" ", 0);
+
+        final StringBuilder builder = new StringBuilder();
+        builder.append("SELECT \"foods\".* FROM \"foods\" WHERE (");
+        for (int i = 0; i < word.length; i++) {
+            String str = word[i];
+            Timber.tag(TAG).d("findFromLocal each word:" + str);
+            builder.append("(\"foods\".\"name\" LIKE \'%");
+            builder.append(str);
+            builder.append("%\' OR \"foods\".\"search_word\" LIKE \'%");
+            builder.append(str);
+            builder.append("%\')");
+            if (i != word.length - 1) {
+                builder.append(" AND ");
+            } else {
+                builder.append(")");
+            }
+        }
+        Timber.tag(TAG).d("findFromLocal sql query:" + builder.toString());
+
+        Cursor cursor = orma.getConnection().rawQuery(builder.toString());
+        Timber.tag(TAG).d("findFromLocal cursor.getCount():" + cursor.getCount());
+        List<Foods> foodsList = toFoodsList(cursor);
+        this.foodsData.setFoods(foodsList);
+        this.foodsData.setKinds(null);
+        return Single.create(emitter -> emitter.onSuccess(this.foodsData));
+    }
+
+    public List<Foods> toFoodsList(Cursor cursor) {
+        ArrayList<Foods> list = new ArrayList<>(cursor.getCount());
+        try {
+            for (int pos = 0; cursor.moveToPosition(pos); pos++) {
+                Foods foods = orma.relationOfFoods().selector().newModelFromCursor(cursor);
+                list.add(foods);
+            }
+        } finally {
+            cursor.close();
+        }
+        return list;
     }
 
     private Disposable updateAllAsync(@NonNull final FoodsData foodsData) {
