@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.sakurafish.pockettoushituryou.model.Foods;
@@ -28,7 +29,10 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private List<Kinds> kindsList;
     private List<Foods> foodsList;
 
+    private String query;
+    private int foodsVisibility;
     private int kindSpinnerVisibility;
+    private int emptyMessageVisibility;
 
     @Inject
     FoodListViewModel(Context context, FoodsRepository foodsRepository) {
@@ -38,11 +42,21 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         this.kindsList = new ArrayList<>();
         this.foodsList = new ArrayList<>();
 
-        this.kindSpinnerVisibility = View.VISIBLE;
+        setFoodsVisibility(View.VISIBLE);
+        setKindSpinnerVisibility(View.VISIBLE);
+        setEmptyMessageVisibility(View.GONE);
     }
 
     @Override
     public void destroy() {
+    }
+
+    public int getFoodsVisibility() {
+        return foodsVisibility;
+    }
+
+    public void setFoodsVisibility(int foodsVisibility) {
+        this.foodsVisibility = foodsVisibility;
     }
 
     public int getKindSpinnerVisibility() {
@@ -53,8 +67,12 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         this.kindSpinnerVisibility = kindSpinnerVisibility;
     }
 
-    public boolean isEmpty() {
-        return this.foodsList.size() == 0;
+    public int getEmptyMessageVisibility() {
+        return emptyMessageVisibility;
+    }
+
+    public void setEmptyMessageVisibility(int emptyMessageVisibility) {
+        this.emptyMessageVisibility = emptyMessageVisibility;
     }
 
     public List<Kinds> getKindsList() {
@@ -75,6 +93,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     }
 
     public Single<List<FoodViewModel>> getFoodViewModelList(@Nullable String query) {
+        this.query = query;
         return foodsRepository.findFromLocal(query)
                 .map(foodsData -> {
                     Timber.tag(TAG).d("getFoodViewModelList local data loaded foods size:" + foodsData.getFoods().size());
@@ -92,6 +111,24 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         for (Foods foods : foodsList) {
             foodViewModels.add(new FoodViewModel(context, foods));
         }
+        setViewsVisiblity(foodViewModels);
+
         return foodViewModels;
+    }
+
+    private void setViewsVisiblity(List<FoodViewModel> foodViewModels) {
+        if (foodViewModels.size() > 0) {
+            setFoodsVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(this.query)) {
+                setKindSpinnerVisibility(View.VISIBLE);
+            } else {
+                setKindSpinnerVisibility(View.GONE);
+            }
+            setEmptyMessageVisibility(View.GONE);
+        } else {
+            setFoodsVisibility(View.GONE);
+            setKindSpinnerVisibility(View.GONE);
+            setEmptyMessageVisibility(View.VISIBLE);
+        }
     }
 }

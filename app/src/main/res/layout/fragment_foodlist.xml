@@ -34,7 +34,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.isEmpty ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{viewModel.foodsVisibility}" />
 
         <!-- empty message -->
         <RelativeLayout
@@ -44,7 +44,7 @@
             android:layout_margin="@dimen/space_16dp"
             android:background="@color/grey200"
             android:padding="@dimen/space_16dp"
-            android:visibility="@{viewModel.isEmpty ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewModel.emptyMessageVisibility}">
 
             <ImageView
                 android:id="@+id/img_tamagogohan"
