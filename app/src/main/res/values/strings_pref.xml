@@ -1,0 +1,18 @@
+<resources>
+    <!-- Preference keys -->
+    <string name="PREF_NOTIFICATION">PREF_NOTIFICATION</string>
+    <string name="PREF_CREDIT">PREF_CREDIT</string>
+    <string name="PREF_MAIL_TO_DEV">PREF_MAIL_TO_DEV</string>
+    <string name="PREF_PRIVACY_POLICY">PREF_PRIVACY_POLICY</string>
+
+    <!-- text -->
+    <string name="environment_setting">環境設定</string>
+    <string name="text_notification_summary">通知</string>
+    <string name="text_notification">アプリからのお知らせを通知エリアに表示します</string>
+    <string name="setting_credit">クレジット</string>
+    <string name="setting_privacy_policy">プライバシーポリシー</string>
+    <string name="setting_mail_to_dev">開発へのご要望・ご感想</string>
+    <string name="setting_mail_to_dev2">【ポケット糖質量】ご意見・ご要望</string>
+    <string name="setting_mail_to_dev3">ユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。</string>
+
+</resources>

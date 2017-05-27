@@ -8,6 +8,7 @@
     <string name="settings">設定</string>
     <string name="share">共有</string>
     <string name="help">ヘルプ</string>
+    <string name="other">その他</string>
 
     <string name="action_search">検索</string>
     <string name="action_search_hint">検索したい語句を入力して下さい</string>

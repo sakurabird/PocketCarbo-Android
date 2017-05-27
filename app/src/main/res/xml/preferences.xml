@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 環境設定 -->
+    <PreferenceCategory android:title="@string/environment_setting">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/PREF_NOTIFICATION"
+            android:summary="@string/text_notification"
+            android:title="@string/text_notification_summary" />
+    </PreferenceCategory>
+
+    <!-- その他 -->
+    <PreferenceCategory android:title="@string/other">
+        <com.sakurafish.pockettoushituryou.pref.PrefCredit
+            android:key="@string/PREF_CREDIT"
+            android:layout="@layout/item_preference" />
+        <com.sakurafish.pockettoushituryou.pref.PrefMailToDev
+            android:key="@string/PREF_MAIL_TO_DEV"
+            android:layout="@layout/item_preference" />
+        <com.sakurafish.pockettoushituryou.pref.PrefPrivacyPolicy
+            android:key="@string/PREF_PRIVACY_POLICY"
+            android:layout="@layout/item_preference" />
+    </PreferenceCategory>
+</PreferenceScreen>

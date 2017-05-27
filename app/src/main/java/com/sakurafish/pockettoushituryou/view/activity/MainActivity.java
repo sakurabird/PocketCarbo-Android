@@ -174,6 +174,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_favorite:
                 break;
             case R.id.nav_setting:
+                startActivity(SettingsActivity.createIntent(MainActivity.this));
                 break;
             case R.id.nav_share:
                 break;
@@ -182,7 +183,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 
     private static class MyPagerAdapter extends FragmentPagerAdapter {
