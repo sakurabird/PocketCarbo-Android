@@ -9,6 +9,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.sakurafish.pockettoushituryou.R;
+import com.sakurafish.pockettoushituryou.view.activity.WebViewActivity;
 
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -44,7 +45,9 @@ public class SettingsFragment extends PreferenceFragment
 
         Preference policy = findPreference(getString(R.string.PREF_PRIVACY_POLICY));
         policy.setOnPreferenceClickListener(preference -> {
-            // show credit
+            mContext.startActivity(WebViewActivity.createIntent(mContext
+                    , "http://www.pockettoushituryou.com/static_pages/privacy_policy"
+                    , getString(R.string.setting_privacy_policy)));
             return false;
         });
 
