@@ -177,6 +177,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(SettingsActivity.createIntent(MainActivity.this));
                 break;
             case R.id.nav_share:
+                final Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+                intent.setType("text/plain");
+                startActivity(intent);
                 break;
             case R.id.nav_help:
                 break;
