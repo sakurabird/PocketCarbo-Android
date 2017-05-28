@@ -11,6 +11,8 @@ import android.preference.PreferenceFragment;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.view.activity.WebViewActivity;
 
+import de.psdev.licensesdialog.LicensesDialog;
+
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -33,7 +35,7 @@ public class SettingsFragment extends PreferenceFragment
     private void initLayout() {
         Preference credit = findPreference(getString(R.string.PREF_CREDIT));
         credit.setOnPreferenceClickListener(preference -> {
-            // show credit
+            showCreditDialog();
             return false;
         });
 
@@ -51,6 +53,14 @@ public class SettingsFragment extends PreferenceFragment
             return false;
         });
 
+    }
+
+    private void showCreditDialog() {
+        new LicensesDialog.Builder(getActivity())
+                .setNotices(R.raw.notices)
+                .setIncludeOwnLicense(true)
+                .build()
+                .show();
     }
 
     private void showMailIntent() {
