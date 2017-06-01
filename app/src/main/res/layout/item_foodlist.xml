@@ -208,7 +208,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/sodium_title"
-                        android:layout_marginBottom="@dimen/space_12dp"
                         android:layout_marginRight="@dimen/space_4dp"
                         android:layout_toRightOf="@+id/sodium_title"
                         android:text="@{viewModel.sodium}"
@@ -216,6 +215,17 @@
                         android:textSize="@dimen/text_14sp"
                         android:textStyle="bold" />
 
+                    <com.like.LikeButton
+                        android:id="@+id/star_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/sodium_title"
+                        android:layout_marginBottom="@dimen/space_8dp"
+                        android:layout_marginRight="@dimen/space_8dp"
+                        app:anim_scale_factor="2.5"
+                        app:icon_size="17dp"
+                        app:icon_type="heart" />
                 </RelativeLayout>
 
             </net.cachapa.expandablelayout.ExpandableLayout>
