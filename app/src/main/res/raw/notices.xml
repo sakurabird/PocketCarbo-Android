@@ -72,4 +72,10 @@
         <copyright>Copyright 2013 Jake Wharton</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
+    <notice>
+        <name>Like Button</name>
+        <url>https://github.com/jd-alexander/LikeButton</url>
+        <copyright>Copyright 2016 Joel Dean</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
 </notices>
