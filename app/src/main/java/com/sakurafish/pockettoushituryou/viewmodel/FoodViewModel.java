@@ -7,14 +7,21 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.like.LikeButton;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.model.Foods;
+import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
+
+import timber.log.Timber;
 
 public class FoodViewModel extends BaseObservable {
+    final static String TAG = FoodViewModel.class.getSimpleName();
 
     private Context context;
     private View.OnClickListener onClickListener;
+    private FavoriteFoodsRepository favoriteFoodsRepository;
 
+    private Foods foods;
     private String name;
     private String carbohydrate_per_100g;
     private String expanded_title;
@@ -24,15 +31,18 @@ public class FoodViewModel extends BaseObservable {
     private String fat;
     private String sodium;
     private boolean expanded = false;
+    private boolean favState = false;
     @ColorRes
     private int carboRatedColorResId = R.color.black_alpha_87;
 
-    FoodViewModel(@NonNull Context context, @NonNull Foods foods) {
+    FoodViewModel(@NonNull Context context, @NonNull FavoriteFoodsRepository favoriteFoodsRepository, @NonNull Foods foods) {
         this.context = context;
+        this.favoriteFoodsRepository = favoriteFoodsRepository;
         setViewValues(foods);
     }
 
     private void setViewValues(@NonNull Foods foods) {
+        this.foods = foods;
         this.name = foods.name;
         this.carbohydrate_per_100g = String.valueOf(foods.carbohydrate_per_100g) + " g";
 
@@ -63,7 +73,7 @@ public class FoodViewModel extends BaseObservable {
             // 糖質量が非常に多い
             this.carboRatedColorResId = R.color.colorCarboDangerHigh;
         }
-
+        setFabState();
     }
 
     public String getName() {
@@ -118,5 +128,30 @@ public class FoodViewModel extends BaseObservable {
 
     public int getCarboRatedColorResId() {
         return carboRatedColorResId;
+    }
+
+    public void setFabState() {
+//        if (favoriteFoodsRepository.isFavorite(foods.id)) {
+//            Timber.tag(TAG).d("setFabState :" + favoriteFoodsRepository.toString(foods.id));
+//        }
+        this.favState = favoriteFoodsRepository.isFavorite(foods.id);
+    }
+
+    public void setFabButtonState(LikeButton likeButton) {
+        likeButton.setLiked(this.favState);
+    }
+
+    public void onClickFab() {
+        if (favoriteFoodsRepository.isFavorite(foods.id)) {
+            favoriteFoodsRepository.delete(foods)
+                    .subscribe((result) -> Timber.tag(TAG).d("Deleted favorite food"),
+                            throwable -> Timber.tag(TAG).e(throwable, "Failed to delete favorite food id:" + foods.id));
+            this.favState = false;
+        } else {
+            favoriteFoodsRepository.save(foods)
+                    .subscribe(() -> Timber.tag(TAG).d("Saved favorite food"),
+                            throwable -> Timber.tag(TAG).e(throwable, "Failed to save favorite food"));
+            this.favState = true;
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.Kinds;
+import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
 
     private Context context;
     private FoodsRepository foodsRepository;
+    private FavoriteFoodsRepository favoriteFoodsRepository;
 
     private List<Kinds> kindsList;
     private List<Foods> foodsList;
@@ -35,9 +37,10 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private int emptyMessageVisibility;
 
     @Inject
-    FoodListViewModel(Context context, FoodsRepository foodsRepository) {
+    FoodListViewModel(Context context, FoodsRepository foodsRepository, FavoriteFoodsRepository favoriteFoodsRepository) {
         this.context = context;
         this.foodsRepository = foodsRepository;
+        this.favoriteFoodsRepository = favoriteFoodsRepository;
 
         this.kindsList = new ArrayList<>();
         this.foodsList = new ArrayList<>();
@@ -109,7 +112,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private List<FoodViewModel> getFoodViewModels() {
         List<FoodViewModel> foodViewModels = new ArrayList<>();
         for (Foods foods : foodsList) {
-            foodViewModels.add(new FoodViewModel(context, foods));
+            foodViewModels.add(new FoodViewModel(this.context, this.favoriteFoodsRepository, foods));
         }
         setViewsVisiblity(foodViewModels);
 

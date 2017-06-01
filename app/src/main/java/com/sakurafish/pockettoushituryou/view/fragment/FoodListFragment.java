@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
@@ -211,6 +213,20 @@ public class FoodListFragment extends BaseFragment {
                 holder.binding.expandArrow.setSelected(false);
                 holder.binding.expandableLayout.collapse(true);
             }
+
+            // Like button
+            viewModel.setFabButtonState(holder.binding.starButton);
+            holder.binding.starButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    viewModel.onClickFab();
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    viewModel.onClickFab();
+                }
+            });
 
             // collapse or expand card
             viewModel.setOnClickListener(v -> {
