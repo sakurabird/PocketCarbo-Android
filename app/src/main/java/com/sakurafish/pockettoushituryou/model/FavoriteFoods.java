@@ -19,7 +19,7 @@ public class FavoriteFoods {
     @Column(indexed = true, unique = true)
     public Foods foods;
 
-    @Column
+    @Column(indexed = true)
     @Nullable
     public Date createdAt;
 

@@ -7,6 +7,7 @@ import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,6 +16,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @Singleton
 public class FavoriteFoodsRepository {
@@ -29,6 +31,11 @@ public class FavoriteFoodsRepository {
 
     public boolean isFavorite(int foodsId) {
         return !orma.relationOfFavoriteFoods().selector().foodsEq(foodsId).isEmpty();
+    }
+
+    public Single<List<FavoriteFoods>> findAllFromLocal() {
+        Timber.tag(TAG).d("findAllFromLocal start");
+        return orma.relationOfFavoriteFoods().selector().orderByCreatedAtDesc().executeAsObservable().toList();
     }
 
     public Single<Integer> delete(@NonNull Foods foods) {
@@ -47,7 +54,7 @@ public class FavoriteFoodsRepository {
     }
 
     public String toString(int foodsId) {
-        FavoriteFoods favoriteFoods= orma.relationOfFavoriteFoods().selector().foodsEq(foodsId).value();
+        FavoriteFoods favoriteFoods = orma.relationOfFavoriteFoods().selector().foodsEq(foodsId).value();
         return favoriteFoods.toString();
     }
 }

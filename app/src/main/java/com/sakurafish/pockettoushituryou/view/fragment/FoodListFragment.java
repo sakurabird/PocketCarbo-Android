@@ -41,10 +41,20 @@ public class FoodListFragment extends BaseFragment {
 
     public static final String TAG = FoodListFragment.class.getSimpleName();
 
+    public enum ListType {
+        NORMAL,
+        SEARCH_RESULT,
+        FAVORITES
+    }
+
+    private static final String EXTRA_LIST_TYPE = "listType";
+    private static final String EXTRA_TYPE = "type";
+
     private FragmentFoodlistBinding binding;
     private KindSpinnerAdapter kindSpinnerAdapter;
     private FoodListAdapter foodListAdapter;
 
+    private ListType listType;
     private int typeId;
     private int kindId = KINDS_ALL;
     private String query;
@@ -58,18 +68,28 @@ public class FoodListFragment extends BaseFragment {
     @Inject
     FoodsRepository foodsRepository;
 
-    public static FoodListFragment newInstance(@IntRange(from = 1, to = 6) int type) {
+    public static FoodListFragment newInstance(@NonNull ListType list_type, @IntRange(from = 1, to = 6) int type) {
         FoodListFragment fragment = new FoodListFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
+        bundle.putSerializable(EXTRA_LIST_TYPE, list_type);
+        bundle.putInt(EXTRA_TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public static FoodListFragment newInstance(@Nullable String query) {
+    public static FoodListFragment newInstance(@NonNull ListType list_type, @Nullable String query) {
         FoodListFragment fragment = new FoodListFragment();
         Bundle bundle = new Bundle();
+        bundle.putSerializable(EXTRA_LIST_TYPE, list_type);
         bundle.putString(SearchResultActivity.EXTRA_QUERY, query);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static FoodListFragment newInstance(@NonNull ListType list_type) {
+        FoodListFragment fragment = new FoodListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(EXTRA_LIST_TYPE, list_type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -94,8 +114,9 @@ public class FoodListFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_foodlist, container, false);
         binding.setViewModel(viewModel);
 
+        this.listType = (ListType) getArguments().getSerializable(EXTRA_LIST_TYPE);
         this.query = getArguments().getString(SearchResultActivity.EXTRA_QUERY, "");
-        this.typeId = getArguments().getInt("type", 0);
+        this.typeId = getArguments().getInt(EXTRA_TYPE, 0);
         initView();
         return binding.getRoot();
     }
@@ -128,7 +149,7 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void initKindsSpinner() {
-        if (!this.query.isEmpty()) {
+        if (this.listType != ListType.NORMAL) {
             kindId = KINDS_ALL;
             viewModel.setKindSpinnerVisibility(View.GONE);
             return;
@@ -155,25 +176,39 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void showFoods() {
-        Timber.tag(TAG).d("showFoods start");
-        if (this.query.isEmpty()) {
-            Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            this::renderFoods,
-                            throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
-                    );
-            compositeDisposable.add(disposable);
-        } else {
-            Disposable disposable = viewModel.getFoodViewModelList(query)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            this::renderFoods,
-                            throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
-                    );
-            compositeDisposable.add(disposable);
+        switch (this.listType) {
+            case NORMAL:
+                Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                this::renderFoods,
+                                throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
+                        );
+                compositeDisposable.add(disposable);
+                break;
+
+            case SEARCH_RESULT:
+                disposable = viewModel.getFoodViewModelList(query)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                this::renderFoods,
+                                throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
+                        );
+                compositeDisposable.add(disposable);
+                break;
+
+            case FAVORITES:
+                disposable = viewModel.getFoodViewModelListFavorites()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                this::renderFoods,
+                                throwable -> Timber.tag(TAG).e(throwable, "Failed to show foods.")
+                        );
+                compositeDisposable.add(disposable);
+                break;
         }
     }
 

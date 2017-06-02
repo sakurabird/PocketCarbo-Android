@@ -5,13 +5,14 @@ import android.databinding.BaseObservable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 
+import com.sakurafish.pockettoushituryou.model.FavoriteFoods;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import timber.log.Timber;
+
+import static com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType.NORMAL;
 
 public final class FoodListViewModel extends BaseObservable implements ViewModel {
     final static String TAG = FoodListViewModel.class.getSimpleName();
@@ -31,7 +34,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private List<Kinds> kindsList;
     private List<Foods> foodsList;
 
-    private String query;
+    private ListType listType;
     private int foodsVisibility;
     private int kindSpinnerVisibility;
     private int emptyMessageVisibility;
@@ -45,6 +48,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         this.kindsList = new ArrayList<>();
         this.foodsList = new ArrayList<>();
 
+        this.listType = NORMAL;
         setFoodsVisibility(View.VISIBLE);
         setKindSpinnerVisibility(View.VISIBLE);
         setEmptyMessageVisibility(View.GONE);
@@ -83,6 +87,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     }
 
     public Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId) {
+        this.listType = NORMAL;
         return foodsRepository.findFromLocal(typeId, kindId)
                 .map(foodsData -> {
                     Timber.tag(TAG).d("getFoodViewModelList local data loaded kinds size:" + foodsData.getKinds().size() + " foods size:" + foodsData.getFoods().size());
@@ -96,7 +101,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     }
 
     public Single<List<FoodViewModel>> getFoodViewModelList(@Nullable String query) {
-        this.query = query;
+        this.listType = ListType.SEARCH_RESULT;
         return foodsRepository.findFromLocal(query)
                 .map(foodsData -> {
                     Timber.tag(TAG).d("getFoodViewModelList local data loaded foods size:" + foodsData.getFoods().size());
@@ -104,6 +109,20 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     foodsList.clear();
                     foodsList.addAll(foodsData.getFoods());
 
+                    return getFoodViewModels();
+                });
+    }
+
+    public Single<List<FoodViewModel>> getFoodViewModelListFavorites() {
+        this.listType = ListType.FAVORITES;
+        return favoriteFoodsRepository.findAllFromLocal()
+                .map(favoriteFoodsList -> {
+                    Timber.tag(TAG).d("getFoodViewModelListFavorites local data loaded foods size:" + favoriteFoodsList.size());
+                    kindsList.clear();
+                    foodsList.clear();
+                    for (FavoriteFoods favoriteFoods : favoriteFoodsList) {
+                        foodsList.add(favoriteFoods.foods);
+                    }
                     return getFoodViewModels();
                 });
     }
@@ -122,11 +141,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private void setViewsVisiblity(List<FoodViewModel> foodViewModels) {
         if (foodViewModels.size() > 0) {
             setFoodsVisibility(View.VISIBLE);
-            if (TextUtils.isEmpty(this.query)) {
-                setKindSpinnerVisibility(View.VISIBLE);
-            } else {
-                setKindSpinnerVisibility(View.GONE);
-            }
+            setKindSpinnerVisibility(this.listType == NORMAL ? View.VISIBLE : View.GONE);
             setEmptyMessageVisibility(View.GONE);
         } else {
             setFoodsVisibility(View.GONE);

@@ -194,8 +194,6 @@ public class FoodsRepository {
     private Disposable updateAllAsync(@NonNull final FoodsData foodsData) {
         Timber.tag(TAG).d("updateAllAsync start" + " *foods*size:" + foodsData.getFoods().size() + "  *kinds*size:" + foodsData.getKinds().size());
         return orma.transactionAsCompletable(() -> {
-            orma.relationOfFoods().deleter().execute();
-            orma.relationOfKinds().deleter().execute();
             for (Foods foods : foodsData.getFoods()) {
                 orma.relationOfFoods().upsert(foods);
             }

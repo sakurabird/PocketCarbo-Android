@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
-import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 
 import java.util.ArrayList;
@@ -29,6 +28,9 @@ import javax.inject.Inject;
 
 import br.com.mauker.materialsearchview.MaterialSearchView;
 import timber.log.Timber;
+
+import static com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType;
+import static com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.newInstance;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -140,7 +142,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         for (TypesData.Types type : typesData.types) {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText(type.name), false);
-            adapter.addFragment(FoodListFragment.newInstance(type.id),
+            adapter.addFragment(newInstance(ListType.NORMAL, type.id),
                     type.name);
         }
 
@@ -172,6 +174,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 // Do nothing
                 break;
             case R.id.nav_favorite:
+                startActivity(FavoritesActivity.createIntent(MainActivity.this));
                 break;
             case R.id.nav_setting:
                 startActivity(SettingsActivity.createIntent(MainActivity.this));

@@ -38,6 +38,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".view.activity.FavoritesActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".view.activity.SettingsActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false"

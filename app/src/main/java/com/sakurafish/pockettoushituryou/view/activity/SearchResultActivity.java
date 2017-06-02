@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivitySearchresultBinding;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
+import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType;
 
 public class SearchResultActivity extends BaseActivity {
 
@@ -29,7 +30,7 @@ public class SearchResultActivity extends BaseActivity {
         final String query = getIntent().getStringExtra(EXTRA_QUERY);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_searchresult);
         initView();
-        replaceFragment(FoodListFragment.newInstance(query), R.id.content_view);
+        replaceFragment(FoodListFragment.newInstance(ListType.SEARCH_RESULT, query), R.id.content_view);
     }
 
     private void initView() {
