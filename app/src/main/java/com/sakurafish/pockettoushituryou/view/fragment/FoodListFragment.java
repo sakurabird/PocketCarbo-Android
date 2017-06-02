@@ -18,7 +18,6 @@ import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
-import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity;
 import com.sakurafish.pockettoushituryou.view.adapter.ArrayRecyclerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.BindingHolder;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
@@ -36,6 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.sakurafish.pockettoushituryou.model.FoodsData.KINDS_ALL;
+import static com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.EXTRA_QUERY;
 
 public class FoodListFragment extends BaseFragment {
 
@@ -57,7 +57,7 @@ public class FoodListFragment extends BaseFragment {
     private ListType listType;
     private int typeId;
     private int kindId = KINDS_ALL;
-    private String query;
+    private String query = "";
 
     @Inject
     FoodListViewModel viewModel;
@@ -81,7 +81,7 @@ public class FoodListFragment extends BaseFragment {
         FoodListFragment fragment = new FoodListFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_LIST_TYPE, list_type);
-        bundle.putString(SearchResultActivity.EXTRA_QUERY, query);
+        bundle.putString(EXTRA_QUERY, query);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -106,6 +106,14 @@ public class FoodListFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.typeId = savedInstanceState.getInt(EXTRA_TYPE);
+            this.listType = (ListType) savedInstanceState.getSerializable(EXTRA_LIST_TYPE);
+            this.kindId = savedInstanceState.getInt("kindId");
+            this.query = savedInstanceState.getString(EXTRA_QUERY);
+            Timber.tag(TAG).d("onCreate type:" + this.typeId);
+        }
     }
 
     @Nullable
@@ -114,9 +122,10 @@ public class FoodListFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_foodlist, container, false);
         binding.setViewModel(viewModel);
 
-        this.listType = (ListType) getArguments().getSerializable(EXTRA_LIST_TYPE);
-        this.query = getArguments().getString(SearchResultActivity.EXTRA_QUERY, "");
         this.typeId = getArguments().getInt(EXTRA_TYPE, 0);
+        this.listType = (ListType) getArguments().getSerializable(EXTRA_LIST_TYPE);
+        this.kindId = getArguments().getInt("kindId");
+        this.query = getArguments().getString(EXTRA_QUERY);
         initView();
         return binding.getRoot();
     }
@@ -138,6 +147,15 @@ public class FoodListFragment extends BaseFragment {
         super.onDestroy();
         viewModel.destroy();
         compositeDisposable.dispose();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(EXTRA_TYPE, this.typeId);
+        outState.putInt("kindId", this.kindId);
+        outState.putString(EXTRA_QUERY, this.query);
+        outState.putSerializable(EXTRA_LIST_TYPE, this.listType);
     }
 
     private void initView() {
@@ -213,7 +231,7 @@ public class FoodListFragment extends BaseFragment {
     }
 
     private void renderFoods(List<FoodViewModel> foodViewModels) {
-        Timber.tag(TAG).d("renderFoods start foodViewModels.size" + foodViewModels.size());
+        Timber.tag(TAG).d("renderFoods start type:" + typeId + " foodViewModels.size" + foodViewModels.size());
         if (binding.recyclerView.getLayoutManager() == null) {
             LinearLayoutManager lm = new LinearLayoutManager(getContext());
             binding.recyclerView.setLayoutManager(lm);

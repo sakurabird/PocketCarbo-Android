@@ -90,11 +90,11 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         this.listType = NORMAL;
         return foodsRepository.findFromLocal(typeId, kindId)
                 .map(foodsData -> {
-                    Timber.tag(TAG).d("getFoodViewModelList local data loaded kinds size:" + foodsData.getKinds().size() + " foods size:" + foodsData.getFoods().size());
                     kindsList.clear();
                     kindsList.addAll(foodsData.getKinds());
                     foodsList.clear();
                     foodsList.addAll(foodsData.getFoods());
+                    Timber.tag(TAG).d("getFoodViewModelList local data loaded type:" + typeId + " kinds size:" + foodsData.getKinds().size() + " foods size:" + foodsData.getFoods().size());
 
                     return getFoodViewModels();
                 });
@@ -104,10 +104,10 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         this.listType = ListType.SEARCH_RESULT;
         return foodsRepository.findFromLocal(query)
                 .map(foodsData -> {
-                    Timber.tag(TAG).d("getFoodViewModelList local data loaded foods size:" + foodsData.getFoods().size());
                     kindsList.clear();
                     foodsList.clear();
                     foodsList.addAll(foodsData.getFoods());
+                    Timber.tag(TAG).d("getFoodViewModelList local data loaded foods size:" + foodsData.getFoods().size());
 
                     return getFoodViewModels();
                 });
@@ -117,12 +117,12 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         this.listType = ListType.FAVORITES;
         return favoriteFoodsRepository.findAllFromLocal()
                 .map(favoriteFoodsList -> {
-                    Timber.tag(TAG).d("getFoodViewModelListFavorites local data loaded foods size:" + favoriteFoodsList.size());
                     kindsList.clear();
                     foodsList.clear();
                     for (FavoriteFoods favoriteFoods : favoriteFoodsList) {
                         foodsList.add(favoriteFoods.foods);
                     }
+                    Timber.tag(TAG).d("getFoodViewModelListFavorites local data loaded foods size:" + favoriteFoodsList.size());
                     return getFoodViewModels();
                 });
     }
