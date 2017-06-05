@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-@Singleton
 public class FoodsRepository {
     private final static String TAG = FoodsRepository.class.getSimpleName();
 
