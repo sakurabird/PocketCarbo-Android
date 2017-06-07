@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.api.PocketCarboService;
+import com.sakurafish.pockettoushituryou.model.DataVersion;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.model.Kinds;
@@ -45,6 +46,16 @@ public class FoodsRepository {
 
     public FoodsData getFoodsData() {
         return foodsData;
+    }
+
+    public Single<DataVersion> receiveDataVersion() {
+        Timber.tag(TAG).d("receiveDataVersion start");
+        return pocketCarboService.getDataVersion()
+                .doOnSuccess(dataVersion -> Timber.tag(TAG).d("receiveDataVersion succeeded version:" + dataVersion.version))
+                .doOnError(throwable -> {
+                    Timber.tag(TAG).e("receiveDataVersion failed");
+                    throwable.printStackTrace();
+                });
     }
 
     public Single<FoodsData> findAll() {
@@ -89,8 +100,12 @@ public class FoodsRepository {
                 });
     }
 
-    private Single<FoodsData> findAllFromLocal() {
+    public Single<FoodsData> findAllFromLocal() {
         Timber.tag(TAG).d("findAllFromLocal start");
+        if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
+            return findAllFromAssets();
+        }
+
         return orma.relationOfFoods().selector().executeAsObservable().toList()
                 .flatMap(foodsList -> {
                     Timber.tag(TAG).e("findAllFromLocal loaded **foodList size:" + foodsList.size());

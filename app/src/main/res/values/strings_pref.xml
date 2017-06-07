@@ -1,5 +1,6 @@
 <resources>
     <!-- Preference keys -->
+    <string name="PREF_DATA_VERSION">PREF_DATA_VERSION</string>
     <string name="PREF_NOTIFICATION">PREF_NOTIFICATION</string>
     <string name="PREF_CREDIT">PREF_CREDIT</string>
     <string name="PREF_MAIL_TO_DEV">PREF_MAIL_TO_DEV</string>

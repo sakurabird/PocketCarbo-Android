@@ -4,65 +4,73 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class Pref {
 
-    private Pref() {
+    private final Context context;
+
+    @Inject
+    public Pref(Context context) {
+        this.context = context;
     }
 
-    public static SharedPreferences getSharedPreferences(final Context con) {
-        return PreferenceManager.getDefaultSharedPreferences(con);
+    public SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static void setPref(final Context con, final String key, final String value) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public void setPref(final String key, final String value) {
+        final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
         editor.commit();
     }
 
-    public static String getPrefString(final Context con, final String key) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public String getPrefString(final String key) {
+        final SharedPreferences pref = getSharedPreferences();
         return pref.getString(key, null);
     }
 
-    public static void setPref(final Context con, final String key, boolean value) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public void setPref(final String key, boolean value) {
+        final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
-    public static boolean getPrefBool(final Context con, final String key, final boolean defaultBool) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public boolean getPrefBool(final String key, final boolean defaultBool) {
+        final SharedPreferences pref = getSharedPreferences();
         return pref.getBoolean(key, defaultBool);
     }
 
-    public static void setPref(final Context con, final String key, final int value) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public void setPref(final String key, final int value) {
+        final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
         editor.putInt(key, value);
         editor.commit();
     }
 
-    public static int getPrefInt(final Context con, final String key) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public int getPrefInt(final String key) {
+        final SharedPreferences pref = getSharedPreferences();
         return pref.getInt(key, 0);
     }
 
-    public static long getPrefLong(final Context con, final String key, final long defaultValue) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public long getPrefLong(final String key, final long defaultValue) {
+        final SharedPreferences pref = getSharedPreferences();
         return pref.getLong(key, defaultValue);
     }
 
-    public static void setPrefLong(final Context con, final String key, final long value) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public void setPrefLong(final String key, final long value) {
+        final SharedPreferences pref = getSharedPreferences();
         final SharedPreferences.Editor editor = pref.edit();
         editor.putLong(key, value);
         editor.commit();
     }
 
-    public static SharedPreferences.Editor getEditor(final Context con) {
-        final SharedPreferences pref = getSharedPreferences(con);
+    public SharedPreferences.Editor getEditor() {
+        final SharedPreferences pref = getSharedPreferences();
         return pref.edit();
     }
 }

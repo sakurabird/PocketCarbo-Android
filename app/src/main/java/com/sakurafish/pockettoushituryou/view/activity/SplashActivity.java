@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.sakurafish.pockettoushituryou.R;
+import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.util.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,11 +26,14 @@ public class SplashActivity extends BaseActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
-    private static final int MINIMUM_LOADING_TIME = 1500;
+    private static final int MINIMUM_LOADING_TIME = 1000;
 
     @Inject
+    Pref pref;
+    @Inject
+    Utils utils;
+    @Inject
     CompositeDisposable compositeDisposable;
-
     @Inject
     FoodsRepository foodsRepository;
 
@@ -57,18 +62,51 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadPocketCarboDataForCache() {
-        Disposable disposable = Single.zip(foodsRepository.findAll(),
+        if (!utils.isConnected()) {
+            findAllDataFromLocal();
+            return;
+        }
+
+        // Check new data
+        Disposable disposable = foodsRepository.receiveDataVersion()
+                .flatMap(dataVersion -> {
+                    // get new data from remote
+                    if (dataVersion != null && dataVersion.version > pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
+                        return foodsRepository.findAllFromRemote()
+                                .doOnSuccess(foodsData -> {
+                                    pref.setPref(getString(R.string.PREF_DATA_VERSION), dataVersion.version);
+                                });
+                    } else {
+                        return foodsRepository.findAllFromLocal();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> {
+                    startNextActivity();
+                })
+                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading foods."),
+                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."));
+        compositeDisposable.add(disposable);
+    }
+
+    private void findAllDataFromLocal() {
+        Disposable disposable = Single.zip(foodsRepository.findAllFromLocal(),
                 Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
                 (foodsData, obj) -> Observable.empty())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> {
-                    if (isFinishing()) return;
-                    startActivity(MainActivity.createIntent(SplashActivity.this));
-                    SplashActivity.this.finish();
+                    startNextActivity();
                 })
                 .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading sessions."),
                         throwable -> Timber.tag(TAG).e(throwable, "Failed to load sessions."));
         compositeDisposable.add(disposable);
+    }
+
+    private void startNextActivity() {
+        if (isFinishing()) return;
+        startActivity(MainActivity.createIntent(SplashActivity.this));
+        SplashActivity.this.finish();
     }
 }
