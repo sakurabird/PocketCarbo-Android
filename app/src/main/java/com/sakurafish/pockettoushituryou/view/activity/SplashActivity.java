@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
-    private static final int MINIMUM_LOADING_TIME = 1000;
+    private static final int MINIMUM_LOADING_TIME = 1600;
 
     @Inject
     Pref pref;

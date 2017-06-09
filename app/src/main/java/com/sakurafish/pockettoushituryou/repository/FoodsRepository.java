@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class FoodsRepository {
@@ -108,12 +109,12 @@ public class FoodsRepository {
 
         return orma.relationOfFoods().selector().executeAsObservable().toList()
                 .flatMap(foodsList -> {
-                    Timber.tag(TAG).e("findAllFromLocal loaded **foodList size:" + foodsList.size());
+                    Timber.tag(TAG).d("findAllFromLocal loaded **foodList size:" + foodsList.size());
                     this.foodsData.setFoods(foodsList);
                     return orma.relationOfKinds().selector().executeAsObservable().toList();
                 })
                 .flatMap(kindsList -> {
-                    Timber.tag(TAG).e("findAllFromLocal loaded **kindList size:" + kindsList.size());
+                    Timber.tag(TAG).d("findAllFromLocal loaded **kindList size:" + kindsList.size());
                     this.foodsData.setKinds(kindsList);
 
                     // insert all data
@@ -214,6 +215,7 @@ public class FoodsRepository {
                 orma.relationOfKinds().upsert(kinds);
             }
         })
+                .subscribeOn(Schedulers.io())
                 .subscribe();
     }
 }
