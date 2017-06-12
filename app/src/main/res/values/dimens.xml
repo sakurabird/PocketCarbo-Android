@@ -4,7 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
-    <!--<dimen name="fab_margin">16dp</dimen>-->
 
     <!-- space -->
     <dimen name="space_4dp">4dp</dimen>
@@ -61,5 +60,7 @@
     <dimen name="tag_padding_horizontal">8dp</dimen>
     <dimen name="tag_padding_vertical">4dp</dimen>
     <dimen name="tag_border_width">1dp</dimen>
+
+    <dimen name="splash_bg_img">20dp</dimen>
 
 </resources>
