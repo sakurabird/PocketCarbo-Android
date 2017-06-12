@@ -125,7 +125,6 @@ dependencies {
     compile 'net.cachapa.expandablelayout:expandablelayout:2.8'
     compile 'br.com.mauker.materialsearchview:materialsearchview:1.2.2'
     compile 'com.github.jd-alexander:LikeButton:0.2.1'
-    compile 'com.github.jinatonic.confetti:confetti:1.1.0'
 
     // Utility
     compile 'com.jakewharton.timber:timber:4.5.1'
