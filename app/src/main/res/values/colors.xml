@@ -8,4 +8,7 @@
     <color name="colorCarboWarning">#4caf50</color>
     <color name="colorCarboDanger">#f44336</color>
     <color name="colorCarboDangerHigh">#9c27b0</color>
+
+    <color name="colorYellowLight1">#fffde7</color>
+    <color name="colorYellowLight2">#fff9c4</color>
 </resources>
