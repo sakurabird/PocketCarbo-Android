@@ -1,76 +1,60 @@
 package com.sakurafish.pockettoushituryou.pref;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class Pref {
-
-    private final Context context;
+    private SharedPreferences preferences;
 
     @Inject
-    public Pref(Context context) {
-        this.context = context;
-    }
-
-    public SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(context);
+    public Pref(SharedPreferences preferences) {
+        this.preferences = preferences;
     }
 
     public void setPref(final String key, final String value) {
-        final SharedPreferences pref = getSharedPreferences();
-        final SharedPreferences.Editor editor = pref.edit();
-        editor.putString(key, value);
+        final SharedPreferences.Editor editor = getEditor();
+        getEditor().putString(key, value);
         editor.commit();
     }
 
     public String getPrefString(final String key) {
-        final SharedPreferences pref = getSharedPreferences();
-        return pref.getString(key, null);
+        return this.preferences.getString(key, null);
     }
 
     public void setPref(final String key, boolean value) {
-        final SharedPreferences pref = getSharedPreferences();
-        final SharedPreferences.Editor editor = pref.edit();
+        final SharedPreferences.Editor editor = getEditor();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
     public boolean getPrefBool(final String key, final boolean defaultBool) {
-        final SharedPreferences pref = getSharedPreferences();
-        return pref.getBoolean(key, defaultBool);
+        return this.preferences.getBoolean(key, defaultBool);
     }
 
     public void setPref(final String key, final int value) {
-        final SharedPreferences pref = getSharedPreferences();
-        final SharedPreferences.Editor editor = pref.edit();
+        final SharedPreferences.Editor editor = getEditor();
         editor.putInt(key, value);
         editor.commit();
     }
 
     public int getPrefInt(final String key) {
-        final SharedPreferences pref = getSharedPreferences();
-        return pref.getInt(key, 0);
+        return this.preferences.getInt(key, 0);
     }
 
     public long getPrefLong(final String key, final long defaultValue) {
-        final SharedPreferences pref = getSharedPreferences();
-        return pref.getLong(key, defaultValue);
+        return this.preferences.getLong(key, defaultValue);
     }
 
     public void setPrefLong(final String key, final long value) {
-        final SharedPreferences pref = getSharedPreferences();
-        final SharedPreferences.Editor editor = pref.edit();
+        final SharedPreferences.Editor editor = getEditor();
         editor.putLong(key, value);
         editor.commit();
     }
 
     public SharedPreferences.Editor getEditor() {
-        final SharedPreferences pref = getSharedPreferences();
-        return pref.edit();
+        return this.preferences.edit();
     }
 }

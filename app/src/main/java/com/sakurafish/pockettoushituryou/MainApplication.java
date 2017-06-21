@@ -11,6 +11,8 @@ import timber.log.Timber;
 
 public class MainApplication extends Application {
 
+    private static final String TAG = MainApplication.class.getSimpleName();
+
     private ApplicationComponent applicationComponent;
 
     @NonNull

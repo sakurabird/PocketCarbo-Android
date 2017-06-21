@@ -2,6 +2,8 @@ package com.sakurafish.pockettoushituryou.di;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.GsonBuilder;
 import com.sakurafish.pockettoushituryou.R;
@@ -33,6 +35,11 @@ public class ApplicationModule {
     @Singleton
     Context provideApplicationContext() {
         return application.getApplicationContext();
+    }
+
+    @Provides
+    public SharedPreferences provideSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Provides

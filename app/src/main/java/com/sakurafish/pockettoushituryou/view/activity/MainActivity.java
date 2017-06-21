@@ -3,6 +3,7 @@ package com.sakurafish.pockettoushituryou.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -11,14 +12,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
+import com.sakurafish.pockettoushituryou.pref.Pref;
+import com.sakurafish.pockettoushituryou.repository.RetrieveReleasedVersion;
+import com.sakurafish.pockettoushituryou.util.Utils;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 
 import java.util.ArrayList;
@@ -41,6 +48,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Inject
     ResourceResolver resourceResolver;
 
+    @Inject
+    Pref pref;
+
+    @Inject
+    Utils utils;
+
     public static Intent createIntent(Context context) {
         return new Intent(context, MainActivity.class);
     }
@@ -55,6 +68,55 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         initView();
+
+        checkAppVersion();
+
+        pleaseReview();
+    }
+
+    private void checkAppVersion() {
+        new RetrieveReleasedVersion(this, version -> {
+            if (TextUtils.isEmpty(version)) return;
+            final String thisVersion = utils.getVersionName();
+            if (TextUtils.isEmpty(thisVersion)) return;
+            if (!version.equals(thisVersion)) {
+                pleaseUpdate();
+            }
+        }).execute();
+    }
+
+    private void pleaseUpdate() {
+        //アップデートへ誘導する
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(getString(R.string.ask_update_title))
+                .content(getString(R.string.ask_update_message))
+                .positiveText(getString(android.R.string.ok))
+                .negativeText(getString(android.R.string.cancel))
+                .onPositive((dialog, which) -> {
+                    // Google Play
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))));
+                })
+                .show();
+    }
+
+    private void pleaseReview() {
+        if (pref.getPrefBool(getString(R.string.PREF_ASK_REVIEW), false) || pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) != 10) {
+            return;
+        }
+        //10回めの起動でレビュー誘導
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(getString(R.string.ask_review_title))
+                .content(getString(R.string.ask_review_message))
+                .positiveText(getString(android.R.string.ok))
+                .negativeText(getString(android.R.string.cancel))
+                .onPositive((dialog, which) -> {
+                    // Google Play
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))));
+                })
+                .show();
+        pref.setPref(getString(R.string.PREF_ASK_REVIEW), true);
     }
 
     @Override

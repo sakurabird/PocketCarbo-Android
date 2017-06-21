@@ -47,6 +47,7 @@ public class SplashActivity extends BaseActivity {
             findViewById(android.R.id.content).setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
+        setLaunchCount();
     }
 
     @Override
@@ -59,6 +60,12 @@ public class SplashActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         compositeDisposable.dispose();
+    }
+
+    private void setLaunchCount() {
+        if (pref == null) return;
+        int launchCount = pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT));
+        pref.setPref(getString(R.string.PREF_LAUNCH_COUNT), ++launchCount);
     }
 
     private void loadPocketCarboDataForCache() {
