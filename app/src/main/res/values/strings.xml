@@ -16,6 +16,7 @@
     <string name="action_search_hint">検索したい語句を入力して下さい</string>
     <string name="search_result_title">検索結果</string>
 
+    <string name="carbohydrate_amount">糖質量</string>
     <string name="list_title">糖質量一覧・検索</string>
     <string name="empty_text">データが見つかりませんでした。</string>
     <string name="kind_all">全ての種類</string>
@@ -26,6 +27,7 @@
     <string name="protein_title">たんぱく質：</string>
     <string name="fat_title">脂質：</string>
     <string name="sodium_title">塩分：</string>
+    <string name="text_clipped">テキストをコピーしました。</string>
 
     <string name="ask_review_title">レビューのお願い</string>
     <string name="ask_review_message">いつもアプリをご利用してくださってありがとうございます！\nもしこのアプリがお役に立っていましたらアプリの評価をしていただけますと大変励みになります(*^_^*)\nOKボタンでGoogle Playに移動いたします。</string>

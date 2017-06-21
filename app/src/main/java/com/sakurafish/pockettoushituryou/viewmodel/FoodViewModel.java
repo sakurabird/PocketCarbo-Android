@@ -1,11 +1,14 @@
 package com.sakurafish.pockettoushituryou.viewmodel;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.like.LikeButton;
 import com.sakurafish.pockettoushituryou.R;
@@ -153,5 +156,34 @@ public class FoodViewModel extends BaseObservable {
                             throwable -> Timber.tag(TAG).e(throwable, "Failed to save favorite food"));
             this.favState = true;
         }
+    }
+
+    public boolean onLongClickExpandButton(View view) {
+        //長押しされた場合クリップボードに内容をコピーする
+        StringBuilder builder = new StringBuilder();
+        builder.append(getName().trim());
+        builder.append("100gあたりの糖質量");
+        builder.append(":");
+        builder.append(getCarbohydrate_per_100g());
+        builder.append(" , ");
+        builder.append(expanded_title);
+        builder.append(":");
+        builder.append(carbohydrate_per_weight);
+        builder.append(", カロリー:");
+        builder.append(calory);
+        builder.append(", たんばく質:");
+        builder.append(protein);
+        builder.append(", 脂質:");
+        builder.append(fat);
+        builder.append(", 塩分:");
+        builder.append(sodium);
+
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(context.getString(R.string.carbohydrate_amount), builder.toString());
+        clipboard.setPrimaryClip(clip);
+
+        Toast.makeText(context, context.getString(R.string.text_clipped) + "\n" + builder.toString(), Toast.LENGTH_SHORT).show();
+
+        return true;
     }
 }
