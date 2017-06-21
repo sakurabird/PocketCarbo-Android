@@ -115,6 +115,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'org.jsoup:jsoup:1.10.3'
 
     // DB
     annotationProcessor 'com.github.gfx.android.orma:orma-processor:4.2.4'
@@ -125,6 +126,7 @@ dependencies {
     compile 'net.cachapa.expandablelayout:expandablelayout:2.8'
     compile 'br.com.mauker.materialsearchview:materialsearchview:1.2.2'
     compile 'com.github.jd-alexander:LikeButton:0.2.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 
     // Utility
     compile 'com.jakewharton.timber:timber:4.5.1'

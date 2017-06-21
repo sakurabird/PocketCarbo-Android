@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This xml is used for PSDev/LicensesDialog (https://github.com/PSDev/LicensesDialog) -->
 <notices>
     <notice>
         <name>Android Open Source Project</name>
@@ -77,5 +78,17 @@
         <url>https://github.com/jd-alexander/LikeButton</url>
         <copyright>Copyright 2016 Joel Dean</copyright>
         <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>jsoup</name>
+        <url>https://jsoup.org/</url>
+        <copyright>Copyright 2009 - 2017 Jonathan Hedley (jonathan@hedley.net)</copyright>
+        <license>The MIT License</license>
+    </notice>
+    <notice>
+        <name>MaterialDialog</name>
+        <url>https://github.com/afollestad/material-dialogs</url>
+        <copyright>Copyright 2014-2016 Aidan Michael Follestad</copyright>
+        <license>The MIT License</license>
     </notice>
 </notices>
