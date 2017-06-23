@@ -12,14 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
-import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
-import com.sakurafish.pockettoushituryou.view.adapter.ArrayRecyclerAdapter;
-import com.sakurafish.pockettoushituryou.view.adapter.BindingHolder;
+import com.sakurafish.pockettoushituryou.view.adapter.FoodListAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodListViewModel;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodViewModel;
@@ -242,61 +238,5 @@ public class FoodListFragment extends BaseFragment {
             kindSpinnerAdapter.setData(viewModel.getKindsList());
         }
         foodListAdapter.reset(foodViewModels);
-    }
-
-    private static class FoodListAdapter
-            extends ArrayRecyclerAdapter<FoodViewModel, BindingHolder<ItemFoodlistBinding>> {
-
-        FoodListAdapter(@NonNull Context context) {
-            super(context);
-        }
-
-        @Override
-        public BindingHolder<ItemFoodlistBinding> onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new BindingHolder<>(getContext(), parent, R.layout.item_foodlist);
-        }
-
-        @Override
-        public void onBindViewHolder(BindingHolder<ItemFoodlistBinding> holder, int position) {
-            final FoodViewModel viewModel = getItem(position);
-            if (viewModel.isExpanded()) {
-                holder.binding.expandArrow.setSelected(true);
-                holder.binding.expandableLayout.expand(true);
-            } else {
-                holder.binding.expandArrow.setSelected(false);
-                holder.binding.expandableLayout.collapse(true);
-            }
-
-            // Like button
-            viewModel.setFabButtonState(holder.binding.starButton);
-            holder.binding.starButton.setOnLikeListener(new OnLikeListener() {
-                @Override
-                public void liked(LikeButton likeButton) {
-                    viewModel.onClickFab();
-                }
-
-                @Override
-                public void unLiked(LikeButton likeButton) {
-                    viewModel.onClickFab();
-                }
-            });
-
-            // collapse or expand card
-            viewModel.setOnClickListener(v -> {
-
-                if (viewModel.isExpanded()) {
-                    holder.binding.expandArrow.setSelected(false);
-                    holder.binding.expandableLayout.collapse(true);
-                    viewModel.setExpanded(false);
-                } else {
-                    holder.binding.expandArrow.setSelected(true);
-                    holder.binding.expandableLayout.expand(true);
-                    viewModel.setExpanded(true);
-                }
-            });
-
-            holder.binding.setViewModel(viewModel);
-            holder.binding.executePendingBindings();
-        }
     }
 }
