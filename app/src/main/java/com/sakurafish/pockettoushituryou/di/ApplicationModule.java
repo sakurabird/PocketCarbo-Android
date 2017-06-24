@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.GsonBuilder;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.api.PocketCarboService;
@@ -84,5 +85,10 @@ public class ApplicationModule {
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
                 .build()
                 .create(PocketCarboService.class);
+    }
+
+    @Provides
+    public FirebaseAnalytics provideFirebaseAnalytics(Context context) {
+        return FirebaseAnalytics.getInstance(context);
     }
 }

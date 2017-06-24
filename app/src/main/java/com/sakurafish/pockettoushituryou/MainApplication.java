@@ -3,6 +3,7 @@ package com.sakurafish.pockettoushituryou;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.ads.MobileAds;
 import com.sakurafish.pockettoushituryou.di.ApplicationComponent;
 import com.sakurafish.pockettoushituryou.di.ApplicationModule;
 import com.sakurafish.pockettoushituryou.di.DaggerApplicationComponent;
@@ -31,6 +32,9 @@ public class MainApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+
+        // adMob
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
     }
 
     public ApplicationComponent getApplicationComponent() {

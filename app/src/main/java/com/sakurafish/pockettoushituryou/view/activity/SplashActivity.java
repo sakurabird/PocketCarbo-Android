@@ -5,6 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
@@ -29,6 +31,8 @@ public class SplashActivity extends BaseActivity {
     private static final int MINIMUM_LOADING_TIME = 1600;
 
     @Inject
+    FirebaseAnalytics firebaseAnalytics;
+    @Inject
     Pref pref;
     @Inject
     Utils utils;
@@ -41,6 +45,9 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getComponent().inject(this);
+
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
+
         DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
