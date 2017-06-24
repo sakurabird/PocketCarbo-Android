@@ -11,6 +11,7 @@ import com.sakurafish.pockettoushituryou.api.PocketCarboService;
 import com.sakurafish.pockettoushituryou.model.DataVersion;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.FoodsData;
+import com.sakurafish.pockettoushituryou.model.Foods_Selector;
 import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
@@ -133,33 +134,44 @@ public class FoodsRepository {
         return Single.create(emitter -> emitter.onSuccess(this.foodsData));
     }
 
-    public Single<FoodsData> findFromLocal(@IntRange(from = 1, to = 6) int typeId, int kindId) {
-        Timber.tag(TAG).d("findFromLocal start type:" + typeId + " kind:" + kindId);
-        if (kindId == 0) {
-            return orma.relationOfFoods().selector().type_idEq(typeId).executeAsObservable().toList()
-                    .flatMap(foodsList -> {
-                        Timber.tag(TAG).d("findFromLocal2 foods size:" + foodsList.size());
-                        this.foodsData.setFoods(foodsList);
-                        return orma.relationOfKinds().selector().type_idEq(typeId).executeAsObservable().toList();
-                    })
-                    .flatMap(kindsList -> {
-                        Timber.tag(TAG).d("findFromLocal3 kinds size:" + kindsList.size());
-                        this.foodsData.setKinds(kindsList);
-                        return Single.create(emitter -> emitter.onSuccess(this.foodsData));
-                    });
-        } else {
-            return orma.relationOfFoods().selector().type_idEq(typeId).kind_idEq(kindId).executeAsObservable().toList()
-                    .flatMap(foodsList -> {
-                        Timber.tag(TAG).d("findFromLocal4 foods size:" + foodsList.size());
-                        this.foodsData.setFoods(foodsList);
-                        return orma.relationOfKinds().selector().type_idEq(typeId).executeAsObservable().toList();
-                    })
-                    .flatMap(kindsList -> {
-                        Timber.tag(TAG).d("findFromLocal5 kinds size:" + kindsList.size());
-                        this.foodsData.setKinds(kindsList);
-                        return Single.create(emitter -> emitter.onSuccess(this.foodsData));
-                    });
+    public Single<FoodsData> findFromLocal(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
+        Timber.tag(TAG).d("findFromLocal start type:" + typeId + " kind:" + kindId + " sort:" + sort);
+
+        Foods_Selector selector = orma.relationOfFoods().selector();
+        selector.type_idEq(typeId);
+        if (kindId != 0) {
+            selector.kind_idEq(kindId);
         }
+        switch (sort) {
+            case 0:
+                // 食品名順(default)
+                selector.orderByNameAsc();
+                break;
+            case 1:
+                // 食品名逆順
+                selector.orderByNameDesc();
+                break;
+            case 2:
+                // 糖質量の少ない順
+                selector.orderByCarbohydrate_per_100gAsc();
+                break;
+            case 3:
+                // 糖質量の少ない順
+                selector.orderByCarbohydrate_per_100gDesc();
+                break;
+        }
+
+        return selector.executeAsObservable().toList()
+                .flatMap(foodsList -> {
+                    Timber.tag(TAG).d("findFromLocal1 foods size:" + foodsList.size());
+                    this.foodsData.setFoods(foodsList);
+                    return orma.relationOfKinds().selector().type_idEq(typeId).executeAsObservable().toList();
+                })
+                .flatMap(kindsList -> {
+                    Timber.tag(TAG).d("findFromLocal2 kinds size:" + kindsList.size());
+                    this.foodsData.setKinds(kindsList);
+                    return Single.create(emitter -> emitter.onSuccess(this.foodsData));
+                });
     }
 
     public Single<FoodsData> findFromLocal(@Nullable String query) {

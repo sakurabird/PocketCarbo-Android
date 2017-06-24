@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.view.adapter.FoodListAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
+import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodListViewModel;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodViewModel;
 
@@ -53,7 +55,9 @@ public class FoodListFragment extends BaseFragment {
     private ListType listType;
     private int typeId;
     private int kindId = KINDS_ALL;
+    private int sort = 0; // デフォルトは名前順;
     private String query = "";
+    private boolean sortToast;
 
     @Inject
     FoodListViewModel viewModel;
@@ -122,6 +126,7 @@ public class FoodListFragment extends BaseFragment {
         this.listType = (ListType) getArguments().getSerializable(EXTRA_LIST_TYPE);
         this.kindId = getArguments().getInt("kindId");
         this.query = getArguments().getString(EXTRA_QUERY);
+        this.sortToast = false;
         initView();
         return binding.getRoot();
     }
@@ -160,6 +165,7 @@ public class FoodListFragment extends BaseFragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         initKindsSpinner();
+        initSortSpinner();
     }
 
     private void initKindsSpinner() {
@@ -171,8 +177,8 @@ public class FoodListFragment extends BaseFragment {
 
         // Creating foodListAdapter for spinner
         kindSpinnerAdapter = new KindSpinnerAdapter(getActivity());
-        binding.spinner.setAdapter(kindSpinnerAdapter);
-        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.kindSpinner.setAdapter(kindSpinnerAdapter);
+        binding.kindSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
@@ -189,10 +195,32 @@ public class FoodListFragment extends BaseFragment {
         });
     }
 
+    private void initSortSpinner() {
+        SortSpinnerAdapter adapter = new SortSpinnerAdapter(getActivity());
+        binding.sortSpinner.setAdapter(adapter);
+        binding.sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sort = position;
+                if (position < 0 || position > 3) sort = 0;
+                if (sortToast) {
+                    Toast.makeText(getActivity(), SortSpinnerAdapter.texts[position] + "にソートしました。", Toast.LENGTH_SHORT).show();
+                } else {
+                    sortToast = true;
+                }
+                showFoods();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     private void showFoods() {
         switch (this.listType) {
             case NORMAL:
-                Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId)
+                Disposable disposable = viewModel.getFoodViewModelList(typeId, kindId, sort)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(

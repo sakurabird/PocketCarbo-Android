@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_20sp"
+            android:textSize="@dimen/text_16sp"
             android:textStyle="bold" />
 
         <android.support.v7.widget.AppCompatImageView

@@ -28,7 +28,7 @@ public class Foods {
     @SerializedName("weight_hint")
     public String weight_hint;
 
-    @Column
+    @Column(indexed = true)
     @SerializedName("carbohydrate_per_100g")
     public float carbohydrate_per_100g;
 

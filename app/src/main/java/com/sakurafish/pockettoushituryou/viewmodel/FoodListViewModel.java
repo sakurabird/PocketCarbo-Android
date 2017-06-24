@@ -86,9 +86,9 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         return this.kindsList;
     }
 
-    public Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId) {
+    public Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
         this.listType = NORMAL;
-        return foodsRepository.findFromLocal(typeId, kindId)
+        return foodsRepository.findFromLocal(typeId, kindId, sort)
                 .map(foodsData -> {
                     kindsList.clear();
                     kindsList.addAll(foodsData.getKinds());

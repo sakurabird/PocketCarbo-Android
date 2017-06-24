@@ -15,19 +15,39 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Kinds selector -->
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_12dp"
-            android:layout_marginLeft="@dimen/space_16dp"
-            android:layout_marginRight="@dimen/space_16dp"
-            android:layout_marginTop="@dimen/space_12dp"
-            android:background="@drawable/kind_spinner"
-            android:dropDownWidth="match_parent"
-            android:spinnerMode="dropdown"
-            android:visibility="@{viewModel.kindSpinnerVisibility}" />
+            android:orientation="horizontal">
+            <!-- Kinds selector -->
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/kind_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_12dp"
+                android:layout_marginLeft="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_12dp"
+                android:layout_weight="1"
+                android:background="@drawable/kind_spinner"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dropdown"
+                android:visibility="@{viewModel.kindSpinnerVisibility}" />
+
+            <!-- Sort order selector -->
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/sort_spinner"
+                android:layout_width="@dimen/sort_spinner_width"
+                android:layout_height="@dimen/sort_spinner_width"
+                android:layout_marginBottom="@dimen/space_12dp"
+                android:layout_marginLeft="@dimen/space_16dp"
+                android:layout_marginRight="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_12dp"
+                android:background="@drawable/kind_spinner"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dialog"
+                android:visibility="@{viewModel.kindSpinnerVisibility}" />
+
+        </LinearLayout>
 
         <!-- Foods list -->
         <android.support.v7.widget.RecyclerView
