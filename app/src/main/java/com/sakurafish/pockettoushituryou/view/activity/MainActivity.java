@@ -26,6 +26,7 @@ import com.sakurafish.pockettoushituryou.model.TypesData;
 import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.RetrieveReleasedVersion;
 import com.sakurafish.pockettoushituryou.util.Utils;
+import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Inject
     Utils utils;
+
+    @Inject
+    AdsHelper adsHelper;
 
     public static Intent createIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -174,6 +178,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
         initTabs();
+
+        // 広告
+        binding.adView.loadAd(adsHelper.getAdRequest());
     }
 
     private void initTabs() {

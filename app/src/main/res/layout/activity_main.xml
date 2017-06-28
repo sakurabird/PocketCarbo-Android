@@ -9,53 +9,70 @@
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
 
-        <android.support.design.widget.CoordinatorLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            tools:context="com.sakurafish.pockettoushituryou.view.activity.MainActivity">
+            android:layout_height="match_parent">
 
-            <!-- header -->
-
-            <android.support.design.widget.AppBarLayout
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/coordinator_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
+                android:layout_height="match_parent"
+                android:layout_above="@+id/adView"
+                android:fitsSystemWindows="true"
+                tools:context="com.sakurafish.pockettoushituryou.view.activity.MainActivity">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
+                <!-- header -->
 
-                </android.support.v7.widget.Toolbar>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout"
+                <android.support.design.widget.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/grey50"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:tabBackground="@color/grey50"
-                    app:tabIndicatorColor="@color/colorAccent"
-                    app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/colorAccent"
-                    app:tabTextAppearance="@style/CustomTabText"
-                    app:tabTextColor="@color/black_alpha_87" />
+                    android:theme="@style/AppTheme.AppBarOverlay">
 
-            </android.support.design.widget.AppBarLayout>
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/colorPrimary"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <!-- contents -->
-            <android.support.v4.view.LoopViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
+                    </android.support.v7.widget.Toolbar>
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@color/grey50"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        app:tabBackground="@color/grey50"
+                        app:tabIndicatorColor="@color/colorAccent"
+                        app:tabMode="scrollable"
+                        app:tabSelectedTextColor="@color/colorAccent"
+                        app:tabTextAppearance="@style/CustomTabText"
+                        app:tabTextColor="@color/black_alpha_87" />
+
+                </android.support.design.widget.AppBarLayout>
+
+                <!-- contents -->
+                <android.support.v4.view.LoopViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </android.support.design.widget.CoordinatorLayout>
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/admob_banner_ad_unit_id" />
 
-        </android.support.design.widget.CoordinatorLayout>
+        </RelativeLayout>
 
         <!-- Search View (show if toolbar menu clicked) -->
         <br.com.mauker.materialsearchview.MaterialSearchView
