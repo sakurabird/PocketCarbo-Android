@@ -86,7 +86,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         return this.kindsList;
     }
 
-    public Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
+    public synchronized Single<List<FoodViewModel>> getFoodViewModelList(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
         this.listType = NORMAL;
         return foodsRepository.findFromLocal(typeId, kindId, sort)
                 .map(foodsData -> {
@@ -100,7 +100,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                 });
     }
 
-    public Single<List<FoodViewModel>> getFoodViewModelList(@Nullable String query) {
+    public synchronized Single<List<FoodViewModel>> getFoodViewModelList(@Nullable String query) {
         this.listType = ListType.SEARCH_RESULT;
         return foodsRepository.findFromLocal(query)
                 .map(foodsData -> {
@@ -113,7 +113,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                 });
     }
 
-    public Single<List<FoodViewModel>> getFoodViewModelListFavorites() {
+    public synchronized Single<List<FoodViewModel>> getFoodViewModelListFavorites() {
         this.listType = ListType.FAVORITES;
         return favoriteFoodsRepository.findAllFromLocal()
                 .map(favoriteFoodsList -> {
@@ -128,7 +128,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     }
 
     @NonNull
-    private List<FoodViewModel> getFoodViewModels() {
+    private synchronized List<FoodViewModel> getFoodViewModels() {
         List<FoodViewModel> foodViewModels = new ArrayList<>();
         for (Foods foods : foodsList) {
             foodViewModels.add(new FoodViewModel(this.context, this.favoriteFoodsRepository, foods));
