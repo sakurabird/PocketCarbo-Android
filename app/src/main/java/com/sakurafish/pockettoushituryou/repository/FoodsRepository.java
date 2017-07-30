@@ -14,6 +14,8 @@ import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.model.Foods_Selector;
 import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
+import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent;
+import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ import timber.log.Timber;
 
 public class FoodsRepository {
     private final static String TAG = FoodsRepository.class.getSimpleName();
+
+    public final static String EVENT_DB_UPDATED = "EVENT_DB_UPDATED";
 
     private final PocketCarboService pocketCarboService;
     private final OrmaDatabase orma;
@@ -228,6 +232,11 @@ public class FoodsRepository {
             }
         })
                 .subscribeOn(Schedulers.io())
+                .doOnComplete(() -> {
+                    Timber.tag(TAG).d("updateAllAsync completed");
+                    RxBus rxBus = RxBus.getIntanceBus();
+                    rxBus.post(new FoodsUpdatedEvent(EVENT_DB_UPDATED));
+                })
                 .subscribe();
     }
 }

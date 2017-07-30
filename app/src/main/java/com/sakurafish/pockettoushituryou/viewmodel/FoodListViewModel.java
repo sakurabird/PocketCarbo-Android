@@ -109,7 +109,9 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     foodsList.addAll(foodsData.getFoods());
                     Timber.tag(TAG).d("getFoodViewModelList local data loaded foods size:" + foodsData.getFoods().size());
 
-                    return getFoodViewModels();
+                    List<FoodViewModel> models = getFoodViewModels();
+                    setViewsVisiblity(models);
+                    return models;
                 });
     }
 
@@ -123,7 +125,9 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                         foodsList.add(favoriteFoods.foods);
                     }
                     Timber.tag(TAG).d("getFoodViewModelListFavorites local data loaded foods size:" + favoriteFoodsList.size());
-                    return getFoodViewModels();
+                    List<FoodViewModel> models = getFoodViewModels();
+                    setViewsVisiblity(models);
+                    return models;
                 });
     }
 
@@ -133,8 +137,6 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         for (Foods foods : foodsList) {
             foodViewModels.add(new FoodViewModel(this.context, this.favoriteFoodsRepository, foods));
         }
-        setViewsVisiblity(foodViewModels);
-
         return foodViewModels;
     }
 

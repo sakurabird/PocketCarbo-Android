@@ -7,6 +7,8 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent;
+import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.view.adapter.FoodListAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter;
@@ -29,6 +33,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -58,6 +63,7 @@ public class FoodListFragment extends BaseFragment {
     private int sort = 0; // デフォルトは名前順;
     private String query = "";
     private boolean sortToast;
+    private RxBus rxBus;
 
     @Inject
     FoodListViewModel viewModel;
@@ -132,6 +138,12 @@ public class FoodListFragment extends BaseFragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initRxBus();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         showFoods();
@@ -148,6 +160,7 @@ public class FoodListFragment extends BaseFragment {
         super.onDestroy();
         viewModel.destroy();
         compositeDisposable.dispose();
+        unregisterRxBus();
     }
 
     @Override
@@ -266,5 +279,24 @@ public class FoodListFragment extends BaseFragment {
             kindSpinnerAdapter.setData(viewModel.getKindsList());
         }
         foodListAdapter.reset(foodViewModels);
+    }
+
+    private void initRxBus() {
+        rxBus = RxBus.getIntanceBus();
+        registerRxBus(FoodsUpdatedEvent.class, rxBusMessage -> {
+            if (TextUtils.equals(rxBusMessage.getMessage(), FoodsRepository.EVENT_DB_UPDATED)) {
+                Timber.tag(TAG).d("RxBus message:" + rxBusMessage.getMessage());
+                showFoods();
+            }
+        });
+    }
+
+    public <T> void registerRxBus(Class<T> eventType, Consumer<T> action) {
+        Disposable disposable = rxBus.doSubscribe(eventType, action, throwable -> Log.e("NewsMainPresenter", throwable.toString()));
+        rxBus.addSubscription(this, disposable);
+    }
+
+    public void unregisterRxBus() {
+        rxBus.unSubscribe(this);
     }
 }
