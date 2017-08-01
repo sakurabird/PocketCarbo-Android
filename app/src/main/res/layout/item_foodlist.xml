@@ -216,6 +216,18 @@
                         android:textSize="@dimen/text_14sp"
                         android:textStyle="bold" />
 
+                    <ImageView
+                        android:id="@+id/share_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/star_button"
+                        android:layout_marginBottom="@dimen/space_8dp"
+                        android:layout_marginRight="@dimen/space_8dp"
+                        android:layout_toLeftOf="@+id/star_button"
+                        android:onClick="@{viewModel::onClickShareButton}"
+                        android:tint="@color/grey600"
+                        app:srcCompat="@drawable/ic_share_black_24dp" />
+
                     <com.like.LikeButton
                         android:id="@+id/star_button"
                         android:layout_width="wrap_content"

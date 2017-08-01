@@ -11,6 +11,7 @@
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.pockettoushituryou #ポケット糖質量 </string>
     <string name="help">ヘルプ</string>
     <string name="other">その他</string>
+    <string name="send_to">Share text to..</string>
 
     <string name="action_search">検索</string>
     <string name="action_search_hint">検索したい語句を入力して下さい</string>

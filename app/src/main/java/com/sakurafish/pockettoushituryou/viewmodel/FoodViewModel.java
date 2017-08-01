@@ -3,6 +3,7 @@ package com.sakurafish.pockettoushituryou.viewmodel;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
@@ -160,30 +161,45 @@ public class FoodViewModel extends BaseObservable {
 
     public boolean onLongClickExpandButton(View view) {
         //長押しされた場合クリップボードに内容をコピーする
+        String rowString = createRowString();
+
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(context.getString(R.string.carbohydrate_amount), rowString);
+        clipboard.setPrimaryClip(clip);
+
+        Toast.makeText(context, context.getString(R.string.text_clipped) + "\n" + rowString, Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
+
+    @NonNull
+    private String createRowString() {
         StringBuilder builder = new StringBuilder();
         builder.append(getName().trim());
         builder.append("100gあたりの糖質量");
         builder.append(":");
-        builder.append(getCarbohydrate_per_100g());
-        builder.append(" , ");
-        builder.append(expanded_title);
+        builder.append(getCarbohydrate_per_100g().replace(" ", ""));
+        builder.append(", ");
+        builder.append(getExpanded_title().replace(" ", ""));
         builder.append(":");
-        builder.append(carbohydrate_per_weight);
+        builder.append(getCarbohydrate_per_weight().replace(" ", ""));
         builder.append(", カロリー:");
-        builder.append(calory);
+        builder.append(getCalory().replace(" ", ""));
         builder.append(", たんばく質:");
-        builder.append(protein);
+        builder.append(getProtein().replace(" ", ""));
         builder.append(", 脂質:");
-        builder.append(fat);
+        builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
-        builder.append(sodium);
+        builder.append(getSodium().replace(" ", ""));
+        return builder.toString();
+    }
 
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(context.getString(R.string.carbohydrate_amount), builder.toString());
-        clipboard.setPrimaryClip(clip);
-
-        Toast.makeText(context, context.getString(R.string.text_clipped) + "\n" + builder.toString(), Toast.LENGTH_SHORT).show();
-
-        return true;
+    public void onClickShareButton(View view) {
+        final Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, createRowString() + " #" + context.getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+        intent.setType("text/plain");
+        context.startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
     }
 }
