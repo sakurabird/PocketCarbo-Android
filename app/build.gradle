@@ -138,6 +138,7 @@ dependencies {
     // Utility
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile('de.psdev.licensesdialog:licensesdialog:1.8.2')
+    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
 
     // Test
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
