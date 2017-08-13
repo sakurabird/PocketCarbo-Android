@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -25,9 +27,12 @@ import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
 import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.RetrieveReleasedVersion;
+import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
+import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.util.Utils;
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +41,16 @@ import javax.inject.Inject;
 
 import br.com.mauker.materialsearchview.MaterialSearchView;
 import timber.log.Timber;
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType;
 import static com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.newInstance;
+import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED;
+import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_DELAY;
+import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_ID_MAINACTIVITY;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -54,6 +66,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Inject
     Utils utils;
+
+    @Inject
+    ShowcaseHelper showcaseHelper;
 
     @Inject
     AdsHelper adsHelper;
@@ -124,8 +139,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        showTutorialOnce();
         return true;
     }
 
@@ -223,6 +240,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    public int getCurrentPagerPosition() {
+        return binding.pager.getCurrentItem();
+    }
+
     @Override
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -261,6 +282,64 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    private void showTutorialOnce() {
+        new Handler().post(() -> {
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(SHOWCASE_DELAY);
+
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(MainActivity.this, SHOWCASE_ID_MAINACTIVITY);
+            sequence.setConfig(config);
+
+            // Menu tutorial
+            View drawerIcon = binding.toolbar.getChildAt(1);
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(MainActivity.this)
+                            .setTarget(drawerIcon)
+                            .setContentText(R.string.tutorial_nav_text)
+                            .setDismissText(android.R.string.ok)
+                            .setDismissOnTouch(true)
+                            .build()
+            );
+
+            // Search tutorial
+            View searchIcon = findViewById(R.id.action_search);
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(MainActivity.this)
+                            .setTarget(searchIcon)
+                            .setContentText(R.string.tutorial_search_text)
+                            .setDismissText(android.R.string.ok)
+                            .setDismissOnTouch(true)
+                            .build()
+            );
+
+            // Tab tutorial
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(MainActivity.this)
+                            .setTarget(binding.tabLayout)
+                            .setContentText(R.string.tutorial_tab_text)
+                            .setDismissText(android.R.string.ok)
+                            .withRectangleShape(true)
+                            .setListener(new IShowcaseListener() {
+                                @Override
+                                public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
+
+                                }
+
+                                @Override
+                                public void onShowcaseDismissed(MaterialShowcaseView materialShowcaseView) {
+                                    showcaseHelper.setPrefShowcaseMainactivityFinished(true);
+                                    RxBus rxBus = RxBus.getIntanceBus();
+                                    rxBus.post(new EventWithMessage(EVENT_SHOWCASE_MAINACTIVITY_FINISHED));
+
+                                }
+                            })
+                            .setDismissOnTouch(true)
+                            .build()
+            );
+            sequence.start();
+        });
     }
 
     private static class MyPagerAdapter extends FragmentStatePagerAdapter {

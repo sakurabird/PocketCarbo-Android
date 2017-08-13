@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,11 +19,14 @@ import android.widget.Toast;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
+import com.sakurafish.pockettoushituryou.view.activity.MainActivity;
 import com.sakurafish.pockettoushituryou.view.adapter.FoodListAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter;
 import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter;
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodListViewModel;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodViewModel;
 
@@ -36,9 +40,16 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static com.sakurafish.pockettoushituryou.model.FoodsData.KINDS_ALL;
+import static com.sakurafish.pockettoushituryou.repository.FoodsRepository.EVENT_DB_UPDATED;
 import static com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.EXTRA_QUERY;
+import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED;
+import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_DELAY;
 
 public class FoodListFragment extends BaseFragment {
 
@@ -73,6 +84,9 @@ public class FoodListFragment extends BaseFragment {
 
     @Inject
     FoodsRepository foodsRepository;
+
+    @Inject
+    ShowcaseHelper showcaseHelper;
 
     public static FoodListFragment newInstance(@NonNull ListType list_type, @IntRange(from = 1, to = 6) int type) {
         FoodListFragment fragment = new FoodListFragment();
@@ -279,14 +293,91 @@ public class FoodListFragment extends BaseFragment {
             kindSpinnerAdapter.setData(viewModel.getKindsList());
         }
         foodListAdapter.reset(foodViewModels);
+
+        showTutorialOnce();
+    }
+
+    private void showTutorialOnce() {
+        if (!showcaseHelper.isShowcaseMainActivityFinished() || showcaseHelper.isShowcaseFoodListFragmentFinished())
+            return;
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity) getActivity();
+            if (activity.getCurrentPagerPosition() + 1 != typeId) {
+                return;
+            }
+        }
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(SHOWCASE_DELAY);
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), ShowcaseHelper.SHOWCASE_ID_FOODLISTFRAGMENT);
+        sequence.setConfig(config);
+
+        // Kind Spinner tutorial
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(binding.kindSpinner)
+                        .setContentText(R.string.tutorial_kind_text)
+                        .setDismissText(android.R.string.ok)
+                        .withRectangleShape()
+                        .setDismissOnTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(binding.sortSpinner)
+                        .setContentText(R.string.tutorial_sort_text)
+                        .setDismissText(android.R.string.ok)
+                        .withRectangleShape()
+                        .setDismissOnTouch(true)
+                        .build()
+        );
+
+        // List tutorial
+        if (binding.recyclerView.getChildAt(0) != null) {
+            View view = binding.recyclerView.getChildAt(0);
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(view)
+                            .setContentText(R.string.tutorial_food_list_text)
+                            .setDismissText(android.R.string.ok)
+                            .withRectangleShape()
+                            .setListener(new IShowcaseListener() {
+                                @Override
+                                public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
+                                }
+
+                                @Override
+                                public void onShowcaseDismissed(MaterialShowcaseView materialShowcaseView) {
+                                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                                    View dialoglayout = inflater.inflate(R.layout.view_tutorial_finished, null);
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                                    alert.setView(dialoglayout);
+                                    alert.setPositiveButton("OK", (dialog, whichButton) -> showcaseHelper.setPrefShowcaseFoodListFragmentFinished(true));
+                                    alert.show();
+                                }
+                            })
+                            .setDismissOnTouch(true)
+                            .build()
+            );
+        }
+        sequence.start();
     }
 
     private void initRxBus() {
         rxBus = RxBus.getIntanceBus();
         registerRxBus(FoodsUpdatedEvent.class, rxBusMessage -> {
-            if (TextUtils.equals(rxBusMessage.getMessage(), FoodsRepository.EVENT_DB_UPDATED)) {
+            // DBに食品データが全て追加された
+            if (TextUtils.equals(rxBusMessage.getMessage(), EVENT_DB_UPDATED)) {
                 Timber.tag(TAG).d("RxBus message:" + rxBusMessage.getMessage());
                 showFoods();
+            }
+        });
+        registerRxBus(EventWithMessage.class, rxBusMessage -> {
+            // MainActivityのチュートリアルが表示済みになった
+            if (TextUtils.equals(rxBusMessage.getMessage(), EVENT_SHOWCASE_MAINACTIVITY_FINISHED)) {
+                showTutorialOnce();
             }
         });
     }
