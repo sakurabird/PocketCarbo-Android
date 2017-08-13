@@ -51,7 +51,7 @@ public class ApplicationModule {
     @Singleton
     @Provides
     public OrmaDatabase provideOrmaDatabase(Context context) {
-        return OrmaDatabase.builder(context).build();
+        return OrmaDatabase.builder(context).trace(false).build();
     }
 
     @Singleton
