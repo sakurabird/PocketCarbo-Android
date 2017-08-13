@@ -277,6 +277,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(intent);
                 break;
             case R.id.nav_help:
+                startActivity(HelpActivity.createIntent(MainActivity.this));
                 break;
         }
 
