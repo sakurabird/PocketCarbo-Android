@@ -56,6 +56,7 @@
 
     <!-- Component -->
     <dimen name="bottom_nav_height">56dp</dimen>
+    <dimen name="nav_image_width">240dp</dimen>
 
     <dimen name="tag_radius">4dp</dimen>
     <dimen name="tag_padding_horizontal">8dp</dimen>
