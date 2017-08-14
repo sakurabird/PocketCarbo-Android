@@ -191,6 +191,7 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
         builder.append(getSodium().replace(" ", ""));
+        builder.append(" http://www.pockettoushituryou.com/");
         return builder.toString();
     }
 
