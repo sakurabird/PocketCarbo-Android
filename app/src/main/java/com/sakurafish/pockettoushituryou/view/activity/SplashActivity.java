@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.pref.Pref;
@@ -85,6 +84,7 @@ public class SplashActivity extends BaseActivity {
         Disposable disposable = foodsRepository.receiveDataVersion()
                 .flatMap(dataVersion -> {
                     // get new data from remote
+                    Timber.tag(TAG).d("Check new data pref:"+pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))+" server:"+dataVersion.version);
                     if (dataVersion != null && dataVersion.version > pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
                         return foodsRepository.findAllFromRemote()
                                 .doOnSuccess(foodsData -> {
