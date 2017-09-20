@@ -78,9 +78,9 @@ public class ApplicationModule {
 
     @Singleton
     @Provides
-    public PocketCarboService providePocketCarboService(OkHttpClient client) {
+    public PocketCarboService providePocketCarboService(Context context, OkHttpClient client) {
         return new Retrofit.Builder().client(client)
-                .baseUrl("http://www.pockettoushituryou.com")
+                .baseUrl(context.getString(R.string.base_url))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
                 .build()
