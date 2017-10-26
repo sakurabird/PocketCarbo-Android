@@ -93,8 +93,7 @@ configurations {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     // Support Library
     compile "com.android.support:support-v4:$supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
@@ -129,15 +128,15 @@ dependencies {
     compile 'com.github.gfx.android.orma:orma:4.2.4'
 
     // UI
+    compile project(':MaterialSearchView')
     compile 'net.yanzm:loopviewpager:25.0.1'
     compile 'net.cachapa.expandablelayout:expandablelayout:2.8'
-    compile 'br.com.mauker.materialsearchview:materialsearchview:1.2.2'
     compile 'com.github.jd-alexander:LikeButton:0.2.1'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 
     // Utility
     compile 'com.jakewharton.timber:timber:4.5.1'
-    compile('de.psdev.licensesdialog:licensesdialog:1.8.2')
+    compile 'de.psdev.licensesdialog:licensesdialog:1.8.2'
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
 
     // Test
