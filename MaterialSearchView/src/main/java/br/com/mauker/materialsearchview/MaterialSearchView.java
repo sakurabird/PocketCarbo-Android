@@ -149,6 +149,11 @@ public class MaterialSearchView extends FrameLayout {
     private ImageButton mClear;
 
     /**
+     * The ImageButton for starting a search.
+     */
+    private ImageButton mSearch;
+
+    /**
      * The ListView for displaying suggestions based on the search.
      */
     private ListView mSuggestionsListView;
@@ -229,7 +234,14 @@ public class MaterialSearchView extends FrameLayout {
         mSearchEditText = (EditText) mRoot.findViewById(R.id.et_search);
         mVoice = (ImageButton) mRoot.findViewById(R.id.action_voice);
         mClear = (ImageButton) mRoot.findViewById(R.id.action_clear);
+        mSearch = (ImageButton) mRoot.findViewById(R.id.action_search);
         mSuggestionsListView = (ListView) mRoot.findViewById(R.id.suggestion_list);
+
+        // ポケット糖質量アプリではVoice,Clearボタンは無効にする
+        displayClearButton(false);
+        displayVoiceButton(false);
+        mClear.setEnabled(false);
+        mVoice.setEnabled(false);
 
         // Set click listeners
         mBack.setOnClickListener(new View.OnClickListener() {
@@ -253,6 +265,14 @@ public class MaterialSearchView extends FrameLayout {
             }
         });
 
+        mSearch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // サーチボタンを押されたらコールバックにテキストをセットする
+                onSubmitQuery();
+            }
+        });
+
         mTintView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,7 +283,7 @@ public class MaterialSearchView extends FrameLayout {
         });
 
         // Show voice button
-        displayVoiceButton(true);
+//        displayVoiceButton(true);
 
         // Initialize the search view.
         initSearchView();
@@ -586,13 +606,13 @@ public class MaterialSearchView extends FrameLayout {
         mCurrentQuery = mSearchEditText.getText();
 
         // If the text is not empty, show the empty button and hide the voice button
-        if(!TextUtils.isEmpty(mCurrentQuery)) {
-            displayVoiceButton(false);
-            displayClearButton(true);
-        } else {
-            displayClearButton(false);
-            displayVoiceButton(true);
-        }
+//        if(!TextUtils.isEmpty(mCurrentQuery)) {
+//            displayVoiceButton(false);
+//            displayClearButton(true);
+//        } else {
+//            displayClearButton(false);
+//            displayVoiceButton(true);
+//        }
 
         // If we have a query listener and the text has changed, call it.
         if(mOnQueryTextListener != null) {
