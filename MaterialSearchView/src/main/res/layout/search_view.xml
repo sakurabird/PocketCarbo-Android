@@ -64,6 +64,7 @@
                 android:paddingRight="@dimen/search_icon_padding"
                 app:srcCompat="@drawable/ic_action_voice_search" />
 
+            <!-- クリアボタンの代わりにサーチボタンを表示するため、このボタンは使用しない -->
             <ImageButton
                 android:id="@+id/action_clear"
                 android:layout_width="wrap_content"
@@ -72,8 +73,20 @@
                 android:contentDescription="@string/cd_clear_button"
                 android:paddingLeft="@dimen/search_icon_padding"
                 android:paddingRight="@dimen/search_icon_padding"
-                app:srcCompat="@drawable/ic_action_navigation_close"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_action_navigation_close" />
+
+            <!-- クリアボタンの代わりにサーチボタンを表示する -->
+            <ImageButton
+                android:id="@+id/action_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/cd_clear_button"
+                android:paddingLeft="@dimen/search_icon_padding"
+                android:paddingRight="@dimen/search_icon_padding"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_search_black_24dp" />
         </LinearLayout>
 
         <ListView
