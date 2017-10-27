@@ -122,8 +122,6 @@ public class FoodsRepository {
                     Timber.tag(TAG).d("findAllFromLocal loaded **kindList size:" + kindsList.size());
                     this.foodsData.setKinds(kindsList);
 
-                    // insert all data
-                    updateAllAsync(this.foodsData);
                     return Single.create(emitter -> emitter.onSuccess(this.foodsData));
                 });
     }
