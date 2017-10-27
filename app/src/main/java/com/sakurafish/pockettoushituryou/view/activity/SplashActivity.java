@@ -27,7 +27,7 @@ public class SplashActivity extends BaseActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
-    private static final int MINIMUM_LOADING_TIME = 1600;
+    private static final int MINIMUM_LOADING_TIME = 1000;
 
     @Inject
     FirebaseAnalytics firebaseAnalytics;
