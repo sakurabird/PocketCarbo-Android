@@ -82,25 +82,22 @@ public class SplashActivity extends BaseActivity {
 
         // Check new data
         Disposable disposable = foodsRepository.receiveDataVersion()
-                .flatMap(dataVersion -> {
+                .doOnSuccess(dataVersion -> {
                     // get new data from remote
-                    Timber.tag(TAG).d("Check new data pref:"+pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))+" server:"+dataVersion.version);
+                    Timber.tag(TAG).d("Check new data pref:" + pref.getPrefInt(getString(R.string.PREF_DATA_VERSION)) + " server:" + dataVersion.version);
                     if (dataVersion != null && dataVersion.version > pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
-                        return foodsRepository.findAllFromRemote()
-                                .doOnSuccess(foodsData -> {
-                                    pref.setPref(getString(R.string.PREF_DATA_VERSION), dataVersion.version);
-                                });
-                    } else {
-                        return foodsRepository.findAllFromLocal();
+                        foodsRepository.findAllFromRemote()
+                                .doOnSuccess(foodsData -> pref.setPref(getString(R.string.PREF_DATA_VERSION), dataVersion.version))
+                                .doOnError(throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."));
                     }
                 })
+                .doOnError(throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> {
-                    startNextActivity();
-                })
-                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading foods."),
+                .doFinally(() -> findAllDataFromLocal())
+                .subscribe(foodsData -> Timber.tag(TAG).d("Succeeded in loading foods."),
                         throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."));
+
         compositeDisposable.add(disposable);
     }
 
