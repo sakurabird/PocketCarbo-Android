@@ -201,6 +201,6 @@ public class FoodViewModel extends BaseObservable {
         intent.putExtra(Intent.EXTRA_TEXT, createRowString() + " #" + context.getString(R.string.app_name));
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
         intent.setType("text/plain");
-        context.startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
+        context.getApplicationContext().startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
     }
 }

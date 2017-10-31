@@ -58,13 +58,13 @@ public final class WebViewViewModel extends BaseObservable implements ViewModel 
 
             if (url.startsWith("tel:")) {
                 final Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
-                context.startActivity(intent);
+                context.getApplicationContext().startActivity(intent);
                 return true;
             }
             if (url.startsWith("mailto:")) {
                 try {
                     final Intent intent = Intent.parseUri(url, 0);
-                    context.startActivity(intent);
+                    context.getApplicationContext().startActivity(intent);
                     return true;
                 } catch (URISyntaxException e) {
                     // Intent schemeが不正.
@@ -76,7 +76,7 @@ public final class WebViewViewModel extends BaseObservable implements ViewModel 
             if (url.startsWith("intent:")) {
                 try {
                     final Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                    context.startActivity(intent);
+                    context.getApplicationContext().startActivity(intent);
                     return true;
                 } catch (URISyntaxException e) {
                     // Intent schemeが不正.
