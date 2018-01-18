@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.sakurafish.pockettoushituryou"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 4
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -78,8 +78,8 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '25.3.1'
-    googleServicesVersion = '11.0.1'
+    supportLibraryVersion = '26.1.0'
+    googleServicesVersion = '11.8.0'
 }
 
 configurations {
@@ -108,38 +108,38 @@ dependencies {
     compile "com.google.firebase:firebase-ads:$googleServicesVersion"
 
     // Structure
-    compile 'com.google.dagger:dagger:2.10'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.5'
+    compile 'com.google.dagger:dagger:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     // Network
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'org.jsoup:jsoup:1.11.2'
 
     // DB
-    annotationProcessor 'com.github.gfx.android.orma:orma-processor:4.2.4'
-    compile 'com.github.gfx.android.orma:orma:4.2.4'
+    annotationProcessor 'com.github.gfx.android.orma:orma-processor:5.0.0-rc4'
+    compile 'com.github.gfx.android.orma:orma:5.0.0-rc4'
 
     // UI
     compile project(':MaterialSearchView')
     compile 'net.yanzm:loopviewpager:25.0.1'
-    compile 'net.cachapa.expandablelayout:expandablelayout:2.8'
-    compile 'com.github.jd-alexander:LikeButton:0.2.1'
-    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
+    compile 'com.github.jd-alexander:LikeButton:0.2.3'
+    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     // Utility
-    compile 'com.jakewharton.timber:timber:4.5.1'
-    compile 'de.psdev.licensesdialog:licensesdialog:1.8.2'
-    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+    compile 'com.jakewharton.timber:timber:4.6.0'
+    compile 'de.psdev.licensesdialog:licensesdialog:1.8.3'
+    compile 'com.github.deano2390:MaterialShowcaseView:1.2.0'
 
     // Test
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
