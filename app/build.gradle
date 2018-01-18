@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.sakurafish.pockettoushituryou"
@@ -146,21 +145,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-
-def toApkFile(originalFile) {
-    def namePrefix = "PocketCarbo"
-    def name = originalFile.name.replace(project.name,
-            namePrefix + "-v" + android.defaultConfig.versionName)
-    return new File(originalFile.parentFile, name)
-}
-
-// 最終成果物のファイル名を変更
+// apkファイルの名前を変更
 android.applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-        output.outputFile = toApkFile(output.outputFile)
-        if (output.packageApplication.outputFile != output.outputFile) {
-            // zipalign をかける前のファイルが最終成果物でなければ変更する
-            output.packageApplication.outputFile = toApkFile(output.packageApplication.outputFile)
-        }
+    variant.outputs.all {
+        outputFileName = "PocketCarbo_v${android.defaultConfig.versionName}_${variant.name}.apk"
     }
 }
