@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class FoodViewModel extends BaseObservable {
     final static String TAG = FoodViewModel.class.getSimpleName();
 
     private Context context;
+    private AppCompatActivity activity;
     private View.OnClickListener onClickListener;
     private FavoriteFoodsRepository favoriteFoodsRepository;
 
@@ -39,8 +41,12 @@ public class FoodViewModel extends BaseObservable {
     @ColorRes
     private int carboRatedColorResId = R.color.black_alpha_87;
 
-    FoodViewModel(@NonNull Context context, @NonNull FavoriteFoodsRepository favoriteFoodsRepository, @NonNull Foods foods) {
+    FoodViewModel(@NonNull Context context,
+                  @NonNull AppCompatActivity activity,
+                  @NonNull FavoriteFoodsRepository favoriteFoodsRepository,
+                  @NonNull Foods foods) {
         this.context = context;
+        this.activity = activity;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
         setViewValues(foods);
     }
@@ -135,9 +141,6 @@ public class FoodViewModel extends BaseObservable {
     }
 
     public void setFabState() {
-//        if (favoriteFoodsRepository.isFavorite(foods.id)) {
-//            Timber.tag(TAG).d("setFabState :" + favoriteFoodsRepository.toString(foods.id));
-//        }
         this.favState = favoriteFoodsRepository.isFavorite(foods.id);
     }
 
@@ -201,6 +204,6 @@ public class FoodViewModel extends BaseObservable {
         intent.putExtra(Intent.EXTRA_TEXT, createRowString() + " #" + context.getString(R.string.app_name));
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
         intent.setType("text/plain");
-        context.getApplicationContext().startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
+        activity.startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
     }
 }

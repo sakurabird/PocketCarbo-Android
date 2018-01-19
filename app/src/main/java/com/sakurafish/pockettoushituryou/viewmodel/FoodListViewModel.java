@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.sakurafish.pockettoushituryou.model.FavoriteFoods;
@@ -28,6 +29,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     final static String TAG = FoodListViewModel.class.getSimpleName();
 
     private Context context;
+    private AppCompatActivity activity;
     private FoodsRepository foodsRepository;
     private FavoriteFoodsRepository favoriteFoodsRepository;
 
@@ -40,8 +42,12 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private int emptyMessageVisibility;
 
     @Inject
-    FoodListViewModel(Context context, FoodsRepository foodsRepository, FavoriteFoodsRepository favoriteFoodsRepository) {
+    FoodListViewModel(Context context,
+                      AppCompatActivity activity,
+                      FoodsRepository foodsRepository,
+                      FavoriteFoodsRepository favoriteFoodsRepository) {
         this.context = context;
+        this.activity = activity;
         this.foodsRepository = foodsRepository;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
 
@@ -135,7 +141,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private synchronized List<FoodViewModel> getFoodViewModels() {
         List<FoodViewModel> foodViewModels = new ArrayList<>();
         for (Foods foods : foodsList) {
-            foodViewModels.add(new FoodViewModel(this.context, this.favoriteFoodsRepository, foods));
+            foodViewModels.add(new FoodViewModel(this.context, this.activity, this.favoriteFoodsRepository, foods));
         }
         return foodViewModels;
     }
