@@ -1,5 +1,7 @@
 package com.sakurafish.pockettoushituryou.view.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -28,5 +30,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(layoutResId, fragment, fragment.getClass().getSimpleName());
         ft.commit();
+    }
+
+    protected void goBrowser(@NonNull final String url) {
+        final Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }

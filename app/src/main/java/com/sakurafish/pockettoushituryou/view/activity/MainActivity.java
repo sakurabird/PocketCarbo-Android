@@ -162,6 +162,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(R.string.list_title);
 
+        View headerView = binding.navView.getHeaderView(0);
+        headerView.setOnClickListener(view -> goBrowser("http://www.pockettoushituryou.com"));
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
