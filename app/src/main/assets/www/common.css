@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+
+.announce {
+    margin: 10px;
+}
+.date {
+    color:#999999;
+    font-size:0.9em;
+}

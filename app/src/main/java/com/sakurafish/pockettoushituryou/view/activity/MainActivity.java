@@ -270,6 +270,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_setting:
                 startActivity(SettingsActivity.createIntent(MainActivity.this));
                 break;
+            case R.id.nav_announcement:
+                startActivity(WebViewActivity.createIntent(MainActivity.this
+                        , "file:///android_asset/www/announcement.html"
+                        , getString(R.string.announcement)));
+                break;
             case R.id.nav_share:
                 final Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
