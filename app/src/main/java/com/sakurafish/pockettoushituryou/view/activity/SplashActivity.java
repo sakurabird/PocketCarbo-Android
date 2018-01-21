@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sakurafish.pockettoushituryou.R;
+import com.sakurafish.pockettoushituryou.model.DataVersion;
+import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.util.Utils;
@@ -29,6 +31,8 @@ public class SplashActivity extends BaseActivity {
 
     private static final int MINIMUM_LOADING_TIME = 1000;
 
+    private int retrieved_data_verion;
+
     @Inject
     FirebaseAnalytics firebaseAnalytics;
     @Inject
@@ -46,6 +50,7 @@ public class SplashActivity extends BaseActivity {
         getComponent().inject(this);
 
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
+        retrieved_data_verion = 0;
 
         DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
@@ -80,28 +85,42 @@ public class SplashActivity extends BaseActivity {
             return;
         }
 
-        // Check new data
         Disposable disposable = foodsRepository.receiveDataVersion()
-                .doOnSuccess(dataVersion -> {
-                    // get new data from remote
-                    Timber.tag(TAG).d("Check new data pref:" + pref.getPrefInt(getString(R.string.PREF_DATA_VERSION)) + " server:" + dataVersion.version);
-                    if (dataVersion != null && dataVersion.version > pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
-                        foodsRepository.findAllFromRemote()
-                                .doOnSuccess(foodsData -> pref.setPref(getString(R.string.PREF_DATA_VERSION), dataVersion.version))
-                                .doOnError(throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."));
+                .flatMap(dataVersion -> {
+                    Timber.tag(TAG).d("receiveDataVersion");
+                    retrieved_data_verion = dataVersion.version;
+                    if (isNeedUpdateData(dataVersion)) {
+                        return foodsRepository.findAllFromRemote();
                     }
+                    return Single.create(emitter -> emitter.onSuccess(new FoodsData()));
                 })
-                .doOnError(throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."))
+                .flatMap(foodsData -> {
+                    Timber.tag(TAG).d("result foodsData check");
+                    if (foodsData != null
+                            && foodsData.getFoods() != null && foodsData.getFoods().size() > 0
+                            && foodsData.getKinds() != null && foodsData.getKinds().size() > 0) {
+                        Timber.tag(TAG).d("Succeeded in loading foods from remote.");
+                        setPrefUpdated();
+                    }
+                    return Single.create(emitter -> emitter.onSuccess(retrieved_data_verion));
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> findAllDataFromLocal())
-                .subscribe(foodsData -> Timber.tag(TAG).d("Succeeded in loading foods."),
+                .subscribe(o -> Timber.tag(TAG).d("finish."),
                         throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods."));
 
         compositeDisposable.add(disposable);
     }
 
     private void findAllDataFromLocal() {
+        if (retrieved_data_verion > 0 && retrieved_data_verion == pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
+            Timber.tag(TAG).d("DBは最新に保たれている");
+            startNextActivity();
+            return;
+        }
+
+        Timber.tag(TAG).d("findAllDataFromLocal");
         Disposable disposable = Single.zip(foodsRepository.findAllFromLocal(),
                 Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
                 (foodsData, obj) -> Observable.empty())
@@ -110,8 +129,8 @@ public class SplashActivity extends BaseActivity {
                 .doFinally(() -> {
                     startNextActivity();
                 })
-                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading sessions."),
-                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load sessions."));
+                .subscribe(observable -> Timber.tag(TAG).d("Succeeded in loading foods from local."),
+                        throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods from local."));
         compositeDisposable.add(disposable);
     }
 
@@ -119,5 +138,29 @@ public class SplashActivity extends BaseActivity {
         if (isFinishing()) return;
         startActivity(MainActivity.createIntent(SplashActivity.this));
         SplashActivity.this.finish();
+    }
+
+    private boolean isNeedUpdateData(DataVersion dataVersion) {
+        Timber.tag(TAG).d("Check new data pref:" + pref.getPrefInt(getString(R.string.PREF_DATA_VERSION)) + " server:" + dataVersion.version);
+        if (dataVersion != null && dataVersion.version > pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
+            Timber.tag(TAG).d("New data found.");
+            return true;
+        }
+
+        // バグ対応 強制的にアップデート
+        if (dataVersion != null
+                && utils.getVersionCode() <= 5 && !pref.getPrefBool("DATA_UPDATED_1.2", false)) {
+            Timber.tag(TAG).d("(ver1.2) data wasn't updated.");
+            return true;
+        }
+        Timber.tag(TAG).d("currently data is up-to-date.");
+        return false;
+    }
+
+    private void setPrefUpdated() {
+        pref.setPref(getString(R.string.PREF_DATA_VERSION), retrieved_data_verion);
+        if (utils.getVersionCode() <= 5) {
+            pref.setPref("DATA_UPDATED_1.2", true);
+        }
     }
 }

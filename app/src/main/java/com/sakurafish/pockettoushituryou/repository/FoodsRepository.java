@@ -83,9 +83,7 @@ public class FoodsRepository {
         Timber.tag(TAG).d("findAllFromRemote start");
         return pocketCarboService.getFoodsData()
                 .doOnSuccess(foodsData -> {
-                    Timber.tag(TAG).d("*foods*size:" + foodsData.getFoods().size() + "  *kinds*size:" + foodsData.getKinds().size());
-                    this.foodsData = foodsData;
-                    updateAllAsync(this.foodsData);
+                    Timber.tag(TAG).d("findAllFromRemote *foods*size:" + foodsData.getFoods().size() + "  *kinds*size:" + foodsData.getKinds().size());
                     if (foodsData.getFoods().isEmpty() || foodsData.getKinds().isEmpty()) {
                         Timber.tag(TAG).e("findAllFromRemote succeded. but foodsData is empty");
                         if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
@@ -93,6 +91,9 @@ public class FoodsRepository {
                         } else {
                             findAllFromLocal();
                         }
+                    } else {
+                        this.foodsData = foodsData;
+                        updateAllAsync(this.foodsData);
                     }
                 })
                 .doOnError(throwable -> {
