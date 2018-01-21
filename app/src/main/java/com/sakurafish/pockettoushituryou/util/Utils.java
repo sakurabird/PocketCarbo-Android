@@ -35,6 +35,23 @@ public class Utils {
     }
 
     /**
+     * version codeを取得する
+     *
+     * @return
+     */
+    public int getVersionCode() {
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info;
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
      * version nameを取得する
      *
      * @return
