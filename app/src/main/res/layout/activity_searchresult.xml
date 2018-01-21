@@ -5,7 +5,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_main">
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
@@ -39,7 +40,6 @@
                 android:id="@+id/content_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/space_12dp"
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

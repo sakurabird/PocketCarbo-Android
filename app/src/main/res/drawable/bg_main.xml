@@ -4,5 +4,5 @@
     android:dither="false"
     android:filter="false"
     android:gravity="fill"
-    android:src="@drawable/img_splash_bg"
+    android:src="@drawable/img_main_bg"
     android:tileMode="repeat" />
