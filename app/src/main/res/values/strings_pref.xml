@@ -16,6 +16,6 @@
     <string name="setting_privacy_policy">プライバシーポリシー</string>
     <string name="setting_mail_to_dev">開発へのご要望・ご感想</string>
     <string name="setting_mail_to_dev2">【ポケット糖質量】ご意見・ご要望</string>
-    <string name="setting_mail_to_dev3">ユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。</string>
+    <string name="setting_mail_to_dev3">ポケット糖質量へのご意見・ご要望をご記入ください。\nユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。\n返信が必要な場合、sakurafish1@gmail.comというメールアドレスよりお送りいたします。\n--------------------\n</string>
 
 </resources>
