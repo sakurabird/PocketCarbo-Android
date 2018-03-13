@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +131,6 @@ public class FoodListFragment extends BaseFragment {
             this.listType = (ListType) savedInstanceState.getSerializable(EXTRA_LIST_TYPE);
             this.kindId = savedInstanceState.getInt("kindId");
             this.query = savedInstanceState.getString(EXTRA_QUERY);
-            Timber.tag(TAG).d("onCreate type:" + this.typeId);
         }
     }
 
@@ -370,7 +368,6 @@ public class FoodListFragment extends BaseFragment {
         registerRxBus(FoodsUpdatedEvent.class, rxBusMessage -> {
             // DBに食品データが全て追加された
             if (TextUtils.equals(rxBusMessage.getMessage(), EVENT_DB_UPDATED)) {
-                Timber.tag(TAG).d("RxBus message:" + rxBusMessage.getMessage());
                 showFoods();
             }
         });
@@ -383,7 +380,7 @@ public class FoodListFragment extends BaseFragment {
     }
 
     public <T> void registerRxBus(Class<T> eventType, Consumer<T> action) {
-        Disposable disposable = rxBus.doSubscribe(eventType, action, throwable -> Log.e("NewsMainPresenter", throwable.toString()));
+        Disposable disposable = rxBus.doSubscribe(eventType, action, throwable -> Timber.tag(TAG).e(throwable, "Failed to register RxBus"));
         rxBus.addSubscription(this, disposable);
     }
 
