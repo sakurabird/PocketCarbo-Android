@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +26,9 @@ import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
 import com.sakurafish.pockettoushituryou.pref.Pref;
-import com.sakurafish.pockettoushituryou.repository.RetrieveReleasedVersion;
+import com.sakurafish.pockettoushituryou.repository.ReleasedVersionRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
-import com.sakurafish.pockettoushituryou.util.Utils;
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
@@ -66,7 +64,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Pref pref;
 
     @Inject
-    Utils utils;
+    ReleasedVersionRepository releasedVersionRepository;
 
     @Inject
     ShowcaseHelper showcaseHelper;
@@ -89,36 +87,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         initView();
 
-        checkAppVersion();
+        releasedVersionRepository.checkReleasedVersion();
 
         pleaseReview();
     }
 
-    private void checkAppVersion() {
-        new RetrieveReleasedVersion(this, version -> {
-            if (TextUtils.isEmpty(version)) return;
-            final String thisVersion = utils.getVersionName();
-            if (TextUtils.isEmpty(thisVersion)) return;
-            if (!version.equals(thisVersion)) {
-                pleaseUpdate();
-            }
-        }).execute();
-    }
-
-    private void pleaseUpdate() {
-        //アップデートへ誘導する
-        new MaterialDialog.Builder(this)
-                .theme(Theme.LIGHT)
-                .title(getString(R.string.ask_update_title))
-                .content(getString(R.string.ask_update_message))
-                .positiveText(getString(android.R.string.ok))
-                .negativeText(getString(android.R.string.cancel))
-                .onPositive((dialog, which) -> {
-                    // Google Play
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))));
-                })
-                .show();
-    }
 
     private void pleaseReview() {
         if (pref.getPrefBool(getString(R.string.PREF_ASK_REVIEW), false) || pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) != 10) {
