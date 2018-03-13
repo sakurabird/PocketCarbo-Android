@@ -38,7 +38,6 @@ public class FoodsRepository {
     private final ResourceResolver resourceResolver;
 
     private FoodsData foodsData;
-    private boolean isDirty;
 
     @Inject
     FoodsRepository(PocketCarboService pocketCarboService, OrmaDatabase orma, ResourceResolver resourceResolver) {
@@ -47,11 +46,6 @@ public class FoodsRepository {
         this.resourceResolver = resourceResolver;
 
         this.foodsData = new FoodsData();
-        this.isDirty = true;
-    }
-
-    public FoodsData getFoodsData() {
-        return foodsData;
     }
 
     public Single<DataVersion> receiveDataVersion() {
@@ -64,21 +58,7 @@ public class FoodsRepository {
                 });
     }
 
-    public Single<FoodsData> findAll() {
-        Timber.tag(TAG).d("findAll start");
-        if (foodsData.getFoods() != null && !foodsData.getFoods().isEmpty()) {
-            return Single.create(emitter -> {
-                emitter.onSuccess(foodsData);
-            });
-        }
-
-        if (isDirty) {
-            return findAllFromRemote();
-        } else {
-            return findAllFromLocal();
-        }
-    }
-
+    @Deprecated
     public Single<FoodsData> findAllFromRemote() {
         Timber.tag(TAG).d("findAllFromRemote start");
         return pocketCarboService.getFoodsData()
@@ -127,7 +107,7 @@ public class FoodsRepository {
                 });
     }
 
-    private Single<FoodsData> findAllFromAssets() {
+    public Single<FoodsData> findAllFromAssets() {
         Timber.tag(TAG).d("findAllFromAssets start");
         final String json = resourceResolver.loadJSONFromAsset(resourceResolver.getString(R.string.foods_and_kinds_file));
         final Gson gson = new Gson();
