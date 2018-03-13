@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#00695c</color>
     <color name="colorAccent">#ff6f00</color>
 
-    <color name="colorCarboSafe">#2196f3</color>
-    <color name="colorCarboWarning">#4caf50</color>
+    <color name="colorCarboSafe">#0000d2</color>
+    <color name="colorCarboWarning">#049336</color>
     <color name="colorCarboDanger">#f44336</color>
     <color name="colorCarboDangerHigh">#9c27b0</color>
 
