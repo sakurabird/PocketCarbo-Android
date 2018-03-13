@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/navigation_drawer_content_description_header_image"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@drawable/img_appname_with_image" />
 
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="http://www.pockettoushituryou.com/"
+        android:text="@string/app_website"
         android:textSize="@dimen/text_12sp" />
 
 </LinearLayout>

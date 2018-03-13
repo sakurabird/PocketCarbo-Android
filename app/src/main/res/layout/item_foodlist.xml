@@ -77,6 +77,7 @@
                 android:layout_marginLeft="@dimen/space_12dp"
                 android:layout_marginRight="@dimen/space_12dp"
                 android:layout_marginTop="@dimen/space_32dp"
+                android:contentDescription="@string/food_list_content_description_expand"
                 app:srcCompat="@drawable/expand_arrow" />
 
             <net.cachapa.expandablelayout.ExpandableLayout
@@ -225,6 +226,7 @@
                         android:layout_marginBottom="@dimen/space_8dp"
                         android:layout_marginRight="@dimen/space_8dp"
                         android:layout_toLeftOf="@+id/star_button"
+                        android:contentDescription="@string/food_list_content_description_share_button"
                         android:onClick="@{viewModel::onClickShareButton}"
                         android:tint="@color/grey600"
                         app:srcCompat="@drawable/ic_share_black_24dp" />

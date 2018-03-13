@@ -24,7 +24,7 @@
                 android:id="@+id/kind_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_16dp"
+                android:layout_marginStart="@dimen/space_16dp"
                 android:layout_marginTop="@dimen/space_12dp"
                 android:layout_weight="1"
                 android:background="@drawable/kind_spinner"
@@ -71,6 +71,7 @@
                 android:id="@+id/img_tamagogohan"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:contentDescription="@string/food_list_content_description_empty_image"
                 android:src="@drawable/img_tamagogohan" />
 
             <TextView
@@ -78,8 +79,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/space_4dp"
-                android:layout_toRightOf="@+id/img_tamagogohan"
+                android:layout_marginStart="@dimen/space_4dp"
+                android:layout_toEndOf="@+id/img_tamagogohan"
                 android:text="@string/empty_text"
                 android:textSize="@dimen/text_16sp" />
 
