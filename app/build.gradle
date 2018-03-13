@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.sakurafish.pockettoushituryou"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 5
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -78,7 +78,7 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.1.0'
     googleServicesVersion = '11.8.0'
 }
 
