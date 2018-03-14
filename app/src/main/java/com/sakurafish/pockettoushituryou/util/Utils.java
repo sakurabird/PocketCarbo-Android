@@ -64,8 +64,8 @@ public class Utils {
             info = manager.getPackageInfo(context.getPackageName(), 0);
             version = info.versionName;
             // for debug
-            if (version.contains("-DEBUG")) {
-                version = version.replace("-DEBUG", "");
+            if (version.toLowerCase().contains("-debug")) {
+                version = version.replace("-debug", "");
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
