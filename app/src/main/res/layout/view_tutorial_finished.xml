@@ -9,12 +9,61 @@
         android:gravity="center"
         android:padding="@dimen/space_24dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/tutorial_clear_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_20sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/tutorial_clear_text1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:text="@string/tutorial_clear_text2"
+                android:textColor="@color/colorCarboSafe"
+                android:textSize="@dimen/text_20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/tutorial_clear_text3"
+                android:textColor="@color/colorCarboWarning"
+                android:textSize="@dimen/text_20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/tutorial_clear_text4"
+                android:textColor="@color/colorCarboDanger"
+                android:textSize="@dimen/text_20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/tutorial_clear_text5"
+                android:textColor="@color/colorCarboDangerHigh"
+                android:textSize="@dimen/text_20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:text="@string/tutorial_clear_text6"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_20sp" />
+
+        </LinearLayout>
     </ScrollView>
 </layout>
