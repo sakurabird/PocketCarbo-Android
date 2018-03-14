@@ -51,7 +51,7 @@ public class FoodsRepository {
     public Single<DataVersion> receiveDataVersion() {
         Timber.tag(TAG).d("receiveDataVersion start");
         return pocketCarboService.getDataVersion()
-                .doOnSuccess(dataVersion -> Timber.tag(TAG).d("receiveDataVersion succeeded version:" + dataVersion.version))
+                .doOnSuccess(dataVersion -> Timber.tag(TAG).d("receiveDataVersion succeeded"))
                 .doOnError(throwable -> {
                     Timber.tag(TAG).e("receiveDataVersion failed");
                     throwable.printStackTrace();
@@ -63,7 +63,6 @@ public class FoodsRepository {
         Timber.tag(TAG).d("findAllFromRemote start");
         return pocketCarboService.getFoodsData()
                 .doOnSuccess(foodsData -> {
-                    Timber.tag(TAG).d("findAllFromRemote *foods*size:" + foodsData.getFoods().size() + "  *kinds*size:" + foodsData.getKinds().size());
                     if (foodsData.getFoods().isEmpty() || foodsData.getKinds().isEmpty()) {
                         Timber.tag(TAG).e("findAllFromRemote succeded. but foodsData is empty");
                         if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
@@ -88,19 +87,16 @@ public class FoodsRepository {
     }
 
     public Single<FoodsData> findAllFromLocal() {
-        Timber.tag(TAG).d("findAllFromLocal start");
         if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
             return findAllFromAssets();
         }
 
         return orma.relationOfFoods().selector().executeAsObservable().toList()
                 .flatMap(foodsList -> {
-                    Timber.tag(TAG).d("findAllFromLocal loaded **foodList size:" + foodsList.size());
                     this.foodsData.setFoods(foodsList);
                     return orma.relationOfKinds().selector().executeAsObservable().toList();
                 })
                 .flatMap(kindsList -> {
-                    Timber.tag(TAG).d("findAllFromLocal loaded **kindList size:" + kindsList.size());
                     this.foodsData.setKinds(kindsList);
 
                     return Single.create(emitter -> emitter.onSuccess(this.foodsData));
@@ -108,17 +104,14 @@ public class FoodsRepository {
     }
 
     public Single<FoodsData> findAllFromAssets() {
-        Timber.tag(TAG).d("findAllFromAssets start");
         final String json = resourceResolver.loadJSONFromAsset(resourceResolver.getString(R.string.foods_and_kinds_file));
         final Gson gson = new Gson();
         this.foodsData = gson.fromJson(json, FoodsData.class);
-        Timber.tag(TAG).d("findAllFromAssets 2 " + " *foods*size:" + foodsData.getFoods().size() + "  *kinds*size:" + foodsData.getKinds().size());
         updateAllAsync(this.foodsData);
         return Single.create(emitter -> emitter.onSuccess(this.foodsData));
     }
 
     public Single<FoodsData> findFromLocal(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
-        Timber.tag(TAG).d("findFromLocal start type:" + typeId + " kind:" + kindId + " sort:" + sort);
 
         Foods_Selector selector = orma.relationOfFoods().selector();
         selector.type_idEq(typeId);
@@ -146,26 +139,22 @@ public class FoodsRepository {
 
         return selector.executeAsObservable().toList()
                 .flatMap(foodsList -> {
-                    Timber.tag(TAG).d("findFromLocal1 foods size:" + foodsList.size());
                     this.foodsData.setFoods(foodsList);
                     return orma.relationOfKinds().selector().type_idEq(typeId).executeAsObservable().toList();
                 })
                 .flatMap(kindsList -> {
-                    Timber.tag(TAG).d("findFromLocal2 kinds size:" + kindsList.size());
                     this.foodsData.setKinds(kindsList);
                     return Single.create(emitter -> emitter.onSuccess(this.foodsData));
                 });
     }
 
     public Single<FoodsData> findFromLocal(@Nullable String query) {
-        Timber.tag(TAG).d("findFromLocal start query:" + query);
         String[] word = query.trim().replaceAll("　", " ").split(" ", 0);
 
         final StringBuilder builder = new StringBuilder();
         builder.append("SELECT \"foods\".* FROM \"foods\" WHERE (");
         for (int i = 0; i < word.length; i++) {
             String str = word[i];
-            Timber.tag(TAG).d("findFromLocal each word:" + str);
             builder.append("(\"foods\".\"name\" LIKE \'%");
             builder.append(str);
             builder.append("%\' OR \"foods\".\"search_word\" LIKE \'%");
@@ -177,10 +166,8 @@ public class FoodsRepository {
                 builder.append(")");
             }
         }
-        Timber.tag(TAG).d("findFromLocal sql query:" + builder.toString());
 
         Cursor cursor = orma.getConnection().rawQuery(builder.toString());
-        Timber.tag(TAG).d("findFromLocal cursor.getCount():" + cursor.getCount());
         List<Foods> foodsList = toFoodsList(cursor);
         this.foodsData.setFoods(foodsList);
         this.foodsData.setKinds(null);
@@ -201,7 +188,6 @@ public class FoodsRepository {
     }
 
     private Disposable updateAllAsync(@NonNull final FoodsData foodsData) {
-        Timber.tag(TAG).d("updateAllAsync start" + " *foods*size:" + foodsData.getFoods().size() + "  *kinds*size:" + foodsData.getKinds().size());
         return orma.transactionAsCompletable(() -> {
             for (Foods foods : foodsData.getFoods()) {
                 orma.relationOfFoods().upsert(foods);

@@ -152,7 +152,7 @@ public class FoodViewModel extends BaseObservable {
         if (favoriteFoodsRepository.isFavorite(foods.id)) {
             favoriteFoodsRepository.delete(foods)
                     .subscribe((result) -> Timber.tag(TAG).d("Deleted favorite food"),
-                            throwable -> Timber.tag(TAG).e(throwable, String.format("Failed to delete favorite food id:%d", foods.id)));
+                            throwable -> Timber.tag(TAG).e(throwable, "Failed to delete favorite food"));
             this.favState = false;
         } else {
             favoriteFoodsRepository.save(foods)
