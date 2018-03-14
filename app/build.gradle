@@ -79,7 +79,7 @@ android {
 
 ext {
     supportLibraryVersion = '27.1.0'
-    googleServicesVersion = '11.8.0'
+    firebaseVersion = '11.8.0'
 }
 
 configurations {
@@ -104,9 +104,9 @@ dependencies {
     compile "com.android.support:cardview-v7:$supportLibraryVersion"
 
     // Google Searvices
-    compile "com.google.firebase:firebase-core:$googleServicesVersion"
-    compile "com.google.firebase:firebase-crash:$googleServicesVersion"
-    compile "com.google.firebase:firebase-ads:$googleServicesVersion"
+    compile "com.google.firebase:firebase-core:$firebaseVersion"
+    compile "com.google.firebase:firebase-crash:$firebaseVersion"
+    compile "com.google.firebase:firebase-ads:$firebaseVersion"
 
     // Structure
     compile 'com.google.dagger:dagger:2.14.1'
@@ -152,3 +152,6 @@ android.applicationVariants.all { variant ->
         outputFileName = "PocketCarbo_v${android.defaultConfig.versionName}_${variant.name}.apk"
     }
 }
+
+// MUST BE AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

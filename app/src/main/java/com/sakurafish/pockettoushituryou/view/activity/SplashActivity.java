@@ -28,8 +28,8 @@ public class SplashActivity extends BaseActivity {
 
     private static final int MINIMUM_LOADING_TIME = 1000;
 
-    @Inject
     FirebaseAnalytics firebaseAnalytics;
+
     @Inject
     Pref pref;
     @Inject
@@ -42,6 +42,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getComponent().inject(this);
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
 
         DataBindingUtil.setContentView(this, R.layout.activity_splash);
