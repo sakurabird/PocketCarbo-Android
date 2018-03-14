@@ -348,12 +348,16 @@ public class FoodListFragment extends BaseFragment {
 
                                 @Override
                                 public void onShowcaseDismissed(MaterialShowcaseView materialShowcaseView) {
-                                    LayoutInflater inflater = getActivity().getLayoutInflater();
-                                    View dialoglayout = inflater.inflate(R.layout.view_tutorial_finished, null);
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                                    alert.setView(dialoglayout);
-                                    alert.setPositiveButton("OK", (dialog, whichButton) -> showcaseHelper.setPrefShowcaseFoodListFragmentFinished(true));
-                                    alert.show();
+                                    try {
+                                        LayoutInflater inflater = getActivity().getLayoutInflater();
+                                        View dialoglayout = inflater.inflate(R.layout.view_tutorial_finished, null);
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                                        alert.setView(dialoglayout);
+                                        alert.setPositiveButton("OK", (dialog, whichButton) -> showcaseHelper.setPrefShowcaseFoodListFragmentFinished(true));
+                                        alert.show();
+                                    } catch (NullPointerException exception) {
+                                        Timber.tag(TAG).e(exception);
+                                    }
                                 }
                             })
                             .setDismissOnTouch(true)
