@@ -48,7 +48,7 @@ public class SettingsFragment extends PreferenceFragment
         Preference policy = findPreference(getString(R.string.PREF_PRIVACY_POLICY));
         policy.setOnPreferenceClickListener(preference -> {
             mContext.startActivity(WebViewActivity.createIntent(mContext
-                    , "http://www.pockettoushituryou.com/static_pages/privacy_policy"
+                    , "file:///android_asset/www/privacy_policy.html"
                     , getString(R.string.setting_privacy_policy)));
             return false;
         });
