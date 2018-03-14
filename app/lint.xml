@@ -2,6 +2,16 @@
 <lint>
     <issue id="MissingTranslation" severity="warning" />
     <issue id="UnusedResources">
-        <ignore path="res/values/colors.xml" />
+        <ignore path="res/values/colors_palette.xml" />
+        <ignore path="res/values/dimens.xml" />
+        <ignore path="res/mipmap-mdpi/ic_launcher_round.png" />
+        <ignore path="res/mipmap-hdpi/ic_launcher_round.png" />
+        <ignore path="res/mipmap-xhdpi/ic_launcher_round.png" />
+        <ignore path="res/mipmap-xxhdpi/ic_launcher_round.png" />
+        <ignore path="res/mipmap-xxxhdpi/ic_launcher_round.png" />
+    </issue>
+    <!-- Long vector paths -->
+    <issue id="VectorPath">
+        <ignore path="res/drawable/ic_settings_black_24dp.xml" />
     </issue>
 </lint>
