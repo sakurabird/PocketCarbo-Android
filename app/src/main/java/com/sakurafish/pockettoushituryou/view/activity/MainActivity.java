@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
+import com.sakurafish.pockettoushituryou.BuildConfig;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
@@ -174,7 +175,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initTabs();
 
         // 広告
-        binding.adView.loadAd(adsHelper.getAdRequest());
+        if (!BuildConfig.DEBUG) {
+            binding.adView.loadAd(adsHelper.getAdRequest());
+        }
     }
 
     private void initTabs() {
