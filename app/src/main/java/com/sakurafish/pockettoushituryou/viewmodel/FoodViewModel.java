@@ -183,9 +183,13 @@ public class FoodViewModel extends BaseObservable {
         builder.append(":");
         builder.append(getCarbohydrate_per_100g().replace(" ", ""));
         builder.append(", ");
-        builder.append(getExpanded_title().replace(" ", ""));
-        builder.append(":");
-        builder.append(getCarbohydrate_per_weight().replace(" ", ""));
+
+        // 同じ100gをコピーしても仕方ないので
+        if (foods.weight != 0 && foods.weight != 100) {
+            builder.append(getExpanded_title().replace(" ", ""));
+            builder.append(":");
+            builder.append(getCarbohydrate_per_weight().replace(" ", ""));
+        }
         builder.append(", カロリー:");
         builder.append(getCalory().replace(" ", ""));
         builder.append(", たんばく質:");
@@ -194,7 +198,8 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
         builder.append(getSodium().replace(" ", ""));
-        builder.append(" http://www.pockettoushituryou.com/");
+        builder.append(" #ポケット糖質量");
+
         return builder.toString();
     }
 
