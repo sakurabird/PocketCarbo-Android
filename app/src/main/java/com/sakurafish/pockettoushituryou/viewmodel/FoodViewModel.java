@@ -206,7 +206,7 @@ public class FoodViewModel extends BaseObservable {
     public void onClickShareButton(View view) {
         final Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, createRowString() + " #" + context.getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, createRowString());
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
         intent.setType("text/plain");
         activity.startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
