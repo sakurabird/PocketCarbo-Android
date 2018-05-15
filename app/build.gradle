@@ -146,7 +146,7 @@ dependencies {
     implementation 'com.github.gfx.android.orma:orma:5.0.0-rc4'
 
     // UI
-    implementation project(':MaterialSearchView')
+    implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
     implementation 'net.yanzm:loopviewpager:25.0.1'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
