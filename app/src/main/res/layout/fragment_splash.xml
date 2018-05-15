@@ -4,8 +4,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_main"
-        android:padding="@dimen/space_16dp">
+        android:background="@drawable/img_splash_bg">
 
         <ImageView
             android:layout_width="match_parent"
@@ -15,8 +14,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:adjustViewBounds="true"
             android:contentDescription="@string/splash_content_description_app_image"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_appname_with_image2" />
+            android:src="@drawable/img_splash_logo" />
 
     </RelativeLayout>
 
