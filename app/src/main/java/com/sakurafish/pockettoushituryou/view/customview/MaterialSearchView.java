@@ -1,4 +1,4 @@
-package br.com.mauker.materialsearchview;
+package com.sakurafish.pockettoushituryou.view.customview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -41,15 +41,21 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sakurafish.pockettoushituryou.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.mauker.materialsearchview.BuildConfig;
 import br.com.mauker.materialsearchview.adapters.CursorSearchAdapter;
 import br.com.mauker.materialsearchview.db.HistoryContract;
 import br.com.mauker.materialsearchview.utils.AnimationUtils;
 
 /**
+ * Mauker1/MaterialSearchView https://github.com/Mauker1/MaterialSearchView
+ * Modified for PocketCarbo
+ * <p>
  * Created by Mauker and Adam McNeilly on 30/03/2016. dd/MM/YY.
  * Maintained by Mauker, Adam McNeilly and our beautiful open source community <3
  * Based on stadiko on 6/8/15. https://github.com/krishnakapil/MaterialSeachView
@@ -150,6 +156,12 @@ public class MaterialSearchView extends FrameLayout {
     private ImageButton mClear;
 
     /**
+     * The ImageButton for starting a search.
+     * PocketCarboで使用
+     */
+    private ImageButton mSearch;
+
+    /**
      * The ListView for displaying suggestions based on the search.
      */
     private ListView mSuggestionsListView;
@@ -176,12 +188,12 @@ public class MaterialSearchView extends FrameLayout {
     /**
      * Listener for when the query text is submitted or changed.
      */
-    private OnQueryTextListener mOnQueryTextListener;
+    public OnQueryTextListener mOnQueryTextListener;
 
     /**
      * Listener for when the search view opens and closes.
      */
-    private SearchViewListener mSearchViewListener;
+    public SearchViewListener mSearchViewListener;
 
     /**
      * Listener for interaction with the voice button.
@@ -215,22 +227,31 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region Initializers
+
     /**
      * Preforms any required initializations for the search view.
      */
     private void init() {
         // Inflate view
-        LayoutInflater.from(mContext).inflate(R.layout.search_view, this, true);
+        LayoutInflater.from(mContext).inflate(com.sakurafish.pockettoushituryou.R.layout.search_view, this, true);
 
         // Get items
-        mRoot = findViewById(R.id.search_layout);
-        mTintView = mRoot.findViewById(R.id.transparent_view);
-        mSearchBar = mRoot.findViewById(R.id.search_bar);
-        mBack = mRoot.findViewById(R.id.action_back);
-        mSearchEditText = mRoot.findViewById(R.id.et_search);
-        mVoice = mRoot.findViewById(R.id.action_voice);
-        mClear = mRoot.findViewById(R.id.action_clear);
-        mSuggestionsListView = mRoot.findViewById(R.id.suggestion_list);
+        mRoot = findViewById(com.sakurafish.pockettoushituryou.R.id.search_layout);
+        mTintView = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.transparent_view);
+        mSearchBar = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.search_bar);
+        mBack = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.action_back);
+        mSearchEditText = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.et_search);
+        mVoice = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.action_voice);
+        mClear = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.action_clear);
+        // PocketCarboで使用
+        mSearch = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.action_search);
+        mSuggestionsListView = mRoot.findViewById(com.sakurafish.pockettoushituryou.R.id.suggestion_list);
+
+        // ポケット糖質量アプリではVoice,Clearボタンは無効にする
+        displayClearButton(false);
+        displayVoiceButton(false);
+        mClear.setEnabled(false);
+        mVoice.setEnabled(false);
 
         // Set click listeners
         mBack.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +275,15 @@ public class MaterialSearchView extends FrameLayout {
             }
         });
 
+        // PocketCarboで使用
+        mSearch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // サーチボタンを押されたらコールバックにテキストをセットする
+                onSubmitQuery();
+            }
+        });
+
         mTintView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +294,7 @@ public class MaterialSearchView extends FrameLayout {
         });
 
         // Show voice button
-        displayVoiceButton(true);
+//        displayVoiceButton(true);
 
         // Initialize the search view.
         initSearchView();
@@ -612,13 +642,13 @@ public class MaterialSearchView extends FrameLayout {
         mCurrentQuery = mSearchEditText.getText();
 
         // If the text is not empty, show the empty button and hide the voice button
-        if(!TextUtils.isEmpty(mCurrentQuery)) {
-            displayVoiceButton(false);
-            displayClearButton(true);
-        } else {
-            displayClearButton(false);
-            displayVoiceButton(true);
-        }
+//        if(!TextUtils.isEmpty(mCurrentQuery)) {
+//            displayVoiceButton(false);
+//            displayClearButton(true);
+//        } else {
+//            displayClearButton(false);
+//            displayVoiceButton(true);
+//        }
 
         // If we have a query listener and the text has changed, call it.
         if(mOnQueryTextListener != null) {

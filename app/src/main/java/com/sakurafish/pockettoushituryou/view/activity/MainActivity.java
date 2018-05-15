@@ -30,6 +30,7 @@ import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.ReleasedVersionRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
+import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView;
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
@@ -39,7 +40,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.mauker.materialsearchview.MaterialSearchView;
 import timber.log.Timber;
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
