@@ -31,8 +31,9 @@
     <string name="list_title">糖質量一覧・検索</string>
     <string name="empty_text">データが見つかりませんでした。</string>
     <string name="kind_all">全ての種類</string>
-    <string name="carbohydrate_exp"> (100g中)</string>
+    <string name="carbohydrate_exp"> /100g</string>
     <string name="expanded_title">%1$s あたりの値</string>
+    <string name="conversion_cube_sugar">角砂糖%1$s個分</string>
     <string name="carbohydrate_per_weight_title">糖質：</string>
     <string name="calory_title">カロリー：</string>
     <string name="protein_title">たんぱく質：</string>
