@@ -3,6 +3,7 @@
     <string name="PREF_DATA_VERSION">PREF_DATA_VERSION</string>
     <string name="PREF_LAUNCH_COUNT">PREF_LAUNCH_COUNT</string>
     <string name="PREF_ASK_REVIEW">PREF_ASK_REVIEW</string>
+    <string name="PREF_APP_MESSAGE_NO">PREF_APP_MESSAGE_NO</string>
     <string name="PREF_NOTIFICATION">PREF_NOTIFICATION</string>
     <string name="PREF_CREDIT">PREF_CREDIT</string>
     <string name="PREF_MAIL_TO_DEV">PREF_MAIL_TO_DEV</string>

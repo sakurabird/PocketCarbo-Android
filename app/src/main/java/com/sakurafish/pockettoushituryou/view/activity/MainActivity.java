@@ -91,6 +91,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         releasedVersionRepository.checkReleasedVersion();
 
         pleaseReview();
+
+        showAppMessage();
     }
 
 
@@ -111,6 +113,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 })
                 .show();
         pref.setPref(getString(R.string.PREF_ASK_REVIEW), true);
+    }
+
+    private void showAppMessage() {
+        final int lastNo = pref.getPrefInt(getString(R.string.PREF_APP_MESSAGE_NO));
+        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
+        String messageText = getString(R.string.APP_MESSAGE_TEXT);
+
+        if (messageNo <= lastNo) {
+            return;
+        }
+
+        // インストール時点のメッセージは表示しない
+        if (pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) <= 1) {
+            pref.setPref(getString(R.string.PREF_LAUNCH_COUNT), messageNo);
+            return;
+        }
+        Timber.tag(TAG).d("no:" + messageNo + " message:" + messageText);
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(getString(R.string.announcement))
+                .content(messageText)
+                .positiveText(getString(android.R.string.ok))
+                .show();
+
+        pref.setPref(getString(R.string.PREF_APP_MESSAGE_NO), messageNo);
     }
 
     @Override
