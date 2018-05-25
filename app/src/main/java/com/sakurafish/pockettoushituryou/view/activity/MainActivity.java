@@ -30,6 +30,7 @@ import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.ReleasedVersionRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
+import com.sakurafish.pockettoushituryou.util.AlarmUtils;
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView;
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
@@ -116,6 +117,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void showAppMessage() {
+        scheduleNotification();
         final int lastNo = pref.getPrefInt(getString(R.string.PREF_APP_MESSAGE_NO));
         int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
         String messageText = getString(R.string.APP_MESSAGE_TEXT);
@@ -138,6 +140,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .show();
 
         pref.setPref(getString(R.string.PREF_APP_MESSAGE_NO), messageNo);
+    }
+
+    private void scheduleNotification() {
+        AlarmUtils.unregisterAlarm(this);
+        AlarmUtils.registerAlarm(this);
     }
 
     @Override

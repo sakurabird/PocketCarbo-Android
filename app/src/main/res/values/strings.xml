@@ -67,4 +67,8 @@
     <string name="tutorial_clear_text5">紫：糖質量が非常に多い</string>
     <string name="tutorial_clear_text6">ポケット糖質量を毎日のご健康にお役立てください！</string>
 
+    <!-- Notification -->
+    <string name="notification_title">アプリからのお知らせ</string>
+    <string name="notification_channel_name">ポケット糖質量通常通知</string>
+    <string name="notification_channel_description">アプリからのお知らせを表示します</string>
 </resources>
