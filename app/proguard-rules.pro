@@ -142,3 +142,13 @@
 
 -dontwarn android.databinding.**
 -dontwarn org.antlr.v4.**
+
+# ----------------------------------------
+# https://stackoverflow.com/a/41932540
+# org.gradle.api.tasks.TaskExecutionException:
+# Execution failed for task ':app:transformClassesAndResourcesWithProguardForRelease'.
+# ----------------------------------------
+-ignorewarnings
+-keep class * {
+    public private *;
+}
