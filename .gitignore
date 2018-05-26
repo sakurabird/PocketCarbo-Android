@@ -38,6 +38,9 @@ captures/
 .idea/*
 !.idea/codeStyleSettings.xml
 
+# Fabric build secret file (Crashlytics)
+fabric.properties
+
 # Keystore files
 sakurafish.keystore
 

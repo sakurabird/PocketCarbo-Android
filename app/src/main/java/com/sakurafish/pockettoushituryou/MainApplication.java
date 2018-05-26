@@ -5,11 +5,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.MobileAds;
 import com.sakurafish.pockettoushituryou.di.ApplicationComponent;
 import com.sakurafish.pockettoushituryou.di.ApplicationModule;
 import com.sakurafish.pockettoushituryou.di.DaggerApplicationComponent;
 
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class MainApplication extends Application {
@@ -40,11 +42,22 @@ public class MainApplication extends Application {
             Timber.plant(new Timber.DebugTree());
         }
 
+        // CrashLytics
+        setupFabric();
+
         // adMob
         MobileAds.initialize(this, getString(R.string.admob_app_id));
     }
 
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
+    }
+
+    private void setupFabric() {
+        final Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics())
+                .debuggable(BuildConfig.DEBUG)
+                .build();
+        Fabric.with(fabric);
     }
 }

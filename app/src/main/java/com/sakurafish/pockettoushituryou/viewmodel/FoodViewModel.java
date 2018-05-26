@@ -17,6 +17,8 @@ import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 
+import java.util.Locale;
+
 import timber.log.Timber;
 
 public class FoodViewModel extends BaseObservable {
@@ -30,12 +32,15 @@ public class FoodViewModel extends BaseObservable {
     private Foods foods;
     private String name;
     private String carbohydrate_per_100g;
+    private String cubeSugarPer100;
     private String expanded_title;
     private String carbohydrate_per_weight;
     private String calory;
     private String protein;
     private String fat;
     private String sodium;
+    private String cubeSugarPerWeight;
+
     private boolean expanded = false;
     private boolean favState = false;
     @ColorRes
@@ -55,6 +60,13 @@ public class FoodViewModel extends BaseObservable {
         this.foods = foods;
         this.name = foods.name;
         this.carbohydrate_per_100g = String.valueOf(foods.carbohydrate_per_100g) + " g";
+        // 角砂糖換算(100gあたり)
+        float cube100 = (float) (foods.carbohydrate_per_100g / 4.0);
+        String cube100String = "0";
+        if (cube100 != 0 && cube100 >= 0.05f) {
+            cube100String = String.format(Locale.getDefault(), "%1$.1f", cube100);
+        }
+        this.cubeSugarPer100 = this.context.getString(R.string.conversion_cube_sugar, cube100String);
 
         setExpanded(false);
         if (TextUtils.isEmpty(foods.weight_hint)) {
@@ -69,6 +81,14 @@ public class FoodViewModel extends BaseObservable {
         this.protein = String.valueOf(foods.protein) + " g";
         this.fat = String.valueOf(foods.fat) + " g";
         this.sodium = String.valueOf(foods.sodium) + " g";
+
+        // 角砂糖換算
+        float cubeWeight = (float) (foods.carbohydrate_per_weight / 4.0);
+        String cubeWeightString = "0";
+        if (cubeWeight != 0 && cubeWeight >= 0.05f) {
+            cubeWeightString = String.format(Locale.getDefault(), "%1$.1f", cubeWeight);
+        }
+        this.cubeSugarPerWeight = this.context.getString(R.string.conversion_cube_sugar, cubeWeightString);
 
         if (foods.carbohydrate_per_100g < 5) {
             // 糖質量が少ない
@@ -94,6 +114,10 @@ public class FoodViewModel extends BaseObservable {
         return carbohydrate_per_100g;
     }
 
+    public String getCubeSugarPer100() {
+        return cubeSugarPer100;
+    }
+
     public String getExpanded_title() {
         return expanded_title;
     }
@@ -116,6 +140,10 @@ public class FoodViewModel extends BaseObservable {
 
     public String getSodium() {
         return sodium;
+    }
+
+    public String getCubeSugarPerWeight() {
+        return cubeSugarPerWeight;
     }
 
     public void onClickExpandButton(View view) {
@@ -183,9 +211,13 @@ public class FoodViewModel extends BaseObservable {
         builder.append(":");
         builder.append(getCarbohydrate_per_100g().replace(" ", ""));
         builder.append(", ");
-        builder.append(getExpanded_title().replace(" ", ""));
-        builder.append(":");
-        builder.append(getCarbohydrate_per_weight().replace(" ", ""));
+
+        // 同じ100gをコピーしても仕方ないので
+        if (foods.weight != 0 && foods.weight != 100) {
+            builder.append(getExpanded_title().replace(" ", ""));
+            builder.append(":");
+            builder.append(getCarbohydrate_per_weight().replace(" ", ""));
+        }
         builder.append(", カロリー:");
         builder.append(getCalory().replace(" ", ""));
         builder.append(", たんばく質:");
@@ -194,14 +226,15 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
         builder.append(getSodium().replace(" ", ""));
-        builder.append(" http://www.pockettoushituryou.com/");
+        builder.append(" #ポケット糖質量");
+
         return builder.toString();
     }
 
     public void onClickShareButton(View view) {
         final Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, createRowString() + " #" + context.getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, createRowString());
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
         intent.setType("text/plain");
         activity.startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));

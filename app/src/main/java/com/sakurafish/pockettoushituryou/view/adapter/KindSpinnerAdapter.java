@@ -72,6 +72,7 @@ public class KindSpinnerAdapter extends BaseAdapter {
 
     private void setNameString(@NonNull View convertView, int position) {
         TextView tv = (TextView) convertView.findViewById(R.id.name);
+        if (tv == null) return;
         if (position == 0) {
             tv.setText(context.getString(R.string.kind_all));
         } else {

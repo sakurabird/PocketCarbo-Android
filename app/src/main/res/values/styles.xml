@@ -25,6 +25,7 @@
         <item name="searchSuggestionBackground">@color/grey300</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/gray_50</item>
+        <item name="listTextColor">@color/black</item>
         <item name="android:hint">@string/action_search_hint</item>
     </style>
 </resources>

@@ -69,6 +69,17 @@
                 android:text="@string/carbohydrate_exp"
                 android:textSize="@dimen/text_12sp" />
 
+            <TextView
+                android:id="@+id/cube_sugar100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/carbohydrate_per_100g"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_toEndOf="@+id/carbohydrate_exp"
+                android:text="@{viewModel.cubeSugarPer100}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_14sp" />
+
             <ImageView
                 android:id="@+id/expand_arrow"
                 android:layout_width="wrap_content"
@@ -105,7 +116,8 @@
                         android:gravity="center"
                         android:text="@{viewModel.expanded_title}"
                         android:textColor="@color/black_alpha_87"
-                        android:textSize="@dimen/text_14sp" />
+                        android:textSize="@dimen/text_14sp"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/carbohydrate_per_weight_title"
@@ -116,7 +128,8 @@
                         android:layout_marginTop="@dimen/space_4dp"
                         android:text="@string/carbohydrate_per_weight_title"
                         android:textColor="@color/black_alpha_87"
-                        android:textSize="@dimen/text_14sp" />
+                        android:textSize="@dimen/text_14sp"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/carbohydrate_per_weight"
@@ -128,7 +141,8 @@
                         android:text="@{viewModel.carbohydrate_per_weight}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/calory_title"
@@ -138,7 +152,8 @@
                         android:layout_below="@+id/carbohydrate_per_weight_title"
                         android:text="@string/calory_title"
                         android:textColor="@color/black_alpha_87"
-                        android:textSize="@dimen/text_14sp" />
+                        android:textSize="@dimen/text_14sp"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/calory"
@@ -150,7 +165,8 @@
                         android:text="@{viewModel.calory}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/protein_title"
@@ -160,7 +176,8 @@
                         android:layout_below="@+id/calory_title"
                         android:text="@string/protein_title"
                         android:textColor="@color/black_alpha_87"
-                        android:textSize="@dimen/text_14sp" />
+                        android:textSize="@dimen/text_14sp"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/protein"
@@ -172,7 +189,8 @@
                         android:text="@{viewModel.protein}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/fat_title"
@@ -182,7 +200,8 @@
                         android:layout_below="@+id/protein_title"
                         android:text="@string/fat_title"
                         android:textColor="@color/black_alpha_87"
-                        android:textSize="@dimen/text_14sp" />
+                        android:textSize="@dimen/text_14sp"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/fat"
@@ -194,7 +213,8 @@
                         android:text="@{viewModel.fat}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/sodium_title"
@@ -204,7 +224,8 @@
                         android:layout_below="@+id/fat_title"
                         android:text="@string/sodium_title"
                         android:textColor="@color/black_alpha_87"
-                        android:textSize="@dimen/text_14sp" />
+                        android:textSize="@dimen/text_14sp"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
                         android:id="@+id/sodium"
@@ -216,7 +237,19 @@
                         android:text="@{viewModel.sodium}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
+
+                    <TextView
+                        android:id="@+id/cube_sugar_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/expanded_title"
+                        android:layout_below="@+id/sodium_title"
+                        android:layout_marginTop="@dimen/space_4dp"
+                        android:text="@{viewModel.cubeSugarPerWeight}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_14sp" />
 
                     <ImageView
                         android:id="@+id/share_button"

@@ -72,7 +72,12 @@ public class SplashActivity extends BaseActivity {
         int dataVersion = getResources().getInteger(R.integer.data_version);
         if (dataVersion == pref.getPrefInt(getString(R.string.PREF_DATA_VERSION))) {
             Timber.tag(TAG).d("DB is maintained latest version:%d", dataVersion);
-            startNextActivity();
+            Disposable disposable = Observable.interval(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                        startNextActivity();
+                    });
+            compositeDisposable.add(disposable);
             return;
         }
 

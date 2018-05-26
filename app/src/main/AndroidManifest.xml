@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sakurafish.pockettoushituryou"
-    xmlns:tools="http://schemas.android.com/tools">
+    package="com.sakurafish.pockettoushituryou">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="com.sakurafish.pockettoushituryou.MainApplication"
@@ -62,12 +62,32 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <receiver
+            android:name=".receiver.BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <!--For HTC devices-->
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.NotificationReceiver"
+            android:exported="false" />
+
         <provider
             android:name="br.com.mauker.materialsearchview.db.HistoryProvider"
             android:authorities="@string/mvs_authority"
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
+
+        <!-- meta data -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5d6fabbcde793289c1e4057daced02012118e520" />
     </application>
 
 </manifest>

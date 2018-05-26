@@ -76,7 +76,7 @@
         </RelativeLayout>
 
         <!-- Search View (show if toolbar menu clicked) -->
-        <br.com.mauker.materialsearchview.MaterialSearchView
+        <com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
             android:id="@+id/search_view"
             style="@style/MaterialSearchViewStyle"
             android:layout_width="match_parent"

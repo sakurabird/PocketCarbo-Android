@@ -2,25 +2,46 @@
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.google.gms:google-services:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.google.gms:google-services:3.2.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
     }
 }
+
+// ./gradlew dependencyUpdates で新しいバージョンを検出
+apply plugin: 'com.github.ben-manes.versions'
 
 allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url "https://clojars.org/repo/" }
+        maven { url "https://maven.google.com/" }
         maven { url 'https://github.com/yanzm/LoopViewPager/raw/master/maven-repo' }
+        maven { url 'https://maven.fabric.io/public' }
         google()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// gradle-versions-plugin upgradable versions
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
 }

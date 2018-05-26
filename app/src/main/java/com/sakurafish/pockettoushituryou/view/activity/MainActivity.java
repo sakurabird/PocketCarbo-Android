@@ -30,6 +30,8 @@ import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.repository.ReleasedVersionRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
+import com.sakurafish.pockettoushituryou.util.AlarmUtils;
+import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView;
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
@@ -39,7 +41,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.mauker.materialsearchview.MaterialSearchView;
 import timber.log.Timber;
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -91,6 +92,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         releasedVersionRepository.checkReleasedVersion();
 
         pleaseReview();
+
+        showAppMessage();
     }
 
 
@@ -111,6 +114,37 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 })
                 .show();
         pref.setPref(getString(R.string.PREF_ASK_REVIEW), true);
+    }
+
+    private void showAppMessage() {
+        scheduleNotification();
+        final int lastNo = pref.getPrefInt(getString(R.string.PREF_APP_MESSAGE_NO));
+        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
+        String messageText = getString(R.string.APP_MESSAGE_TEXT);
+
+        if (messageNo <= lastNo) {
+            return;
+        }
+
+        // インストール時点のメッセージは表示しない
+        if (pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) <= 1) {
+            pref.setPref(getString(R.string.PREF_LAUNCH_COUNT), messageNo);
+            return;
+        }
+        Timber.tag(TAG).d("no:" + messageNo + " message:" + messageText);
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(getString(R.string.announcement))
+                .content(messageText)
+                .positiveText(getString(android.R.string.ok))
+                .show();
+
+        pref.setPref(getString(R.string.PREF_APP_MESSAGE_NO), messageNo);
+    }
+
+    private void scheduleNotification() {
+        AlarmUtils.unregisterAlarm(this);
+        AlarmUtils.registerAlarm(this);
     }
 
     @Override
