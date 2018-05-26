@@ -167,7 +167,8 @@ dependencies {
 // apkファイルの名前を変更
 android.applicationVariants.all { variant ->
     variant.outputs.all {
-        outputFileName = "PocketCarbo_v${android.defaultConfig.versionName}_${variant.name}.apk"
+        outputFileName = "PocketCarbo_v${android.defaultConfig.versionName}" +
+                "_vc${android.defaultConfig.versionCode}_${variant.name}.apk"
     }
 }
 
