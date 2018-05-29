@@ -61,12 +61,7 @@ public class FoodViewModel extends BaseObservable {
         this.name = foods.name;
         this.carbohydrate_per_100g = String.valueOf(foods.carbohydrate_per_100g) + " g";
         // 角砂糖換算(100gあたり)
-        float cube100 = (float) (foods.carbohydrate_per_100g / 4.0);
-        String cube100String = "0";
-        if (cube100 != 0 && cube100 >= 0.05f) {
-            cube100String = String.format(Locale.getDefault(), "%1$.1f", cube100);
-        }
-        this.cubeSugarPer100 = this.context.getString(R.string.conversion_cube_sugar, cube100String);
+        this.cubeSugarPer100 = createCubeSugarString(foods.carbohydrate_per_100g);
 
         setExpanded(false);
         if (TextUtils.isEmpty(foods.weight_hint)) {
@@ -83,12 +78,7 @@ public class FoodViewModel extends BaseObservable {
         this.sodium = String.valueOf(foods.sodium) + " g";
 
         // 角砂糖換算
-        float cubeWeight = (float) (foods.carbohydrate_per_weight / 4.0);
-        String cubeWeightString = "0";
-        if (cubeWeight != 0 && cubeWeight >= 0.05f) {
-            cubeWeightString = String.format(Locale.getDefault(), "%1$.1f", cubeWeight);
-        }
-        this.cubeSugarPerWeight = this.context.getString(R.string.conversion_cube_sugar, cubeWeightString);
+        this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydrate_per_weight);
 
         if (foods.carbohydrate_per_100g < 5) {
             // 糖質量が少ない
@@ -104,6 +94,20 @@ public class FoodViewModel extends BaseObservable {
             this.carboRatedColorResId = R.color.colorCarboDangerHigh;
         }
         setFabState();
+    }
+
+    private String createCubeSugarString(float carbohydrate) {
+        // 1個4gで計算。 小数点第二位で四捨五入
+        float cubeNum = carbohydrate / 4;
+        String cubeString = "0";
+        if (cubeNum != 0) {
+            // TODO 1.8/4のようにdoubleで4で割ったときの数が0.449999…のような値のものは,
+            // floatで4で割ったときに0.45となる数値でもString.formatで四捨五入すると0.5とならず0.4となってしまう。
+            // これを防ぐため一旦10倍して四捨五入し10で割ることにした
+            float cubeNumRound = Math.round(cubeNum * 10);
+            cubeString = String.format(Locale.getDefault(), "%.1f", cubeNumRound / 10);
+        }
+        return this.context.getString(R.string.conversion_cube_sugar, cubeString);
     }
 
     public String getName() {
