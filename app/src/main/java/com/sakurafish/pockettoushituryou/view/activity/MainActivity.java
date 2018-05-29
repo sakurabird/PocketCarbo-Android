@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         // インストール時点のメッセージは表示しない
         if (pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) <= 1) {
-            pref.setPref(getString(R.string.PREF_LAUNCH_COUNT), messageNo);
+            pref.setPref(getString(R.string.PREF_APP_MESSAGE_NO), messageNo);
             return;
         }
         Timber.tag(TAG).d("no:" + messageNo + " message:" + messageText);
