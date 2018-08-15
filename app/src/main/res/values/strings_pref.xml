@@ -8,6 +8,7 @@
     <string name="PREF_CREDIT">PREF_CREDIT</string>
     <string name="PREF_MAIL_TO_DEV">PREF_MAIL_TO_DEV</string>
     <string name="PREF_PRIVACY_POLICY">PREF_PRIVACY_POLICY</string>
+    <string name="PREF_LAST_AD_CLICK_TIME">PREF_LAST_AD_CLICK_TIME</string>
 
     <!-- text -->
     <string name="environment_setting">環境設定</string>
