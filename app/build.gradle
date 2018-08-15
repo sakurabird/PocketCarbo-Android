@@ -154,7 +154,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     // Utility
-    implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
 
