@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
-import com.sakurafish.pockettoushituryou.BuildConfig;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivitySearchresultBinding;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
@@ -49,8 +48,6 @@ public class SearchResultActivity extends BaseActivity {
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
         // 広告
-        if (!BuildConfig.DEBUG) {
-            binding.adView.loadAd(adsHelper.getAdRequest());
-        }
+        binding.adView.loadAd(adsHelper.getAdRequest());
     }
 }
