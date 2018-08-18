@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.like.LikeButton;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.model.Foods;
+import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 
 import java.util.Locale;
@@ -31,6 +32,7 @@ public class FoodViewModel extends BaseObservable {
 
     private Foods foods;
     private String name;
+    private String kindName;
     private String carbohydrate_per_100g;
     private String cubeSugarPer100;
     private String expanded_title;
@@ -49,10 +51,12 @@ public class FoodViewModel extends BaseObservable {
     FoodViewModel(@NonNull Context context,
                   @NonNull AppCompatActivity activity,
                   @NonNull FavoriteFoodsRepository favoriteFoodsRepository,
+                  @NonNull Kinds kinds,
                   @NonNull Foods foods) {
         this.context = context;
         this.activity = activity;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
+        this.kindName = kinds.name;
         setViewValues(foods);
     }
 
@@ -112,6 +116,10 @@ public class FoodViewModel extends BaseObservable {
 
     public String getName() {
         return name;
+    }
+
+    public String getKindName() {
+        return kindName;
     }
 
     public String getCarbohydrate_per_100g() {

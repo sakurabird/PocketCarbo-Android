@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import timber.log.Timber;
 
@@ -141,7 +142,10 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     private synchronized List<FoodViewModel> getFoodViewModels() {
         List<FoodViewModel> foodViewModels = new ArrayList<>();
         for (Foods foods : foodsList) {
-            foodViewModels.add(new FoodViewModel(this.context, this.activity, this.favoriteFoodsRepository, foods));
+            Kinds kindsResult = Observable.fromIterable(kindsList)
+                    .filter(kinds -> kinds.id == foods.kind_id).toList().blockingGet().get(0);
+            foodViewModels.add(new FoodViewModel(this.context,
+                    this.activity, this.favoriteFoodsRepository, kindsResult, foods));
         }
         return foodViewModels;
     }
