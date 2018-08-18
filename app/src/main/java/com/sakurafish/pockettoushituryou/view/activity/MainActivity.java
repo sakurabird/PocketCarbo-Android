@@ -307,8 +307,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(MainActivity.this)
                             .setTarget(drawerIcon)
-                            .setContentText(R.string.tutorial_nav_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_nav_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .setDismissOnTouch(true)
                             .build()
             );
@@ -318,8 +318,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(MainActivity.this)
                             .setTarget(searchIcon)
-                            .setContentText(R.string.tutorial_search_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_search_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .setDismissOnTouch(true)
                             .build()
             );
@@ -328,8 +328,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(MainActivity.this)
                             .setTarget(binding.tabLayout)
-                            .setContentText(R.string.tutorial_tab_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_tab_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .withRectangleShape(true)
                             .setListener(new IShowcaseListener() {
                                 @Override
