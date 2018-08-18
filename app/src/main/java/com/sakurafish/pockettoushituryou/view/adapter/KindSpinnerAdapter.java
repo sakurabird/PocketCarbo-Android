@@ -77,7 +77,9 @@ public class KindSpinnerAdapter extends BaseAdapter {
             tv.setText(context.getString(R.string.kind_all));
         } else {
             Kinds kinds = (Kinds) getItem(position - 1);
-            tv.setText(kinds.name);
+            if (kinds != null) {
+                tv.setText(kinds.name);
+            }
         }
     }
 }
