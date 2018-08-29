@@ -72,7 +72,7 @@
                 android:layout_marginBottom="@dimen/space_12dp"
                 android:layout_marginStart="@dimen/space_12dp"
                 android:layout_marginTop="@dimen/space_8dp"
-                android:text="@{viewModel.carbohydrate_per_100g}"
+                android:text="@{viewModel.carbohydratePer100g}"
                 android:textSize="@dimen/text_28sp"
                 android:textStyle="bold"
                 app:foodTextColor="@{viewModel.carboRatedColorResId}" />
@@ -133,7 +133,7 @@
                         android:layout_marginRight="@dimen/space_12dp"
                         android:layout_marginTop="@dimen/space_12dp"
                         android:gravity="center"
-                        android:text="@{viewModel.expanded_title}"
+                        android:text="@{viewModel.expandedTitle}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
                         app:foodTextColor="@{viewModel.carboRatedColorResId}" />
@@ -157,7 +157,7 @@
                         android:layout_alignBaseline="@+id/carbohydrate_per_weight_title"
                         android:layout_marginEnd="@dimen/space_4dp"
                         android:layout_toEndOf="@+id/carbohydrate_per_weight_title"
-                        android:text="@{viewModel.carbohydrate_per_weight}"
+                        android:text="@{viewModel.carbohydratePerWeight}"
                         android:textColor="@color/black_alpha_87"
                         android:textSize="@dimen/text_14sp"
                         android:textStyle="bold"
