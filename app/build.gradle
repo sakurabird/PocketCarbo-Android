@@ -25,8 +25,8 @@ android {
         applicationId "com.sakurafish.pockettoushituryou"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 17020102
-        versionName "2.1"
+        versionCode 17020201
+        versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
