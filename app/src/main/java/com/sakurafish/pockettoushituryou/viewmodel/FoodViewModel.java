@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.like.LikeButton;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.model.Foods;
-import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 
 import java.util.Locale;
@@ -51,17 +50,19 @@ public class FoodViewModel extends BaseObservable {
     FoodViewModel(@NonNull Context context,
                   @NonNull AppCompatActivity activity,
                   @NonNull FavoriteFoodsRepository favoriteFoodsRepository,
-                  @NonNull Kinds kinds,
-                  @NonNull Foods foods) {
+                  @NonNull Foods foods,
+                  @NonNull String kindName) {
         this.context = context;
         this.activity = activity;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
-        this.kindName = kinds.name;
+        this.kindName = kindName;
+
         setViewValues(foods);
     }
 
     private void setViewValues(@NonNull Foods foods) {
         this.foods = foods;
+
         this.name = foods.name;
         this.carbohydrate_per_100g = String.valueOf(foods.carbohydratePer100g) + " g";
         // 角砂糖換算(100gあたり)
