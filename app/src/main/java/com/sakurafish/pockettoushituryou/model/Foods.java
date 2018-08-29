@@ -26,15 +26,15 @@ public class Foods {
     @Column
     @Nullable
     @SerializedName("weight_hint")
-    public String weight_hint;
+    public String weightHint;
 
     @Column(indexed = true)
     @SerializedName("carbohydrate_per_100g")
-    public float carbohydrate_per_100g;
+    public float carbohydratePer100g;
 
     @Column
     @SerializedName("carbohydrate_per_weight")
-    public float carbohydrate_per_weight;
+    public float carbohydratePerWeight;
 
     @Column
     @SerializedName("calory")
@@ -55,7 +55,7 @@ public class Foods {
     @Column(indexed = true)
     @Nullable
     @SerializedName("search_word")
-    public String search_word;
+    public String searchWord;
 
     @Column(indexed = true)
     @SerializedName("type_id")

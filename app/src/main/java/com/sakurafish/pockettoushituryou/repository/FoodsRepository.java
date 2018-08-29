@@ -130,11 +130,11 @@ public class FoodsRepository {
                 break;
             case 2:
                 // 糖質量の少ない順
-                selector.orderByCarbohydrate_per_100gAsc();
+                selector.orderByCarbohydratePer100gAsc();
                 break;
             case 3:
                 // 糖質量の少ない順
-                selector.orderByCarbohydrate_per_100gDesc();
+                selector.orderByCarbohydratePer100gDesc();
                 break;
         }
 

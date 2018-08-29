@@ -63,34 +63,34 @@ public class FoodViewModel extends BaseObservable {
     private void setViewValues(@NonNull Foods foods) {
         this.foods = foods;
         this.name = foods.name;
-        this.carbohydrate_per_100g = String.valueOf(foods.carbohydrate_per_100g) + " g";
+        this.carbohydrate_per_100g = String.valueOf(foods.carbohydratePer100g) + " g";
         // 角砂糖換算(100gあたり)
-        this.cubeSugarPer100 = createCubeSugarString(foods.carbohydrate_per_100g);
+        this.cubeSugarPer100 = createCubeSugarString(foods.carbohydratePer100g);
 
         setExpanded(false);
-        if (TextUtils.isEmpty(foods.weight_hint)) {
+        if (TextUtils.isEmpty(foods.weightHint)) {
             this.expanded_title = this.context.getString(R.string.expanded_title, String.valueOf(foods.weight) + " g");
         } else {
-            String str = foods.weight + " g" + "(" + foods.weight_hint + ")";
+            String str = foods.weight + " g" + "(" + foods.weightHint + ")";
             this.expanded_title = this.context.getString(R.string.expanded_title, str);
         }
 
-        this.carbohydrate_per_weight = String.valueOf(foods.carbohydrate_per_weight) + " g";
+        this.carbohydrate_per_weight = String.valueOf(foods.carbohydratePerWeight) + " g";
         this.calory = String.valueOf(foods.calory) + " kcal";
         this.protein = String.valueOf(foods.protein) + " g";
         this.fat = String.valueOf(foods.fat) + " g";
         this.sodium = String.valueOf(foods.sodium) + " g";
 
         // 角砂糖換算
-        this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydrate_per_weight);
+        this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydratePerWeight);
 
-        if (foods.carbohydrate_per_100g < 5) {
+        if (foods.carbohydratePer100g < 5) {
             // 糖質量が少ない
             this.carboRatedColorResId = R.color.colorCarboSafe;
-        } else if (foods.carbohydrate_per_100g >= 5 && foods.carbohydrate_per_100g < 15) {
+        } else if (foods.carbohydratePer100g >= 5 && foods.carbohydratePer100g < 15) {
             // 糖質量がやや多い
             this.carboRatedColorResId = R.color.colorCarboWarning;
-        } else if (foods.carbohydrate_per_100g >= 15 && foods.carbohydrate_per_100g < 50) {
+        } else if (foods.carbohydratePer100g >= 15 && foods.carbohydratePer100g < 50) {
             // 糖質量が多い
             this.carboRatedColorResId = R.color.colorCarboDanger;
         } else {
