@@ -153,20 +153,31 @@ public class FoodsRepository {
         String[] word = query.trim().replaceAll("　", " ").split(" ", 0);
 
         final StringBuilder builder = new StringBuilder();
-        builder.append("SELECT \"foods\".* FROM \"foods\" WHERE (");
+        builder.append("SELECT \"foods\".* FROM \"foods\" INNER JOIN \"kinds\" ON \"kinds\".\"id\" = \"foods\".\"kind_id\" WHERE (");
         for (int i = 0; i < word.length; i++) {
             String str = word[i];
+
+            if (word.length > 1) {
+                builder.append("(");
+            }
             builder.append("(\"foods\".\"name\" LIKE \'%");
             builder.append(str);
             builder.append("%\' OR \"foods\".\"search_word\" LIKE \'%");
             builder.append(str);
             builder.append("%\')");
-            if (i != word.length - 1) {
-                builder.append(" AND ");
-            } else {
+            builder.append(" OR ");
+            builder.append("\"kinds\".\"search_word\" LIKE '%");
+            builder.append(str);
+            builder.append("%'");
+
+            if (word.length > 1) {
                 builder.append(")");
+                if (i != word.length - 1) {
+                    builder.append(" AND ");
+                }
             }
         }
+        builder.append(") ORDER BY \"foods\".\"name\" ASC");
 
         Cursor cursor = orma.getConnection().rawQuery(builder.toString());
         List<Foods> foodsList = toFoodsList(cursor);
