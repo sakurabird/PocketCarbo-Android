@@ -63,7 +63,7 @@ public class Foods {
 
     @Column(indexed = true)
     @SerializedName("kind_id")
-    public int kind_id;
+    public int kindId;
 
     @Override
     public boolean equals(Object o) {

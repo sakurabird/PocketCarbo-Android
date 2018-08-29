@@ -143,7 +143,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         List<FoodViewModel> foodViewModels = new ArrayList<>();
         for (Foods foods : foodsList) {
             Kinds kindsResult = Observable.fromIterable(kindsList)
-                    .filter(kinds -> kinds.id == foods.kind_id).toList().blockingGet().get(0);
+                    .filter(kinds -> kinds.id == foods.kindId).toList().blockingGet().get(0);
             foodViewModels.add(new FoodViewModel(this.context,
                     this.activity, this.favoriteFoodsRepository, kindsResult, foods));
         }

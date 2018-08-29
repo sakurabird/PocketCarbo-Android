@@ -117,7 +117,7 @@ public class FoodsRepository {
         Foods_Selector selector = orma.relationOfFoods().selector();
         selector.typeIdEq(typeId);
         if (kindId != 0) {
-            selector.kind_idEq(kindId);
+            selector.kindIdEq(kindId);
         }
         switch (sort) {
             case 0:
