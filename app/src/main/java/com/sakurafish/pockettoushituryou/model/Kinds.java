@@ -1,5 +1,7 @@
 package com.sakurafish.pockettoushituryou.model;
 
+import android.support.annotation.Nullable;
+
 import com.github.gfx.android.orma.annotation.Column;
 import com.github.gfx.android.orma.annotation.PrimaryKey;
 import com.github.gfx.android.orma.annotation.Table;
@@ -13,9 +15,14 @@ public class Kinds {
     @SerializedName("id")
     public int id;
 
-    @Column(indexed = true)
+    @Column
     @SerializedName("name")
     public String name;
+
+    @Column(indexed = true)
+    @SerializedName("search_word")
+    @Nullable
+    public String searchWord;
 
     @Column(indexed = true)
     @SerializedName("type_id")
@@ -23,7 +30,7 @@ public class Kinds {
 
     @Override
     public String toString() {
-        return "Kinds id:" + id + " name:" + name + " type_id:" + type_id;
+        return "Kinds id:" + id + " name:" + name  + " searchWord:" + searchWord + " type_id:" + type_id;
     }
 
     @Override
