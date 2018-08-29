@@ -1,12 +1,26 @@
 package com.sakurafish.pockettoushituryou.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class FoodsData {
     public static final int KINDS_ALL = 0;
 
+    @SerializedName("data_version")
+    private int dataVersion;
+
     private List<Kinds> kinds;
+
     private List<Foods> foods;
+
+    public int getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(int dataVersion) {
+        this.dataVersion = dataVersion;
+    }
 
     public List<Kinds> getKinds() {
         return kinds;
