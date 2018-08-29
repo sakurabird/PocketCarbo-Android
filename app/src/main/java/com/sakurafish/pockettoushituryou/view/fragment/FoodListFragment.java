@@ -319,8 +319,8 @@ public class FoodListFragment extends BaseFragment {
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(getActivity())
                         .setTarget(binding.kindSpinner)
-                        .setContentText(R.string.tutorial_kind_text)
-                        .setDismissText(android.R.string.ok)
+                        .setContentText(getString(R.string.tutorial_kind_text))
+                        .setDismissText(getString(android.R.string.ok))
                         .withRectangleShape()
                         .setDismissOnTouch(true)
                         .build()
@@ -329,8 +329,8 @@ public class FoodListFragment extends BaseFragment {
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(getActivity())
                         .setTarget(binding.sortSpinner)
-                        .setContentText(R.string.tutorial_sort_text)
-                        .setDismissText(android.R.string.ok)
+                        .setContentText(getString(R.string.tutorial_sort_text))
+                        .setDismissText(getString(android.R.string.ok))
                         .withRectangleShape()
                         .setDismissOnTouch(true)
                         .build()
@@ -342,8 +342,8 @@ public class FoodListFragment extends BaseFragment {
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(view)
-                            .setContentText(R.string.tutorial_food_list_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_food_list_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .withRectangleShape()
                             .setListener(new IShowcaseListener() {
                                 @Override

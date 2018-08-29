@@ -22,18 +22,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="@string/tutorial_reset_text" />
+            android:layout_marginLeft="@dimen/space_4dp"
+            android:layout_marginRight="@dimen/space_4dp"
+            android:text="@string/tutorial_reset_text"
+            android:textColor="@color/black_alpha_87" />
 
         <Button
             android:id="@+id/tutorial_reset_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tutorial_reset_text"
             android:layout_below="@+id/tutorial_reset_text"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_show_tutorial_button"
+            android:minHeight="38dp"
             android:onClick="@{viewModel::onClickTurorialResetButton}"
-            android:text="@string/tutorial_reset_button_text" />
+            android:paddingLeft="@dimen/space_12dp"
+            android:paddingRight="@dimen/space_12dp"
+            android:text="@string/tutorial_reset_button_text"
+            android:textColor="@android:color/white" />
 
         <WebView
             android:id="@+id/web_view"

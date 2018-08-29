@@ -31,10 +31,11 @@ public class FoodViewModel extends BaseObservable {
 
     private Foods foods;
     private String name;
-    private String carbohydrate_per_100g;
+    private String kindName;
+    private String carbohydratePer100g;
     private String cubeSugarPer100;
-    private String expanded_title;
-    private String carbohydrate_per_weight;
+    private String expandedTitle;
+    private String carbohydratePerWeight;
     private String calory;
     private String protein;
     private String fat;
@@ -49,44 +50,48 @@ public class FoodViewModel extends BaseObservable {
     FoodViewModel(@NonNull Context context,
                   @NonNull AppCompatActivity activity,
                   @NonNull FavoriteFoodsRepository favoriteFoodsRepository,
-                  @NonNull Foods foods) {
+                  @NonNull Foods foods,
+                  @NonNull String kindName) {
         this.context = context;
         this.activity = activity;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
+        this.kindName = kindName;
+
         setViewValues(foods);
     }
 
     private void setViewValues(@NonNull Foods foods) {
         this.foods = foods;
+
         this.name = foods.name;
-        this.carbohydrate_per_100g = String.valueOf(foods.carbohydrate_per_100g) + " g";
+        this.carbohydratePer100g = String.valueOf(foods.carbohydratePer100g) + " g";
         // 角砂糖換算(100gあたり)
-        this.cubeSugarPer100 = createCubeSugarString(foods.carbohydrate_per_100g);
+        this.cubeSugarPer100 = createCubeSugarString(foods.carbohydratePer100g);
 
         setExpanded(false);
-        if (TextUtils.isEmpty(foods.weight_hint)) {
-            this.expanded_title = this.context.getString(R.string.expanded_title, String.valueOf(foods.weight) + " g");
+        if (TextUtils.isEmpty(foods.weightHint)) {
+            this.expandedTitle = this.context.getString(R.string.expanded_title, String.valueOf(foods.weight) + " g");
         } else {
-            String str = foods.weight + " g" + "(" + foods.weight_hint + ")";
-            this.expanded_title = this.context.getString(R.string.expanded_title, str);
+            String str = foods.weight + " g" + "(" + foods.weightHint + ")";
+            this.expandedTitle = this.context.getString(R.string.expanded_title, str);
         }
 
-        this.carbohydrate_per_weight = String.valueOf(foods.carbohydrate_per_weight) + " g";
+        this.carbohydratePerWeight = String.valueOf(foods.carbohydratePerWeight) + " g";
         this.calory = String.valueOf(foods.calory) + " kcal";
         this.protein = String.valueOf(foods.protein) + " g";
         this.fat = String.valueOf(foods.fat) + " g";
         this.sodium = String.valueOf(foods.sodium) + " g";
 
         // 角砂糖換算
-        this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydrate_per_weight);
+        this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydratePerWeight);
 
-        if (foods.carbohydrate_per_100g < 5) {
+        if (foods.carbohydratePer100g < 5) {
             // 糖質量が少ない
             this.carboRatedColorResId = R.color.colorCarboSafe;
-        } else if (foods.carbohydrate_per_100g >= 5 && foods.carbohydrate_per_100g < 15) {
+        } else if (foods.carbohydratePer100g >= 5 && foods.carbohydratePer100g < 15) {
             // 糖質量がやや多い
             this.carboRatedColorResId = R.color.colorCarboWarning;
-        } else if (foods.carbohydrate_per_100g >= 15 && foods.carbohydrate_per_100g < 50) {
+        } else if (foods.carbohydratePer100g >= 15 && foods.carbohydratePer100g < 50) {
             // 糖質量が多い
             this.carboRatedColorResId = R.color.colorCarboDanger;
         } else {
@@ -114,20 +119,24 @@ public class FoodViewModel extends BaseObservable {
         return name;
     }
 
-    public String getCarbohydrate_per_100g() {
-        return carbohydrate_per_100g;
+    public String getKindName() {
+        return kindName;
+    }
+
+    public String getCarbohydratePer100g() {
+        return carbohydratePer100g;
     }
 
     public String getCubeSugarPer100() {
         return cubeSugarPer100;
     }
 
-    public String getExpanded_title() {
-        return expanded_title;
+    public String getExpandedTitle() {
+        return expandedTitle;
     }
 
-    public String getCarbohydrate_per_weight() {
-        return carbohydrate_per_weight;
+    public String getCarbohydratePerWeight() {
+        return carbohydratePerWeight;
     }
 
     public String getCalory() {
@@ -213,14 +222,14 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getName().trim());
         builder.append("100gあたりの糖質量");
         builder.append(":");
-        builder.append(getCarbohydrate_per_100g().replace(" ", ""));
+        builder.append(getCarbohydratePer100g().replace(" ", ""));
         builder.append(", ");
 
         // 同じ100gをコピーしても仕方ないので
         if (foods.weight != 0 && foods.weight != 100) {
-            builder.append(getExpanded_title().replace(" ", ""));
+            builder.append(getExpandedTitle().replace(" ", ""));
             builder.append(":");
-            builder.append(getCarbohydrate_per_weight().replace(" ", ""));
+            builder.append(getCarbohydratePerWeight().replace(" ", ""));
         }
         builder.append(", カロリー:");
         builder.append(getCalory().replace(" ", ""));

@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
-import com.sakurafish.pockettoushituryou.BuildConfig;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
@@ -32,7 +31,6 @@ import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.util.AlarmUtils;
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView;
-import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
 
@@ -70,9 +68,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Inject
     ShowcaseHelper showcaseHelper;
-
-    @Inject
-    AdsHelper adsHelper;
 
     public static Intent createIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -207,11 +202,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
         initTabs();
-
-        // 広告
-        if (!BuildConfig.DEBUG) {
-            binding.adView.loadAd(adsHelper.getAdRequest());
-        }
     }
 
     private void initTabs() {
@@ -317,8 +307,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(MainActivity.this)
                             .setTarget(drawerIcon)
-                            .setContentText(R.string.tutorial_nav_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_nav_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .setDismissOnTouch(true)
                             .build()
             );
@@ -328,8 +318,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(MainActivity.this)
                             .setTarget(searchIcon)
-                            .setContentText(R.string.tutorial_search_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_search_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .setDismissOnTouch(true)
                             .build()
             );
@@ -338,8 +328,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(MainActivity.this)
                             .setTarget(binding.tabLayout)
-                            .setContentText(R.string.tutorial_tab_text)
-                            .setDismissText(android.R.string.ok)
+                            .setContentText(getString(R.string.tutorial_tab_text))
+                            .setDismissText(getString(android.R.string.ok))
                             .withRectangleShape(true)
                             .setListener(new IShowcaseListener() {
                                 @Override

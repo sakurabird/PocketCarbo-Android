@@ -18,7 +18,7 @@
                 android:id="@+id/coordinator_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/adView"
+                android:layout_above="@+id/fragment_adBanner"
                 android:fitsSystemWindows="true"
                 tools:context="com.sakurafish.pockettoushituryou.view.activity.MainActivity">
 
@@ -64,14 +64,13 @@
 
             </android.support.design.widget.CoordinatorLayout>
 
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
+            <fragment
+                android:id="@+id/fragment_adBanner"
+                android:name="com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/admob_banner_ad_unit_id" />
+                android:layout_centerHorizontal="true" />
 
         </RelativeLayout>
 

@@ -1,254 +1,305 @@
 {
+  "data_version": 4,
   "kinds": [
     {
       "id": 1,
       "name": "穀類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "こくるいコクルイざっこくザッコク穀類"
     },
     {
       "id": 2,
       "name": "豆・種実・藻類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "まめたねみもるいマメタネミモルイ"
     },
     {
       "id": 3,
       "name": "いも・野菜・きのこ類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "いも芋イモやさいヤサイキノコ菌茸野菜きのこ"
     },
     {
       "id": 4,
       "name": "果実類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "果物果実かじつカジツくだものクダモノふるーつフルーツ"
     },
     {
       "id": 5,
       "name": "魚介類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "魚介ぎょかいるいギョカイルイ魚貝おさかなオサカナフィッシュ"
     },
     {
       "id": 6,
       "name": "肉類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "肉類にくるいニクルイおにくオニクミート"
     },
     {
       "id": 7,
       "name": "卵・乳類",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "eggmilk"
     },
     {
       "id": 8,
       "name": "油脂類・調味料・香辛料",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "ゆしるいユシルイちょうみりょうチョウミリョウこうしんりょうコウシンリョウあぶら脂アブラオイルスパイス調味料"
     },
     {
       "id": 9,
       "name": "砂糖・ジャムなど",
-      "type_id": 1
+      "type_id": 1,
+      "search_word": "sugar"
     },
     {
       "id": 10,
       "name": "主食（ごはん・パンなど）",
-      "type_id": 2
+      "type_id": 2,
+      "search_word": "しゅしょくシュショクご飯ゴハンぱんぶれっどブレッドらいすライス"
     },
     {
       "id": 11,
       "name": "主食（めん類・その他）",
-      "type_id": 2
+      "type_id": 2,
+      "search_word": "しゅしょくシュショク麺メン"
     },
     {
       "id": 12,
       "name": "肉料理",
-      "type_id": 2
+      "type_id": 2,
+      "search_word": "にくニクみーとミートりょうりリョウリ肉料理おかず"
     },
     {
       "id": 13,
       "name": "魚介料理",
-      "type_id": 2
+      "type_id": 2,
+      "search_word": "ぎょかい魚貝ギョカイりょうりリョウリおさかなオサカナフィッシュ魚介料理おかず"
     },
     {
       "id": 14,
-      "name": "野菜・いも・きのこ類の料理",
-      "type_id": 2
+      "name": "野菜・いも・きのこ類料理",
+      "type_id": 2,
+      "search_word": "やさいヤサイ芋イモ茸菌キノコりょうりリョウリべじたぶるベジタブル野菜おかず"
     },
     {
       "id": 15,
-      "name": "卵・豆腐・海藻などの料理",
-      "type_id": 2
+      "name": "卵・豆腐・海藻料理",
+      "type_id": 2,
+      "search_word": "おかず"
     },
     {
       "id": 16,
       "name": "鍋・汁ものなど",
-      "type_id": 2
+      "type_id": 2,
+      "search_word": "なべナベ汁物しるものシルモノ鍋"
     },
     {
       "id": 17,
       "name": "おつまみ",
-      "type_id": 3
+      "type_id": 3,
+      "search_word": "オツマミおつまみ"
     },
     {
       "id": 19,
       "name": "缶詰など",
-      "type_id": 3
+      "type_id": 3,
+      "search_word": "かんづめカンヅメ缶詰"
     },
     {
       "id": 20,
       "name": "インスタント・レトルト食品",
-      "type_id": 3
+      "type_id": 3,
+      "search_word": "いんすたんとれとるとインスタントレトルト"
     },
     {
       "id": 21,
       "name": "冷凍食品",
-      "type_id": 3
+      "type_id": 3,
+      "search_word": "れいとうしょくひんレイトウショクヒンチルド冷凍食品"
     },
     {
       "id": 22,
       "name": "調理パン・おにぎり",
-      "type_id": 3
+      "type_id": 3,
+      "search_word": "ちょうりチョウリぱんオニギリお握りおにぎりパン"
     },
     {
       "id": 23,
       "name": "和菓子・洋菓子",
-      "type_id": 3
+      "type_id": 3,
+      "search_word": "わがしようがしワガシヨウガシお菓子おかしオカシ和菓子洋菓子"
     },
     {
       "id": 24,
-      "name": "アイスクリーム・ゼリー・スナック類他",
-      "type_id": 3
+      "name": "アイス・スナック類他",
+      "type_id": 3,
+      "search_word": "あいすくりーむぜりーすなっくるいアイスクリームゼリースナックお菓子おかしオカシ"
     },
     {
       "id": 25,
       "name": "ピザ他",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "ぴざピザ"
     },
     {
       "id": 26,
       "name": "クレープ",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "くれーぷクレープ"
     },
     {
       "id": 27,
       "name": "弁当",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "べんとうベントウランチボックスらんちぼっくす弁当"
     },
     {
       "id": 28,
       "name": "定食など",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "ていしょくテイショク定食"
     },
     {
       "id": 29,
       "name": "すし",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "寿司スシ鮨寿しすし"
     },
     {
       "id": 30,
       "name": "焼き鳥",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "やきとりヤキトリ焼鳥焼き鳥"
     },
     {
       "id": 31,
       "name": "おでん",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "オデンおでん"
     },
     {
       "id": 32,
       "name": "焼き肉",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "やきにく焼肉ヤキニク焼き肉"
     },
     {
       "id": 33,
       "name": "天ぷら",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "てんぷら天麩羅天婦羅テンプラ天ぷら"
     },
     {
       "id": 34,
       "name": "串揚げ",
-      "type_id": 4
+      "type_id": 4,
+      "search_word": "くしあげクシアゲ串揚げ"
     },
     {
       "id": 35,
       "name": "ソフトドリンク",
-      "type_id": 5
+      "type_id": 5,
+      "search_word": "そふとどりんくのみもの飲み物飲料インリョウノミモノソフトドリンク"
     },
     {
       "id": 36,
       "name": "アルコールなど",
-      "type_id": 5
+      "type_id": 5,
+      "search_word": "あるこーるのみもの飲み物飲料インリョウノミモノおさけお酒おさけオサケアルコール"
     },
     {
       "id": 37,
       "name": "雪印メグミルク",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "ゆきじるしユキジルシめぐみるく雪印メグミルク"
     },
     {
       "id": 38,
       "name": "フジッコ",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "ふじっこフジッコ"
     },
     {
       "id": 39,
       "name": "グリコ",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "ぐりこグリコ"
     },
     {
       "id": 40,
       "name": "大塚製薬",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "おおつかせいやくオオツカセイヤク大塚製薬"
     },
     {
       "id": 41,
       "name": "マクドナルド",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "まくどなるどマクドナルドMcDonald"
     },
     {
       "id": 42,
       "name": "モスバーガー",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "もすばーがーMOS BURGERモスバーガー"
     },
     {
       "id": 43,
       "name": "ローソン",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "ろーそんLAWSONローソン"
     },
     {
       "id": 44,
       "name": "トップバリュ",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "とっぷばりゅTOPVALUいおんイオントップバリュ"
     },
     {
       "id": 45,
       "name": "明星",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "みょうじょうミョウジョウ明星"
     },
     {
       "id": 46,
       "name": "紀文",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "きぶんキブン紀文"
     },
     {
       "id": 47,
       "name": "カゴメ",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "かごめカゴメ"
     },
     {
       "id": 48,
       "name": "日清",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "にっしんニッシン日清"
     },
     {
       "id": 49,
       "name": "山崎製パン",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "やまざきせいぱんヤマザキセイパン山パンやまぱん山崎製パン"
     },
     {
       "id": 50,
       "name": "はごろもフーズ",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "ハゴロモふーずはごろもフーズ"
     },
     {
       "id": 51,
       "name": "モンテール",
-      "type_id": 6
+      "type_id": 6,
+      "search_word": "もんてーるモンテール"
     }
   ],
   "foods": [

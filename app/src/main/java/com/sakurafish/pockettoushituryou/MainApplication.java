@@ -42,8 +42,7 @@ public class MainApplication extends Application {
             Timber.plant(new Timber.DebugTree());
         }
 
-        // CrashLytics
-        setupFabric();
+        Fabric.with(this, new Crashlytics());
 
         // adMob
         MobileAds.initialize(this, getString(R.string.admob_app_id));
@@ -51,13 +50,5 @@ public class MainApplication extends Application {
 
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
-    }
-
-    private void setupFabric() {
-        final Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics())
-                .debuggable(BuildConfig.DEBUG)
-                .build();
-        Fabric.with(fabric);
     }
 }

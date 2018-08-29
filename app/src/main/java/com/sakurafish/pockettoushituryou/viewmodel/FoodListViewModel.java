@@ -13,6 +13,7 @@ import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.Kinds;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
+import com.sakurafish.pockettoushituryou.repository.KindsRepository;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
 
     private Context context;
     private AppCompatActivity activity;
+    private KindsRepository kindsRepository;
     private FoodsRepository foodsRepository;
     private FavoriteFoodsRepository favoriteFoodsRepository;
 
@@ -44,10 +46,12 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     @Inject
     FoodListViewModel(Context context,
                       AppCompatActivity activity,
+                      KindsRepository kindsRepository,
                       FoodsRepository foodsRepository,
                       FavoriteFoodsRepository favoriteFoodsRepository) {
         this.context = context;
         this.activity = activity;
+        this.kindsRepository = kindsRepository;
         this.foodsRepository = foodsRepository;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
 
@@ -113,7 +117,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     kindsList.clear();
                     foodsList.clear();
                     foodsList.addAll(foodsData.getFoods());
-                    Timber.tag(TAG).d(String.format("getFoodViewModelList local data loaded foods size:%s", foodsData.getFoods().size()));
+                    Timber.tag(TAG).d(String.format("search foods size:%s query:%s", foodsData.getFoods().size(), query));
 
                     List<FoodViewModel> models = getFoodViewModels();
                     setViewsVisiblity(models);
@@ -140,8 +144,11 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     @NonNull
     private synchronized List<FoodViewModel> getFoodViewModels() {
         List<FoodViewModel> foodViewModels = new ArrayList<>();
+
         for (Foods foods : foodsList) {
-            foodViewModels.add(new FoodViewModel(this.context, this.activity, this.favoriteFoodsRepository, foods));
+            String kindName = kindsRepository.findName(foods.kindId);
+            foodViewModels.add(new FoodViewModel(this.context,
+                    this.activity, this.favoriteFoodsRepository, foods, kindName));
         }
         return foodViewModels;
     }

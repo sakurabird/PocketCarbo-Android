@@ -48,6 +48,7 @@ public class FoodsRepository {
         this.foodsData = new FoodsData();
     }
 
+    @Deprecated
     public Single<DataVersion> receiveDataVersion() {
         Timber.tag(TAG).d("receiveDataVersion start");
         return pocketCarboService.getDataVersion()
@@ -114,9 +115,9 @@ public class FoodsRepository {
     public Single<FoodsData> findFromLocal(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
 
         Foods_Selector selector = orma.relationOfFoods().selector();
-        selector.type_idEq(typeId);
+        selector.typeIdEq(typeId);
         if (kindId != 0) {
-            selector.kind_idEq(kindId);
+            selector.kindIdEq(kindId);
         }
         switch (sort) {
             case 0:
@@ -129,18 +130,18 @@ public class FoodsRepository {
                 break;
             case 2:
                 // 糖質量の少ない順
-                selector.orderByCarbohydrate_per_100gAsc();
+                selector.orderByCarbohydratePer100gAsc();
                 break;
             case 3:
                 // 糖質量の少ない順
-                selector.orderByCarbohydrate_per_100gDesc();
+                selector.orderByCarbohydratePer100gDesc();
                 break;
         }
 
         return selector.executeAsObservable().toList()
                 .flatMap(foodsList -> {
                     this.foodsData.setFoods(foodsList);
-                    return orma.relationOfKinds().selector().type_idEq(typeId).executeAsObservable().toList();
+                    return orma.relationOfKinds().selector().typeIdEq(typeId).executeAsObservable().toList();
                 })
                 .flatMap(kindsList -> {
                     this.foodsData.setKinds(kindsList);
@@ -152,20 +153,31 @@ public class FoodsRepository {
         String[] word = query.trim().replaceAll("　", " ").split(" ", 0);
 
         final StringBuilder builder = new StringBuilder();
-        builder.append("SELECT \"foods\".* FROM \"foods\" WHERE (");
+        builder.append("SELECT \"foods\".* FROM \"foods\" INNER JOIN \"kinds\" ON \"kinds\".\"id\" = \"foods\".\"kind_id\" WHERE (");
         for (int i = 0; i < word.length; i++) {
             String str = word[i];
+
+            if (word.length > 1) {
+                builder.append("(");
+            }
             builder.append("(\"foods\".\"name\" LIKE \'%");
             builder.append(str);
             builder.append("%\' OR \"foods\".\"search_word\" LIKE \'%");
             builder.append(str);
             builder.append("%\')");
-            if (i != word.length - 1) {
-                builder.append(" AND ");
-            } else {
+            builder.append(" OR ");
+            builder.append("\"kinds\".\"search_word\" LIKE '%");
+            builder.append(str);
+            builder.append("%'");
+
+            if (word.length > 1) {
                 builder.append(")");
+                if (i != word.length - 1) {
+                    builder.append(" AND ");
+                }
             }
         }
+        builder.append(") ORDER BY \"foods\".\"name\" ASC");
 
         Cursor cursor = orma.getConnection().rawQuery(builder.toString());
         List<Foods> foodsList = toFoodsList(cursor);
