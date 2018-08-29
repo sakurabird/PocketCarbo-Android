@@ -59,7 +59,7 @@ public class Foods {
 
     @Column(indexed = true)
     @SerializedName("type_id")
-    public int type_id;
+    public int typeId;
 
     @Column(indexed = true)
     @SerializedName("kind_id")

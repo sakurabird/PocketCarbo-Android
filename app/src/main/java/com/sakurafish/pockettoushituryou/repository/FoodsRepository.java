@@ -48,6 +48,7 @@ public class FoodsRepository {
         this.foodsData = new FoodsData();
     }
 
+    @Deprecated
     public Single<DataVersion> receiveDataVersion() {
         Timber.tag(TAG).d("receiveDataVersion start");
         return pocketCarboService.getDataVersion()
@@ -114,7 +115,7 @@ public class FoodsRepository {
     public Single<FoodsData> findFromLocal(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {
 
         Foods_Selector selector = orma.relationOfFoods().selector();
-        selector.type_idEq(typeId);
+        selector.typeIdEq(typeId);
         if (kindId != 0) {
             selector.kind_idEq(kindId);
         }
@@ -140,7 +141,7 @@ public class FoodsRepository {
         return selector.executeAsObservable().toList()
                 .flatMap(foodsList -> {
                     this.foodsData.setFoods(foodsList);
-                    return orma.relationOfKinds().selector().type_idEq(typeId).executeAsObservable().toList();
+                    return orma.relationOfKinds().selector().typeIdEq(typeId).executeAsObservable().toList();
                 })
                 .flatMap(kindsList -> {
                     this.foodsData.setKinds(kindsList);

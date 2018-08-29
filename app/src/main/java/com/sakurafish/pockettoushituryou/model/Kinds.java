@@ -26,11 +26,11 @@ public class Kinds {
 
     @Column(indexed = true)
     @SerializedName("type_id")
-    public int type_id;
+    public int typeId;
 
     @Override
     public String toString() {
-        return "Kinds id:" + id + " name:" + name  + " searchWord:" + searchWord + " type_id:" + type_id;
+        return "Kinds id:" + id + " name:" + name  + " searchWord:" + searchWord + " typeId:" + typeId;
     }
 
     @Override
