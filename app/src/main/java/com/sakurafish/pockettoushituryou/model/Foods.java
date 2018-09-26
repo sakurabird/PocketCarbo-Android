@@ -57,6 +57,11 @@ public class Foods {
     @SerializedName("search_word")
     public String searchWord;
 
+    @Column
+    @Nullable
+    @SerializedName("notes")
+    public String notes;
+
     @Column(indexed = true)
     @SerializedName("type_id")
     public int typeId;
@@ -64,6 +69,41 @@ public class Foods {
     @Column(indexed = true)
     @SerializedName("kind_id")
     public int kindId;
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Foods id:");
+        builder.append(id);
+        builder.append(" name:");
+        builder.append(name);
+        builder.append(" weight:");
+        builder.append(weight);
+        builder.append(" weightHint:");
+        builder.append(weightHint);
+        builder.append(" carbohydratePer100g:");
+        builder.append(carbohydratePer100g);
+        builder.append(" carbohydratePerWeight:");
+        builder.append(carbohydratePerWeight);
+        builder.append(" calory:");
+        builder.append(calory);
+        builder.append(" protein:");
+        builder.append(protein);
+        builder.append(" fat:");
+        builder.append(fat);
+        builder.append(" sodium:");
+        builder.append(sodium);
+        builder.append(" searchWord:");
+        builder.append(searchWord);
+        builder.append(" notes:");
+        builder.append(notes);
+        builder.append(" typeId:");
+        builder.append(typeId);
+        builder.append(" kindId:");
+        builder.append(kindId);
+
+        return  builder.toString();
+    }
 
     @Override
     public boolean equals(Object o) {
