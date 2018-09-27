@@ -170,9 +170,11 @@ public class FoodsRepository {
             builder.append(str);
             builder.append("%\')");
             builder.append(" OR ");
-            builder.append("\"kinds\".\"search_word\" LIKE '%");
+            builder.append("(\"kinds\".\"name\" LIKE \'%");
             builder.append(str);
-            builder.append("%'");
+            builder.append("%\' OR \"kinds\".\"search_word\" LIKE \'%");
+            builder.append(str);
+            builder.append("%\')");
 
             if (word.length > 1) {
                 builder.append(")");
