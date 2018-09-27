@@ -39,6 +39,7 @@
     <string name="protein_title">たんぱく質：</string>
     <string name="fat_title">脂質：</string>
     <string name="sodium_title">塩分：</string>
+    <string name="notes_title">備考：</string>
     <string name="text_clipped">テキストをコピーしました。</string>
     <string name="food_list_content_description_empty_image">Nothing to show</string>
     <string name="food_list_content_description_share_button">Share Button</string>

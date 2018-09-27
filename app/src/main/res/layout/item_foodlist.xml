@@ -260,15 +260,32 @@
                         app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <TextView
-                        android:id="@+id/cube_sugar_weight"
+                        android:id="@+id/notes_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/expanded_title"
                         android:layout_below="@+id/sodium_title"
-                        android:layout_marginTop="@dimen/space_4dp"
-                        android:text="@{viewModel.cubeSugarPerWeight}"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_14sp" />
+                        android:layout_alignStart="@+id/expanded_title"
+                        android:text="@string/notes_title"
+                        android:textColor="@color/black_alpha_87"
+                        android:textSize="@dimen/text_14sp"
+                        android:visibility="@{viewModel.notesVisibility}"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
+
+                    <TextView
+                        android:id="@+id/notes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/notes_title"
+                        android:layout_marginEnd="@dimen/space_4dp"
+                        android:layout_marginBottom="@dimen/space_8dp"
+                        android:layout_toStartOf="@+id/share_button"
+                        android:layout_toEndOf="@+id/notes_title"
+                        android:text="@{viewModel.notes}"
+                        android:textColor="@color/black_alpha_87"
+                        android:textSize="@dimen/text_14sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.notesVisibility}"
+                        app:foodTextColor="@{viewModel.carboRatedColorResId}" />
 
                     <ImageView
                         android:id="@+id/share_button"
