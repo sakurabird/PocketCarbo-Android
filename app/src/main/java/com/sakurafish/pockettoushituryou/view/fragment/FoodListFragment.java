@@ -298,6 +298,7 @@ public class FoodListFragment extends BaseFragment {
     private void showTutorialOnce() {
         if (!showcaseHelper.isShowcaseMainActivityFinished()
                 || showcaseHelper.isShowcaseFoodListFragmentFinished()
+                || getActivity() == null
                 || binding.kindSpinner == null
                 || binding.sortSpinner == null
                 || binding.recyclerView.getChildAt(0) == null)

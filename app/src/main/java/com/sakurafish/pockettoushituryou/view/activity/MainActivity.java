@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,6 +72,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public static Intent createIntent(Context context) {
         return new Intent(context, MainActivity.class);
+    }
+
+    static {
+        // For Android 5.0 (API level 21) below (https://stackoverflow.com/a/38012842)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     @Override

@@ -40,6 +40,8 @@ public class FoodViewModel extends BaseObservable {
     private String protein;
     private String fat;
     private String sodium;
+    private String notes;
+    private int notesVisibility;
     private String cubeSugarPerWeight;
 
     private boolean expanded = false;
@@ -81,6 +83,8 @@ public class FoodViewModel extends BaseObservable {
         this.protein = String.valueOf(foods.protein) + " g";
         this.fat = String.valueOf(foods.fat) + " g";
         this.sodium = String.valueOf(foods.sodium) + " g";
+        this.notes = foods.notes;
+        setNotesVisibility(TextUtils.isEmpty(foods.notes) ? View.GONE : View.VISIBLE);
 
         // 角砂糖換算
         this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydratePerWeight);
@@ -153,6 +157,18 @@ public class FoodViewModel extends BaseObservable {
 
     public String getSodium() {
         return sodium;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public int getNotesVisibility() {
+        return notesVisibility;
+    }
+
+    public void setNotesVisibility(int visibility) {
+        this.notesVisibility = visibility;
     }
 
     public String getCubeSugarPerWeight() {

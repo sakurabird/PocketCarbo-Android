@@ -150,6 +150,10 @@ public class FoodsRepository {
     }
 
     public Single<FoodsData> findFromLocal(@Nullable String query) {
+        if (query == null) {
+            // 基本的にqueryがemptyなことはないが、特定の端末でNPEが発生するためこの処理を入れた(ver2.3)
+            query = "";
+        }
         String[] word = query.trim().replaceAll("　", " ").split(" ", 0);
 
         final StringBuilder builder = new StringBuilder();
@@ -166,9 +170,11 @@ public class FoodsRepository {
             builder.append(str);
             builder.append("%\')");
             builder.append(" OR ");
-            builder.append("\"kinds\".\"search_word\" LIKE '%");
+            builder.append("(\"kinds\".\"name\" LIKE \'%");
             builder.append(str);
-            builder.append("%'");
+            builder.append("%\' OR \"kinds\".\"search_word\" LIKE \'%");
+            builder.append(str);
+            builder.append("%\')");
 
             if (word.length > 1) {
                 builder.append(")");
