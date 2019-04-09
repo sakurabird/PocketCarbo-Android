@@ -17,13 +17,13 @@ repositories {
 
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
 // version code = api version(2) + app version(4) + build number(2)
     defaultConfig {
         applicationId "com.sakurafish.pockettoushituryou"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 17020301
         versionName "2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
