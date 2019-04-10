@@ -1,5 +1,7 @@
 package com.sakurafish.pockettoushituryou.viewmodel;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,9 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.like.LikeButton;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
@@ -23,6 +26,8 @@ import timber.log.Timber;
 
 public class FoodViewModel extends BaseObservable {
     final static String TAG = FoodViewModel.class.getSimpleName();
+
+    private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(4);
 
     private Context context;
     private AppCompatActivity activity;
@@ -46,6 +51,8 @@ public class FoodViewModel extends BaseObservable {
 
     private boolean expanded = false;
     private boolean favState = false;
+    private AnimatorSet favAnimatorSet;
+
     @ColorRes
     private int carboRatedColorResId = R.color.black_alpha_87;
 
@@ -102,7 +109,7 @@ public class FoodViewModel extends BaseObservable {
             // 糖質量が非常に多い
             this.carboRatedColorResId = R.color.colorCarboDangerHigh;
         }
-        setFabState();
+        retrieveFavState();
     }
 
     private String createCubeSugarString(float carbohydrate) {
@@ -197,26 +204,63 @@ public class FoodViewModel extends BaseObservable {
         return carboRatedColorResId;
     }
 
-    public void setFabState() {
+    public void retrieveFavState() {
         this.favState = favoriteFoodsRepository.isFavorite(foods.id);
     }
 
-    public void setFabButtonState(LikeButton likeButton) {
-        likeButton.setLiked(this.favState);
+    public void setFavState(boolean favState) {
+        this.favState = favState;
     }
 
-    public void onClickFab() {
+    public boolean isFavState() {
+        return favState;
+    }
+
+    public void onClickFavButton(View view) {
         if (favoriteFoodsRepository.isFavorite(foods.id)) {
             favoriteFoodsRepository.delete(foods)
                     .subscribe((result) -> Timber.tag(TAG).d("Deleted favorite food"),
                             throwable -> Timber.tag(TAG).e(throwable, "Failed to delete favorite food"));
-            this.favState = false;
+
+            setFavState(false);
+            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.grey600));
         } else {
             favoriteFoodsRepository.save(foods)
                     .subscribe(() -> Timber.tag(TAG).d("Saved favorite food"),
                             throwable -> Timber.tag(TAG).e(throwable, "Failed to save favorite food"));
-            this.favState = true;
+
+            setFavState(true);
+            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.dark_red));
         }
+        animateFavButton(view);
+    }
+
+    private void animateFavButton(View view){
+        if (favAnimatorSet != null) {
+            favAnimatorSet.cancel();
+        }
+        view.animate().cancel();
+        view.setScaleX(0);
+        view.setScaleY(0);
+
+        favAnimatorSet = new AnimatorSet();
+
+        ObjectAnimator starScaleYAnimator = ObjectAnimator.ofFloat(view, ImageView.SCALE_Y, 0.2f, 1f);
+        starScaleYAnimator.setDuration(350);
+        starScaleYAnimator.setStartDelay(250);
+        starScaleYAnimator.setInterpolator(OVERSHOOT_INTERPOLATOR);
+
+        ObjectAnimator starScaleXAnimator = ObjectAnimator.ofFloat(view, ImageView.SCALE_X, 0.2f, 1f);
+        starScaleXAnimator.setDuration(350);
+        starScaleXAnimator.setStartDelay(250);
+        starScaleXAnimator.setInterpolator(OVERSHOOT_INTERPOLATOR);
+
+        favAnimatorSet.playTogether(
+                starScaleYAnimator,
+                starScaleXAnimator
+        );
+
+        favAnimatorSet.start();
     }
 
     public boolean onLongClickExpandButton(View view) {

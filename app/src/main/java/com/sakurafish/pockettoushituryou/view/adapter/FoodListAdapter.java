@@ -5,8 +5,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodlistBinding;
 import com.sakurafish.pockettoushituryou.viewmodel.FoodViewModel;
@@ -32,20 +30,6 @@ public class FoodListAdapter extends ArrayRecyclerAdapter<FoodViewModel, Binding
             holder.binding.expandArrow.setSelected(false);
             holder.binding.expandableLayout.collapse(true);
         }
-
-        // Like button
-        viewModel.setFabButtonState(holder.binding.starButton);
-        holder.binding.starButton.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                viewModel.onClickFab();
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                viewModel.onClickFab();
-            }
-        });
 
         // collapse or expand card
         viewModel.setOnClickListener(v -> {

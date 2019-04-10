@@ -74,12 +74,6 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Like Button</name>
-        <url>https://github.com/jd-alexander/LikeButton</url>
-        <copyright>Copyright 2016 Joel Dean</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
         <name>jsoup</name>
         <url>https://jsoup.org/</url>
         <copyright>Copyright 2009 - 2017 Jonathan Hedley (jonathan@hedley.net)</copyright>
