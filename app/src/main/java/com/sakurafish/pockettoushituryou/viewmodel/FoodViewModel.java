@@ -235,6 +235,9 @@ public class FoodViewModel extends BaseObservable {
     @NonNull
     private String createRowString() {
         StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        builder.append(kindName);
+        builder.append("] ");
         builder.append(getName().trim());
         builder.append("100gあたりの糖質量");
         builder.append(":");
