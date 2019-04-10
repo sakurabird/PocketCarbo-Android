@@ -22,7 +22,7 @@ android {
 // version code = api version(2) + app version(4) + build number(2)
     defaultConfig {
         applicationId "com.sakurafish.pockettoushituryou"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 17020301
         versionName "2.3"
