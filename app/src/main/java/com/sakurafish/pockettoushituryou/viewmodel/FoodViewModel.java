@@ -258,6 +258,11 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
         builder.append(getSodium().replace(" ", ""));
+        if (!TextUtils.isEmpty(foods.notes)){
+            builder.append(", 備考:");
+            builder.append(notes);
+        }
+
         builder.append(" #ポケット糖質量");
 
         return builder.toString();
