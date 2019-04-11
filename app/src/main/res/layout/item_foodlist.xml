@@ -318,6 +318,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/space_12dp"
                         android:layout_marginBottom="@dimen/space_12dp"
+                        android:contentDescription="@string/food_list_content_description_fav_button"
                         android:onClick="@{viewModel::onClickFavButton}"
                         android:tint="@{viewModel.favState ? @color/dark_red : @color/grey600}"
                         app:srcCompat="@drawable/ic_favorite_black_24dp" />
