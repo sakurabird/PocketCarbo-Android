@@ -80,12 +80,6 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>jsoup</name>
-        <url>https://jsoup.org/</url>
-        <copyright>Copyright 2009 - 2017 Jonathan Hedley (jonathan@hedley.net)</copyright>
-        <license>MIT License</license>
-    </notice>
-    <notice>
         <name>MaterialDialog</name>
         <url>https://github.com/afollestad/material-dialogs</url>
         <copyright>Copyright 2014-2016 Aidan Michael Follestad</copyright>
