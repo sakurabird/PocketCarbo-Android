@@ -76,7 +76,11 @@ public class KindSpinnerAdapter extends BaseAdapter {
         if (position == 0) {
             tv.setText(context.getString(R.string.kind_all));
         } else {
-            Kinds kinds = (Kinds) getItem(position - 1);
+            int listPos = position - 1;
+            if (listPos < 0 || listPos > kindsList.size() - 1) {
+                return;
+            }
+            Kinds kinds = (Kinds) getItem(listPos);
             if (kinds != null) {
                 tv.setText(kinds.name);
             }
