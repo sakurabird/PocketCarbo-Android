@@ -27,7 +27,6 @@ import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.model.TypesData;
 import com.sakurafish.pockettoushituryou.pref.Pref;
-import com.sakurafish.pockettoushituryou.repository.ReleasedVersionRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.util.AlarmUtils;
@@ -65,9 +64,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Pref pref;
 
     @Inject
-    ReleasedVersionRepository releasedVersionRepository;
-
-    @Inject
     ShowcaseHelper showcaseHelper;
 
     public static Intent createIntent(Context context) {
@@ -89,8 +85,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         initView();
-
-        releasedVersionRepository.checkReleasedVersion();
 
         pleaseReview();
 
