@@ -106,7 +106,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     foodsList.addAll(foodsData.getFoods());
                     Timber.tag(TAG).d("getFoodViewModelList local data loaded type:" + typeId + " kinds size:" + foodsData.getKinds().size() + " foods size:" + foodsData.getFoods().size());
 
-                    return getFoodViewModels();
+                    return getFoodViewModels(foodsData.getFoods());
                 });
     }
 
@@ -119,7 +119,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     foodsList.addAll(foodsData.getFoods());
                     Timber.tag(TAG).d(String.format("search foods size:%s query:%s", foodsData.getFoods().size(), query));
 
-                    List<FoodViewModel> models = getFoodViewModels();
+                    List<FoodViewModel> models = getFoodViewModels(foodsData.getFoods());
                     setViewsVisiblity(models);
                     return models;
                 });
@@ -131,18 +131,21 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                 .map(favoriteFoodsList -> {
                     kindsList.clear();
                     foodsList.clear();
+                    List<Foods> list = new ArrayList<>();
                     for (FavoriteFoods favoriteFoods : favoriteFoodsList) {
                         foodsList.add(favoriteFoods.foods);
+                        list.add(favoriteFoods.foods);
                     }
                     Timber.tag(TAG).d(String.format("getFoodViewModelListFavorites local data loaded foods size:%s", favoriteFoodsList.size()));
-                    List<FoodViewModel> models = getFoodViewModels();
+
+                    List<FoodViewModel> models = getFoodViewModels(list);
                     setViewsVisiblity(models);
                     return models;
                 });
     }
 
     @NonNull
-    private synchronized List<FoodViewModel> getFoodViewModels() {
+    private synchronized List<FoodViewModel> getFoodViewModels(List<Foods> foodsList) {
         List<FoodViewModel> foodViewModels = new ArrayList<>();
 
         for (Foods foods : foodsList) {

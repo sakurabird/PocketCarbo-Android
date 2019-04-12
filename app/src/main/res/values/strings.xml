@@ -43,13 +43,12 @@
     <string name="text_clipped">テキストをコピーしました。</string>
     <string name="food_list_content_description_empty_image">Nothing to show</string>
     <string name="food_list_content_description_share_button">Share Button</string>
+    <string name="food_list_content_description_fav_button">Share Button</string>
     <string name="food_list_content_description_expand">Expand Image</string>
 
     <!-- Dialog -->
     <string name="ask_review_title">レビューのお願い</string>
     <string name="ask_review_message">いつもアプリをご利用してくださってありがとうございます！\nもしこのアプリがお役に立っていましたらアプリの評価をしていただけますと大変励みになります(*^_^*)\nOKボタンでGoogle Playに移動いたします。</string>
-    <string name="ask_update_title">新バージョン</string>
-    <string name="ask_update_message">いつもアプリをご利用してくださってありがとうございます！\n新バージョンがリリースされました。\nOKボタンでGoogle Playに移動いたしますので更新してくださると嬉しいです。</string>
 
     <!-- Tutorial -->
     <string name="tutorial_reset_text">このボタンをクリックすると、次回起動した時にインストール時に表示したチュートリアルを再度表示します。</string>

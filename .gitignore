@@ -46,5 +46,7 @@ sakurafish.keystore
 
 # secret values
 consts.xml
+type.json
+foods_and_kinds.json
 
 .DS_Store

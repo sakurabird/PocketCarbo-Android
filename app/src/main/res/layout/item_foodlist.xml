@@ -302,24 +302,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/sodium"
-                        android:layout_marginEnd="@dimen/space_8dp"
-                        android:layout_toStartOf="@+id/star_button"
+                        android:layout_marginEnd="@dimen/space_12dp"
+                        android:layout_marginBottom="@dimen/space_12dp"
+                        android:layout_toStartOf="@+id/fav_button"
                         android:contentDescription="@string/food_list_content_description_share_button"
                         android:onClick="@{viewModel::onClickShareButton}"
                         android:tint="@color/grey600"
                         app:srcCompat="@drawable/ic_share_black_24dp" />
 
-                    <com.like.LikeButton
-                        android:id="@+id/star_button"
+                    <ImageView
+                        android:id="@+id/fav_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/sodium"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/space_8dp"
-                        android:layout_marginBottom="@dimen/space_8dp"
-                        app:anim_scale_factor="1.5"
-                        app:icon_size="17dp"
-                        app:icon_type="heart" />
+                        android:layout_marginEnd="@dimen/space_12dp"
+                        android:layout_marginBottom="@dimen/space_12dp"
+                        android:contentDescription="@string/food_list_content_description_fav_button"
+                        android:onClick="@{viewModel::onClickFavButton}"
+                        android:tint="@{viewModel.favState ? @color/dark_red : @color/grey600}"
+                        app:srcCompat="@drawable/ic_favorite_black_24dp" />
                 </RelativeLayout>
 
             </net.cachapa.expandablelayout.ExpandableLayout>
