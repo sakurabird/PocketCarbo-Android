@@ -1,8 +1,8 @@
 package com.sakurafish.pockettoushituryou.viewmodel;
 
 import android.content.Context;
-import android.databinding.BaseObservable;
-import android.support.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;

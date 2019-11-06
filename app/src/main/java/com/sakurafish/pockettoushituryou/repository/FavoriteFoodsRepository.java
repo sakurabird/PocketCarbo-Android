@@ -1,6 +1,6 @@
 package com.sakurafish.pockettoushituryou.repository;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.sakurafish.pockettoushituryou.model.FavoriteFoods;
 import com.sakurafish.pockettoushituryou.model.Foods;

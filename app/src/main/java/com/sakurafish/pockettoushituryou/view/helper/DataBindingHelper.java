@@ -1,8 +1,8 @@
 package com.sakurafish.pockettoushituryou.view.helper;
 
-import android.databinding.BindingAdapter;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
+import androidx.databinding.BindingAdapter;
+import androidx.annotation.ColorRes;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;

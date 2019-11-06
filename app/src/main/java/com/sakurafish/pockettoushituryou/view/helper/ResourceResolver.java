@@ -1,7 +1,7 @@
 package com.sakurafish.pockettoushituryou.view.helper;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import java.io.IOException;
 import java.io.InputStream;

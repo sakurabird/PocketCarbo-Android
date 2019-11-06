@@ -9,7 +9,7 @@
         android:orientation="horizontal"
         android:padding="@dimen/space_8dp">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/sort_spinner_width"
             android:layout_height="@dimen/sort_spinner_width"
             android:scaleType="fitCenter"

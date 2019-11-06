@@ -1,6 +1,6 @@
 package com.sakurafish.pockettoushituryou.di;
 
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 import com.sakurafish.pockettoushituryou.view.fragment.BaseFragment;
 
