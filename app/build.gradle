@@ -142,8 +142,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.0'
 
     // DB
-    annotationProcessor 'com.github.maskarade.android.orma:orma-processor:5.1.2'
-    implementation 'com.github.maskarade.android.orma:orma:5.1.2'
+    annotationProcessor 'com.github.maskarade.android.orma:orma-processor:6.0.2'
+    implementation 'com.github.maskarade.android.orma:orma:6.0.2'
 
     // UI
     implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
