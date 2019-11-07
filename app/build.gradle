@@ -1,3 +1,8 @@
+plugins {
+    // ./gradlew dependencyUpdates で新しいバージョンを検出
+    id "com.github.ben-manes.versions" version "0.27.0"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'

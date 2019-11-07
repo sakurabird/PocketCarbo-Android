@@ -13,14 +13,10 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
         classpath 'com.google.gms:google-services:4.3.2'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'io.fabric.tools:gradle:1.31.2'
     }
 }
-
-// ./gradlew dependencyUpdates で新しいバージョンを検出
-apply plugin: 'com.github.ben-manes.versions'
 
 allprojects {
     repositories {
@@ -34,18 +30,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-// gradle-versions-plugin upgradable versions
-dependencyUpdates.resolutionStrategy = {
-    componentSelection { rules ->
-        rules.all { ComponentSelection selection ->
-            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-            }
-            if (rejected) {
-                selection.reject('Release candidate')
-            }
-        }
-    }
 }
