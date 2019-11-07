@@ -8,10 +8,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.view.activity.WebViewActivity;
-
-import de.psdev.licensesdialog.LicensesDialog;
 
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -52,15 +51,10 @@ public class SettingsFragment extends PreferenceFragment
                     , getString(R.string.setting_privacy_policy)));
             return false;
         });
-
     }
 
     private void showCreditDialog() {
-        new LicensesDialog.Builder(getActivity())
-                .setNotices(R.raw.notices)
-                .setIncludeOwnLicense(true)
-                .build()
-                .show();
+        startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
     }
 
     private void showMailIntent() {
