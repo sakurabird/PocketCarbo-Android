@@ -1,14 +1,13 @@
 package com.sakurafish.pockettoushituryou.repository;
 
 import android.database.Cursor;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.api.PocketCarboService;
-import com.sakurafish.pockettoushituryou.model.DataVersion;
 import com.sakurafish.pockettoushituryou.model.Foods;
 import com.sakurafish.pockettoushituryou.model.FoodsData;
 import com.sakurafish.pockettoushituryou.model.Foods_Selector;
@@ -33,75 +32,17 @@ public class FoodsRepository {
 
     public final static String EVENT_DB_UPDATED = "EVENT_DB_UPDATED";
 
-    private final PocketCarboService pocketCarboService;
     private final OrmaDatabase orma;
     private final ResourceResolver resourceResolver;
 
     private FoodsData foodsData;
 
     @Inject
-    FoodsRepository(PocketCarboService pocketCarboService, OrmaDatabase orma, ResourceResolver resourceResolver) {
-        this.pocketCarboService = pocketCarboService;
+    FoodsRepository(OrmaDatabase orma, ResourceResolver resourceResolver) {
         this.orma = orma;
         this.resourceResolver = resourceResolver;
 
         this.foodsData = new FoodsData();
-    }
-
-    @Deprecated
-    public Single<DataVersion> receiveDataVersion() {
-        Timber.tag(TAG).d("receiveDataVersion start");
-        return pocketCarboService.getDataVersion()
-                .doOnSuccess(dataVersion -> Timber.tag(TAG).d("receiveDataVersion succeeded"))
-                .doOnError(throwable -> {
-                    Timber.tag(TAG).e("receiveDataVersion failed");
-                    throwable.printStackTrace();
-                });
-    }
-
-    @Deprecated
-    public Single<FoodsData> findAllFromRemote() {
-        Timber.tag(TAG).d("findAllFromRemote start");
-        return pocketCarboService.getFoodsData()
-                .doOnSuccess(foodsData -> {
-                    if (foodsData.getFoods().isEmpty() || foodsData.getKinds().isEmpty()) {
-                        Timber.tag(TAG).e("findAllFromRemote succeded. but foodsData is empty");
-                        if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
-                            findAllFromAssets();
-                        } else {
-                            findAllFromLocal();
-                        }
-                    } else {
-                        this.foodsData = foodsData;
-                        updateAllAsync(this.foodsData);
-                    }
-                })
-                .doOnError(throwable -> {
-                    Timber.tag(TAG).e("findAllFromRemote failed");
-                    throwable.printStackTrace();
-                    if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
-                        findAllFromAssets();
-                    } else {
-                        findAllFromLocal();
-                    }
-                });
-    }
-
-    public Single<FoodsData> findAllFromLocal() {
-        if (orma.relationOfFoods().isEmpty() || orma.relationOfKinds().isEmpty()) {
-            return findAllFromAssets();
-        }
-
-        return orma.relationOfFoods().selector().executeAsObservable().toList()
-                .flatMap(foodsList -> {
-                    this.foodsData.setFoods(foodsList);
-                    return orma.relationOfKinds().selector().executeAsObservable().toList();
-                })
-                .flatMap(kindsList -> {
-                    this.foodsData.setKinds(kindsList);
-
-                    return Single.create(emitter -> emitter.onSuccess(this.foodsData));
-                });
     }
 
     public Single<FoodsData> findAllFromAssets() {
