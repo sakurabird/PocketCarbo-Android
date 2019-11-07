@@ -25,7 +25,6 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url "https://clojars.org/repo/" }
-        maven { url 'https://github.com/yanzm/LoopViewPager/raw/master/maven-repo' }
         maven { url 'https://maven.fabric.io/public' }
     }
 }

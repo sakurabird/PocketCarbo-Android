@@ -153,7 +153,6 @@ dependencies {
 
     // UI
     implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
-    implementation 'net.yanzm:loopviewpager:25.0.1'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
