@@ -8,6 +8,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
+def applicationName = "PocketCarbo"
+
 android {
     compileSdkVersion 28
 
@@ -21,6 +23,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
+        archivesBaseName = "${applicationName}-v${versionName}-vc${versionCode}"
     }
 
     dataBinding {
@@ -153,14 +157,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
-}
-
-// apkファイルの名前を変更
-android.applicationVariants.all { variant ->
-    variant.outputs.all {
-        outputFileName = "PocketCarbo_v${android.defaultConfig.versionName}" +
-                "_vc${android.defaultConfig.versionCode}_${variant.name}.apk"
-    }
 }
 
 // MUST BE AT THE BOTTOM
