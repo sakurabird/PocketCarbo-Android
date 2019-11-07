@@ -37,8 +37,9 @@ captures/
 .idea/*
 !.idea/codeStyleSettings.xml
 
-# Fabric build secret file (Crashlytics)
-fabric.properties
+# Google Services (e.g. APIs or Firebase)
+app/google-services.json
+app/fabric.properties
 
 # Keystore files
 *.jks
