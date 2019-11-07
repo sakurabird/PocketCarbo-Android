@@ -1,9 +1,8 @@
 package com.sakurafish.pockettoushituryou;
 
 import android.app.Application;
-import android.content.Context;
+
 import androidx.annotation.NonNull;
-import androidx.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.MobileAds;
@@ -23,12 +22,6 @@ public class MainApplication extends Application {
     @NonNull
     public ApplicationComponent getComponent() {
         return applicationComponent;
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
     }
 
     @Override
