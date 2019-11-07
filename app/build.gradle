@@ -93,16 +93,7 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '28.0.0'
-}
-
-configurations {
-    all {
-        resolutionStrategy {
-            force "com.android.support:support-annotations:$supportLibraryVersion"
-            force 'com.google.code.findbugs:jsr305:2.0.1'
-        }
-    }
+    supportLibraryVersion = '1.0.0'
 }
 
 dependencies {
@@ -113,12 +104,9 @@ dependencies {
 
     // Support Library
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation "androidx.appcompat:appcompat:$supportLibraryVersion"
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
 
     // Google Services
     implementation 'com.google.firebase:firebase-core:17.2.1'
