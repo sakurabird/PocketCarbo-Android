@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -72,7 +73,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:contentDescription="@string/food_list_content_description_empty_image"
-                android:src="@drawable/img_tamagogohan" />
+                app:srcCompat="@drawable/img_tamagogohan" />
 
             <TextView
                 android:id="@+id/empty_text"
