@@ -2,26 +2,26 @@ package com.sakurafish.pockettoushituryou.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
@@ -91,23 +91,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         showAppMessage();
     }
 
-
     private void pleaseReview() {
         if (pref.getPrefBool(getString(R.string.PREF_ASK_REVIEW), false) || pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) != 10) {
             return;
         }
         //10回めの起動でレビュー誘導
-        new MaterialDialog.Builder(this)
-                .theme(Theme.LIGHT)
-                .title(getString(R.string.ask_review_title))
-                .content(getString(R.string.ask_review_message))
-                .positiveText(getString(android.R.string.ok))
-                .negativeText(getString(android.R.string.cancel))
-                .onPositive((dialog, which) -> {
-                    // Google Play
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))));
-                })
-                .show();
+        // TODO Rewrite with Kotlin
+        MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.title(null, getString(R.string.ask_review_title));
+        dialog.message(null, getString(R.string.ask_review_message), null);
+        dialog.positiveButton(null, getString(android.R.string.ok), materialDialog -> {
+            // Google Play
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))));
+            return null;
+        });
+        dialog.show();
+
         pref.setPref(getString(R.string.PREF_ASK_REVIEW), true);
     }
 
@@ -127,12 +126,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             return;
         }
         Timber.tag(TAG).d("no:" + messageNo + " message:" + messageText);
-        new MaterialDialog.Builder(this)
-                .theme(Theme.LIGHT)
-                .title(getString(R.string.announcement))
-                .content(messageText)
-                .positiveText(getString(android.R.string.ok))
-                .show();
+
+        // TODO Rewrite with Kotlin
+        MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.title(null, getString(R.string.announcement));
+        dialog.message(null, messageText, null);
+        dialog.positiveButton(null, getString(android.R.string.ok), materialDialog -> null);
+        dialog.show();
 
         pref.setPref(getString(R.string.PREF_APP_MESSAGE_NO), messageNo);
     }
