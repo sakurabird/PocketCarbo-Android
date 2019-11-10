@@ -52,3 +52,12 @@ type.json
 foods_and_kinds.json
 
 .DS_Store
+
+# Others
+app/mapping.txt
+app/unused.txt
+app/seeds.txt
+depends.txt
+
+# Script for my local environment
+/script/ex-*
