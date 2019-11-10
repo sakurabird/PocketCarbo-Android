@@ -1,8 +1,6 @@
 package com.sakurafish.pockettoushituryou.util;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -32,45 +30,5 @@ public class Utils {
             return cm.getActiveNetworkInfo().isConnected();
         }
         return false;
-    }
-
-    /**
-     * version codeを取得する
-     *
-     * @return
-     */
-    public int getVersionCode() {
-        PackageManager manager = context.getPackageManager();
-        PackageInfo info;
-        try {
-            info = manager.getPackageInfo(context.getPackageName(), 0);
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    /**
-     * version nameを取得する
-     *
-     * @return
-     */
-    public String getVersionName() {
-        PackageManager manager = context.getPackageManager();
-        PackageInfo info;
-        String version;
-        try {
-            info = manager.getPackageInfo(context.getPackageName(), 0);
-            version = info.versionName;
-            // for debug
-            if (version.toLowerCase().contains("-debug")) {
-                version = version.replace("-debug", "");
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return version;
     }
 }
