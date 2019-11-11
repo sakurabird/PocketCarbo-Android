@@ -1,7 +1,7 @@
 package com.sakurafish.pockettoushituryou.repository;
 
-import com.sakurafish.pockettoushituryou.model.Kinds;
-import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
+import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
 
 import java.util.List;
 

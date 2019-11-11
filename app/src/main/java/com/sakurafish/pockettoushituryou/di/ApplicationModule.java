@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
+import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
 
 import javax.inject.Singleton;
 

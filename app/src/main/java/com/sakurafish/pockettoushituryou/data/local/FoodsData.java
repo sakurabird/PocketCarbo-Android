@@ -1,6 +1,8 @@
-package com.sakurafish.pockettoushituryou.model;
+package com.sakurafish.pockettoushituryou.data.local;
 
 import com.google.gson.annotations.SerializedName;
+import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
 
 import java.util.List;
 

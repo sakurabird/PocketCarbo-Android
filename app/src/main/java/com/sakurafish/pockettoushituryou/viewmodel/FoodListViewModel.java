@@ -8,9 +8,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
-import com.sakurafish.pockettoushituryou.model.FavoriteFoods;
-import com.sakurafish.pockettoushituryou.model.Foods;
-import com.sakurafish.pockettoushituryou.model.Kinds;
+import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods;
+import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.repository.KindsRepository;

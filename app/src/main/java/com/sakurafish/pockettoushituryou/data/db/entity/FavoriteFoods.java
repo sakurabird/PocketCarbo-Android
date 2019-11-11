@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.model;
+package com.sakurafish.pockettoushituryou.data.db.entity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

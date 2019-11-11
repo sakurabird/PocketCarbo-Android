@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.model;
+package com.sakurafish.pockettoushituryou.data.local;
 
 import java.util.ArrayList;
 

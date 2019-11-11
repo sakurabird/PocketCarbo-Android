@@ -25,7 +25,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
-import com.sakurafish.pockettoushituryou.model.TypesData;
+import com.sakurafish.pockettoushituryou.data.local.TypesData;
 import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;

@@ -44,7 +44,7 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-import static com.sakurafish.pockettoushituryou.model.FoodsData.KINDS_ALL;
+import static com.sakurafish.pockettoushituryou.data.local.FoodsData.KINDS_ALL;
 import static com.sakurafish.pockettoushituryou.repository.FoodsRepository.EVENT_DB_UPDATED;
 import static com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.EXTRA_QUERY;
 import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED;

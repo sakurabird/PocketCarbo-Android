@@ -8,11 +8,11 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.model.Foods;
-import com.sakurafish.pockettoushituryou.model.FoodsData;
-import com.sakurafish.pockettoushituryou.model.Foods_Selector;
-import com.sakurafish.pockettoushituryou.model.Kinds;
-import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
+import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
+import com.sakurafish.pockettoushituryou.data.db.entity.Foods_Selector;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
+import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
+import com.sakurafish.pockettoushituryou.data.local.FoodsData;
 import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.model.Foods;
+import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository;
 
 import java.util.Locale;

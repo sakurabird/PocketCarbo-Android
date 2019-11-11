@@ -2,9 +2,9 @@ package com.sakurafish.pockettoushituryou.repository;
 
 import androidx.annotation.NonNull;
 
-import com.sakurafish.pockettoushituryou.model.FavoriteFoods;
-import com.sakurafish.pockettoushituryou.model.Foods;
-import com.sakurafish.pockettoushituryou.model.OrmaDatabase;
+import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods;
+import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
+import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
 
 import java.util.Date;
 import java.util.List;
