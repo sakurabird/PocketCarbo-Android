@@ -1,22 +1,24 @@
 package com.sakurafish.pockettoushituryou.repository;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
-import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods_Selector;
 import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
 import com.sakurafish.pockettoushituryou.data.local.FoodsData;
+import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver;
 import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
-import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,24 +35,33 @@ public class FoodsRepository {
     public final static String EVENT_DB_UPDATED = "EVENT_DB_UPDATED";
 
     private final OrmaDatabase orma;
-    private final ResourceResolver resourceResolver;
+    private final Context context;
+    private final Moshi moshi;
 
     private FoodsData foodsData;
 
     @Inject
-    FoodsRepository(OrmaDatabase orma, ResourceResolver resourceResolver) {
+    FoodsRepository(OrmaDatabase orma, Context context, Moshi moshi) {
         this.orma = orma;
-        this.resourceResolver = resourceResolver;
+        this.context = context;
+        this.moshi = moshi;
 
         this.foodsData = new FoodsData();
     }
 
     public Single<FoodsData> findAllFromAssets() {
-        final String json = resourceResolver.loadJSONFromAsset(resourceResolver.getString(R.string.foods_and_kinds_file));
-        final Gson gson = new Gson();
-        this.foodsData = gson.fromJson(json, FoodsData.class);
-        updateAllAsync(this.foodsData);
-        return Single.create(emitter -> emitter.onSuccess(this.foodsData));
+        final String json;
+        try {
+            json = LocalJsonResolver.loadJsonFromAsset(context, "json/foods_and_kinds.json");
+            JsonAdapter<FoodsData> jsonAdapter = moshi.adapter(FoodsData.class);
+            this.foodsData = jsonAdapter.fromJson(json);
+            assert this.foodsData != null;
+            updateAllAsync(this.foodsData);
+            return Single.create(emitter -> emitter.onSuccess(this.foodsData));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Single.create(emitter -> emitter.onError(e));
+        }
     }
 
     public Single<FoodsData> findFromLocal(@IntRange(from = 1, to = 6) int typeId, int kindId, int sort) {

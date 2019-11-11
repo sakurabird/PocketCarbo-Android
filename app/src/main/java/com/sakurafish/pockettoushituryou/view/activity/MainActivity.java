@@ -22,18 +22,21 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
+import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver;
+import com.sakurafish.pockettoushituryou.data.local.Type;
 import com.sakurafish.pockettoushituryou.data.local.TypesData;
+import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
 import com.sakurafish.pockettoushituryou.pref.Pref;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.util.AlarmUtils;
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView;
-import com.sakurafish.pockettoushituryou.view.helper.ResourceResolver;
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +61,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     ActivityMainBinding binding;
 
     @Inject
-    ResourceResolver resourceResolver;
+    Moshi moshi;
 
     @Inject
     Pref pref;
@@ -225,22 +228,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
         final MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+        final String json;
+        try {
+            json = LocalJsonResolver.loadJsonFromAsset(this, "json/type.json");
+            JsonAdapter<TypesData> jsonAdapter = moshi.adapter(TypesData.class);
+            TypesData typesData = jsonAdapter.fromJson(json);
 
-        final String json = resourceResolver.loadJSONFromAsset(resourceResolver.getString(R.string.types_file));
-        final Gson gson = new Gson();
-        TypesData typesData = gson.fromJson(json, TypesData.class);
+            for (Type type : typesData.getTypes()) {
+                binding.tabLayout.addTab(binding.tabLayout.newTab().setText(type.getName()), false);
+                adapter.addFragment(newInstance(ListType.NORMAL, type.getId()),
+                        type.getName());
+            }
+            binding.pager.setAdapter(adapter);
 
-        for (TypesData.Types type : typesData.types) {
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(type.name), false);
-            adapter.addFragment(newInstance(ListType.NORMAL, type.id),
-                    type.name);
-        }
-
-        binding.pager.setAdapter(adapter);
-
-        final int curItem = binding.pager.getCurrentItem();
-        if (curItem != binding.tabLayout.getSelectedTabPosition() && curItem < binding.tabLayout.getTabCount()) {
-            binding.tabLayout.getTabAt(curItem).select();
+            final int curItem = binding.pager.getCurrentItem();
+            if (curItem != binding.tabLayout.getSelectedTabPosition() && curItem < binding.tabLayout.getTabCount()) {
+                binding.tabLayout.getTabAt(curItem).select();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
