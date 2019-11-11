@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
+import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
 
@@ -41,5 +42,10 @@ public class ApplicationModule {
     @Provides
     public OrmaDatabase provideOrmaDatabase(Context context) {
         return OrmaDatabase.builder(context).trace(false).build();
+    }
+
+    @Provides
+    public Moshi provideMoshi() {
+        return new Moshi.Builder().build();
     }
 }
