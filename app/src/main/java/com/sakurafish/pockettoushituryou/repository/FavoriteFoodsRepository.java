@@ -39,14 +39,14 @@ public class FavoriteFoodsRepository {
     }
 
     public Single<Integer> delete(@NonNull Foods foods) {
-        return orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).executeAsSingle()
+        return orma.relationOfFavoriteFoods().deleter().foodsEq(foods.getId()).executeAsSingle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Completable save(@NonNull Foods foods) {
         return orma.transactionAsCompletable(() -> {
-            orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute();
+            orma.relationOfFavoriteFoods().deleter().foodsEq(foods.getId()).execute();
             orma.relationOfFavoriteFoods().inserter().execute(new FavoriteFoods(foods, new Date()));
         })
                 .subscribeOn(Schedulers.io())

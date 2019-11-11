@@ -20,7 +20,7 @@ public class KindsRepository {
     public String findName(int kindId) {
         List<Kinds> kinds = orma.relationOfKinds().selector().idEq(kindId).executeAsObservable().toList().blockingGet();
         if (kinds == null || kinds.size() == 0) return "";
-        String name = kinds.get(0).name;
+        String name = kinds.get(0).getName();
         return name != null ? name : "";
     }
 }

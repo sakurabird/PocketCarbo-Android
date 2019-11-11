@@ -1,13 +1,7 @@
 package com.sakurafish.pockettoushituryou.view.fragment;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +9,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.sakurafish.pockettoushituryou.R;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
@@ -44,7 +46,6 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-import static com.sakurafish.pockettoushituryou.data.local.FoodsData.KINDS_ALL;
 import static com.sakurafish.pockettoushituryou.repository.FoodsRepository.EVENT_DB_UPDATED;
 import static com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.EXTRA_QUERY;
 import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED;
@@ -69,7 +70,7 @@ public class FoodListFragment extends BaseFragment {
 
     private ListType listType;
     private int typeId;
-    private int kindId = KINDS_ALL;
+    private int kindId = Kinds.ALL;
     private int sort = 0; // デフォルトは名前順;
     private String query = "";
     private boolean sortToast;
@@ -195,7 +196,7 @@ public class FoodListFragment extends BaseFragment {
 
     private void initKindsSpinner() {
         if (this.listType != ListType.NORMAL) {
-            kindId = KINDS_ALL;
+            kindId = Kinds.ALL;
             viewModel.setKindSpinnerVisibility(View.GONE);
             return;
         }
@@ -207,9 +208,9 @@ public class FoodListFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    kindId = KINDS_ALL;
+                    kindId = Kinds.ALL;
                 } else {
-                    kindId = viewModel.getKindsList().get(position - 1).id;
+                    kindId = viewModel.getKindsList().get(position - 1).getId();
                 }
                 showFoods();
             }

@@ -133,8 +133,8 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
                     foodsList.clear();
                     List<Foods> list = new ArrayList<>();
                     for (FavoriteFoods favoriteFoods : favoriteFoodsList) {
-                        foodsList.add(favoriteFoods.foods);
-                        list.add(favoriteFoods.foods);
+                        foodsList.add(favoriteFoods.getFoods());
+                        list.add(favoriteFoods.getFoods());
                     }
                     Timber.tag(TAG).d(String.format("getFoodViewModelListFavorites local data loaded foods size:%s", favoriteFoodsList.size()));
 
@@ -149,7 +149,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         List<FoodViewModel> foodViewModels = new ArrayList<>();
 
         for (Foods foods : foodsList) {
-            String kindName = kindsRepository.findName(foods.kindId);
+            String kindName = kindsRepository.findName(foods.getKindId());
             foodViewModels.add(new FoodViewModel(this.context,
                     this.activity, this.favoriteFoodsRepository, foods, kindName));
         }

@@ -6,15 +6,16 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.BaseObservable;
-import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.BaseObservable;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
@@ -72,37 +73,37 @@ public class FoodViewModel extends BaseObservable {
     private void setViewValues(@NonNull Foods foods) {
         this.foods = foods;
 
-        this.name = foods.name;
-        this.carbohydratePer100g = String.valueOf(foods.carbohydratePer100g) + " g";
+        this.name = foods.getName();
+        this.carbohydratePer100g = String.valueOf(foods.getCarbohydratePer100g()) + " g";
         // 角砂糖換算(100gあたり)
-        this.cubeSugarPer100 = createCubeSugarString(foods.carbohydratePer100g);
+        this.cubeSugarPer100 = createCubeSugarString(foods.getCarbohydratePer100g());
 
         setExpanded(false);
-        if (TextUtils.isEmpty(foods.weightHint)) {
-            this.expandedTitle = this.context.getString(R.string.expanded_title, String.valueOf(foods.weight) + " g");
+        if (TextUtils.isEmpty(foods.getWeightHint())) {
+            this.expandedTitle = this.context.getString(R.string.expanded_title, String.valueOf(foods.getWeight()) + " g");
         } else {
-            String str = foods.weight + " g" + "(" + foods.weightHint + ")";
+            String str = foods.getWeight() + " g" + "(" + foods.getWeightHint() + ")";
             this.expandedTitle = this.context.getString(R.string.expanded_title, str);
         }
 
-        this.carbohydratePerWeight = String.valueOf(foods.carbohydratePerWeight) + " g";
-        this.calory = String.valueOf(foods.calory) + " kcal";
-        this.protein = String.valueOf(foods.protein) + " g";
-        this.fat = String.valueOf(foods.fat) + " g";
-        this.sodium = String.valueOf(foods.sodium) + " g";
-        this.notes = foods.notes;
-        setNotesVisibility(TextUtils.isEmpty(foods.notes) ? View.GONE : View.VISIBLE);
+        this.carbohydratePerWeight = String.valueOf(foods.getCarbohydratePerWeight()) + " g";
+        this.calory = String.valueOf(foods.getCalory()) + " kcal";
+        this.protein = String.valueOf(foods.getProtein()) + " g";
+        this.fat = String.valueOf(foods.getFat()) + " g";
+        this.sodium = String.valueOf(foods.getSodium()) + " g";
+        this.notes = foods.getNotes();
+        setNotesVisibility(TextUtils.isEmpty(foods.getNotes()) ? View.GONE : View.VISIBLE);
 
         // 角砂糖換算
-        this.cubeSugarPerWeight = createCubeSugarString(foods.carbohydratePerWeight);
+        this.cubeSugarPerWeight = createCubeSugarString(foods.getCarbohydratePerWeight());
 
-        if (foods.carbohydratePer100g < 5) {
+        if (foods.getCarbohydratePer100g() < 5) {
             // 糖質量が少ない
             this.carboRatedColorResId = R.color.colorCarboSafe;
-        } else if (foods.carbohydratePer100g >= 5 && foods.carbohydratePer100g < 15) {
+        } else if (foods.getCarbohydratePer100g() >= 5 && foods.getCarbohydratePer100g() < 15) {
             // 糖質量がやや多い
             this.carboRatedColorResId = R.color.colorCarboWarning;
-        } else if (foods.carbohydratePer100g >= 15 && foods.carbohydratePer100g < 50) {
+        } else if (foods.getCarbohydratePer100g() >= 15 && foods.getCarbohydratePer100g() < 50) {
             // 糖質量が多い
             this.carboRatedColorResId = R.color.colorCarboDanger;
         } else {
@@ -205,7 +206,7 @@ public class FoodViewModel extends BaseObservable {
     }
 
     public void retrieveFavState() {
-        this.favState = favoriteFoodsRepository.isFavorite(foods.id);
+        this.favState = favoriteFoodsRepository.isFavorite(foods.getId());
     }
 
     public void setFavState(boolean favState) {
@@ -217,7 +218,7 @@ public class FoodViewModel extends BaseObservable {
     }
 
     public void onClickFavButton(View view) {
-        if (favoriteFoodsRepository.isFavorite(foods.id)) {
+        if (favoriteFoodsRepository.isFavorite(foods.getId())) {
             favoriteFoodsRepository.delete(foods)
                     .subscribe((result) -> Timber.tag(TAG).d("Deleted favorite food"),
                             throwable -> Timber.tag(TAG).e(throwable, "Failed to delete favorite food"));
@@ -289,7 +290,7 @@ public class FoodViewModel extends BaseObservable {
         builder.append(", ");
 
         // 同じ100gをコピーしても仕方ないので
-        if (foods.weight != 0 && foods.weight != 100) {
+        if (foods.getWeight() != 0 && foods.getWeight() != 100) {
             builder.append(getExpandedTitle().replace(" ", ""));
             builder.append(":");
             builder.append(getCarbohydratePerWeight().replace(" ", ""));
@@ -302,7 +303,7 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
         builder.append(getSodium().replace(" ", ""));
-        if (!TextUtils.isEmpty(foods.notes)){
+        if (!TextUtils.isEmpty(foods.getNotes())){
             builder.append(", 備考:");
             builder.append(notes);
         }
