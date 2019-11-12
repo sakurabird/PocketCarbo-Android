@@ -166,7 +166,6 @@ public class FoodListFragment extends Fragment implements Injectable {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        viewModel.destroy();
         compositeDisposable.dispose();
         unregisterRxBus();
     }

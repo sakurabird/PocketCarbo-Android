@@ -26,7 +26,7 @@ import timber.log.Timber;
 
 import static com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType.NORMAL;
 
-public final class FoodListViewModel extends BaseObservable implements ViewModel {
+public final class FoodListViewModel extends BaseObservable {
     final static String TAG = FoodListViewModel.class.getSimpleName();
 
     private Context context;
@@ -59,10 +59,6 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         setFoodsVisibility(View.VISIBLE);
         setKindSpinnerVisibility(View.VISIBLE);
         setEmptyMessageVisibility(View.GONE);
-    }
-
-    @Override
-    public void destroy() {
     }
 
     public int getFoodsVisibility() {
