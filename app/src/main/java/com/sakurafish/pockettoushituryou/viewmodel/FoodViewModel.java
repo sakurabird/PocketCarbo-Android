@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BaseObservable;
 
 import com.sakurafish.pockettoushituryou.R;
@@ -31,7 +30,6 @@ public class FoodViewModel extends BaseObservable {
     private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(4);
 
     private Context context;
-    private AppCompatActivity activity;
     private View.OnClickListener onClickListener;
     private FavoriteFoodsRepository favoriteFoodsRepository;
 
@@ -58,12 +56,10 @@ public class FoodViewModel extends BaseObservable {
     private int carboRatedColorResId = R.color.black_alpha_87;
 
     FoodViewModel(@NonNull Context context,
-                  @NonNull AppCompatActivity activity,
                   @NonNull FavoriteFoodsRepository favoriteFoodsRepository,
                   @NonNull Foods foods,
                   @NonNull String kindName) {
         this.context = context;
-        this.activity = activity;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
         this.kindName = kindName;
 
@@ -224,19 +220,19 @@ public class FoodViewModel extends BaseObservable {
                             throwable -> Timber.tag(TAG).e(throwable, "Failed to delete favorite food"));
 
             setFavState(false);
-            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.grey600));
+            ((ImageView) view).setColorFilter(context.getResources().getColor(R.color.grey600));
         } else {
             favoriteFoodsRepository.save(foods)
                     .subscribe(() -> Timber.tag(TAG).d("Saved favorite food"),
                             throwable -> Timber.tag(TAG).e(throwable, "Failed to save favorite food"));
 
             setFavState(true);
-            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.dark_red));
+            ((ImageView) view).setColorFilter(context.getResources().getColor(R.color.dark_red));
         }
         animateFavButton(view);
     }
 
-    private void animateFavButton(View view){
+    private void animateFavButton(View view) {
         if (favAnimatorSet != null) {
             favAnimatorSet.cancel();
         }
@@ -303,7 +299,7 @@ public class FoodViewModel extends BaseObservable {
         builder.append(getFat().replace(" ", ""));
         builder.append(", 塩分:");
         builder.append(getSodium().replace(" ", ""));
-        if (!TextUtils.isEmpty(foods.getNotes())){
+        if (!TextUtils.isEmpty(foods.getNotes())) {
             builder.append(", 備考:");
             builder.append(notes);
         }
@@ -319,6 +315,6 @@ public class FoodViewModel extends BaseObservable {
         intent.putExtra(Intent.EXTRA_TEXT, createRowString());
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
         intent.setType("text/plain");
-        activity.startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
+        view.getContext().startActivity(Intent.createChooser(intent, context.getResources().getText(R.string.send_to)));
     }
 }

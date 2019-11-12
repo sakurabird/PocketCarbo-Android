@@ -1,12 +1,12 @@
 package com.sakurafish.pockettoushituryou.viewmodel;
 
 import android.content.Context;
-import androidx.databinding.BaseObservable;
+import android.view.View;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
+import androidx.databinding.BaseObservable;
 
 import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods;
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
@@ -30,7 +30,6 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
     final static String TAG = FoodListViewModel.class.getSimpleName();
 
     private Context context;
-    private AppCompatActivity activity;
     private KindsRepository kindsRepository;
     private FoodsRepository foodsRepository;
     private FavoriteFoodsRepository favoriteFoodsRepository;
@@ -45,12 +44,10 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
 
     @Inject
     FoodListViewModel(Context context,
-                      AppCompatActivity activity,
                       KindsRepository kindsRepository,
                       FoodsRepository foodsRepository,
                       FavoriteFoodsRepository favoriteFoodsRepository) {
         this.context = context;
-        this.activity = activity;
         this.kindsRepository = kindsRepository;
         this.foodsRepository = foodsRepository;
         this.favoriteFoodsRepository = favoriteFoodsRepository;
@@ -151,7 +148,7 @@ public final class FoodListViewModel extends BaseObservable implements ViewModel
         for (Foods foods : foodsList) {
             String kindName = kindsRepository.findName(foods.getKindId());
             foodViewModels.add(new FoodViewModel(this.context,
-                    this.activity, this.favoriteFoodsRepository, foods, kindName));
+                    this.favoriteFoodsRepository, foods, kindName));
         }
         return foodViewModels;
     }
