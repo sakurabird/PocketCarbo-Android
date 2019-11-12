@@ -11,59 +11,59 @@ import com.squareup.moshi.JsonClass
 class Foods {
 
     @PrimaryKey(auto = false)
-    @Column(indexed = true)
+    @Column(value = "id", indexed = true)
     @Json(name = "id")
     var id: Int = 0
 
-    @Column(indexed = true)
+    @Column(value = "name", indexed = true)
     @Json(name = "name")
     var name: String? = null
 
-    @Column
+    @Column(value = "weight")
     @Json(name = "weight")
     var weight: Int = 0
 
-    @Column
+    @Column(value = "weight_hint")
     @Json(name = "weight_hint")
     var weightHint: String? = null
 
-    @Column(indexed = true)
+    @Column(value = "carbohydrate_per_100g", indexed = true)
     @Json(name = "carbohydrate_per_100g")
     var carbohydratePer100g: Float = 0.toFloat()
 
-    @Column
+    @Column(value = "carbohydrate_per_weight")
     @Json(name = "carbohydrate_per_weight")
     var carbohydratePerWeight: Float = 0.toFloat()
 
-    @Column
+    @Column(value = "calory")
     @Json(name = "calory")
     var calory: Float = 0.toFloat()
 
-    @Column
+    @Column(value = "protein")
     @Json(name = "protein")
     var protein: Float = 0.toFloat()
 
-    @Column
+    @Column(value = "fat")
     @Json(name = "fat")
     var fat: Float = 0.toFloat()
 
-    @Column
+    @Column(value = "sodium")
     @Json(name = "sodium")
     var sodium: Float = 0.toFloat()
 
-    @Column(indexed = true)
+    @Column(value = "search_word", indexed = true)
     @Json(name = "search_word")
     var searchWord: String? = null
 
-    @Column
+    @Column(value = "notes")
     @Json(name = "notes")
     var notes: String? = null
 
-    @Column(indexed = true)
+    @Column(value = "type_id", indexed = true)
     @Json(name = "type_id")
     var typeId: Int = 0
 
-    @Column(indexed = true)
+    @Column(value = "kind_id", indexed = true)
     @Json(name = "kind_id")
     var kindId: Int = 0
 

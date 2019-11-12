@@ -11,19 +11,19 @@ import com.squareup.moshi.JsonClass
 class Kinds {
 
     @PrimaryKey(auto = false)
-    @Column(indexed = true)
+    @Column(value = "id", indexed = true)
     @Json(name = "id")
     var id: Int = 0
 
-    @Column
+    @Column(value = "name")
     @Json(name = "name")
     var name: String? = null
 
-    @Column(indexed = true)
+    @Column(value = "search_word", indexed = true)
     @Json(name = "search_word")
     var searchWord: String? = null
 
-    @Column(indexed = true)
+    @Column(value = "type_id", indexed = true)
     @Json(name = "type_id")
     var typeId: Int = 0
 

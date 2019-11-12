@@ -9,13 +9,13 @@ import java.util.*
 class FavoriteFoods {
 
     @PrimaryKey
-    @Column(indexed = true)
+    @Column(value = "id", indexed = true)
     var id: Int = 0
 
-    @Column(indexed = true, unique = true)
+    @Column(value = "foods", indexed = true, unique = true)
     var foods: Foods = Foods()
 
-    @Column(indexed = true)
+    @Column(value = "createdAt", indexed = true)
     var createdAt: Date? = null
 
     constructor() {}
