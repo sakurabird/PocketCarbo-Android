@@ -1,8 +1,9 @@
 package com.sakurafish.pockettoushituryou.view.activity;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sakurafish.pockettoushituryou.R;
@@ -13,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,7 +25,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements HasAndroidInjector {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
@@ -29,6 +33,8 @@ public class SplashActivity extends BaseActivity {
 
     FirebaseAnalytics firebaseAnalytics;
 
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
     @Inject
     Pref pref;
     @Inject
@@ -39,7 +45,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getComponent().inject(this);
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
@@ -97,5 +102,10 @@ public class SplashActivity extends BaseActivity {
         if (isFinishing()) return;
         startActivity(MainActivity.createIntent(SplashActivity.this));
         SplashActivity.this.finish();
+    }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 }

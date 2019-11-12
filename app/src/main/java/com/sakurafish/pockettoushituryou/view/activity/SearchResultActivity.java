@@ -2,19 +2,29 @@ package com.sakurafish.pockettoushituryou.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.databinding.DataBindingUtil;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivitySearchresultBinding;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment.ListType;
 
-public class SearchResultActivity extends BaseActivity {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
+
+public class SearchResultActivity extends BaseActivity implements HasAndroidInjector {
 
     private static final String TAG = SearchResultActivity.class.getSimpleName();
     public static final String EXTRA_QUERY = "query";
+
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
 
     ActivitySearchresultBinding binding;
 
@@ -33,7 +43,6 @@ public class SearchResultActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getComponent().inject(this);
         final String query = getIntent().getStringExtra(EXTRA_QUERY);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_searchresult);
         initView();
@@ -46,5 +55,10 @@ public class SearchResultActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.search_result_title) + " (" + getIntent().getStringExtra(EXTRA_QUERY) + ")");
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
+    }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 }

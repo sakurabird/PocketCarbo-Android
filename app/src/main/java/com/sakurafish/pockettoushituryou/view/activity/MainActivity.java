@@ -42,6 +42,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
 import timber.log.Timber;
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -54,11 +57,14 @@ import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.EVENT
 import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_DELAY;
 import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_ID_MAINACTIVITY;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements HasAndroidInjector, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     ActivityMainBinding binding;
+
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
 
     @Inject
     Moshi moshi;
@@ -82,8 +88,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Timber.tag(TAG).d("onCreate");
-
-        getComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -357,6 +361,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sequence.start();
         });
     }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
+    }
+
 
     private static class MyPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

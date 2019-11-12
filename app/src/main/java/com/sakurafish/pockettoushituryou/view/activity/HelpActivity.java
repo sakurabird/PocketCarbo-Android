@@ -2,15 +2,25 @@ package com.sakurafish.pockettoushituryou.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityHelpBinding;
 
-public class HelpActivity extends BaseActivity {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
+
+public class HelpActivity extends BaseActivity implements HasAndroidInjector {
 
     private static final String TAG = HelpActivity.class.getSimpleName();
+
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
 
     ActivityHelpBinding binding;
 
@@ -22,7 +32,6 @@ public class HelpActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getComponent().inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_help);
         initView();
     }
@@ -33,5 +42,10 @@ public class HelpActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.help));
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
+    }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 }

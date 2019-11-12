@@ -2,17 +2,27 @@ package com.sakurafish.pockettoushituryou.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.databinding.DataBindingUtil;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ActivityFavoritesBinding;
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment;
 
-public class FavoritesActivity extends BaseActivity {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
+
+public class FavoritesActivity extends BaseActivity implements HasAndroidInjector {
 
     private static final String TAG = FavoritesActivity.class.getSimpleName();
+
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
 
     ActivityFavoritesBinding binding;
 
@@ -29,7 +39,6 @@ public class FavoritesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getComponent().inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_favorites);
         initView();
         replaceFragment(FoodListFragment.newInstance(FoodListFragment.ListType.FAVORITES), R.id.content_view);
@@ -41,5 +50,10 @@ public class FavoritesActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.favorite));
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
+    }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 }
