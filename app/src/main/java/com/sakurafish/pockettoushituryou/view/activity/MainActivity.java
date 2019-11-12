@@ -278,7 +278,7 @@ public class MainActivity extends BaseActivity implements HasAndroidInjector, Na
                 startActivity(SettingsActivity.createIntent(MainActivity.this));
                 break;
             case R.id.nav_announcement:
-                startActivity(WebViewActivity.createIntent(MainActivity.this
+                startActivity(WebViewActivity.Companion.createIntent(MainActivity.this
                         , "file:///android_asset/www/announcement.html"
                         , getString(R.string.announcement)));
                 break;

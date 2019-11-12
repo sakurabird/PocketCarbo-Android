@@ -1,32 +1,39 @@
 package com.sakurafish.pockettoushituryou.viewmodel
 
-import android.annotation.TargetApi
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.text.TextUtils
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.databinding.BaseObservable
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import java.net.URISyntaxException
 import javax.inject.Inject
 
-class WebViewViewModel @Inject
-internal constructor(private val context: Context) : BaseObservable(), ViewModel {
+class WebViewViewModel @Inject constructor(private val context: Context) : ViewModel() {
 
-    var url: String? = null
+    private val _initAction = MutableLiveData<Boolean>().apply {
+        value = true
+    }
+    val initAction: LiveData<Boolean> = _initAction
 
-    val webViewClient: WebViewClient
+    private val _url = MutableLiveData<String>()
+    val url: LiveData<String> = _url
 
-    init {
-        webViewClient = MyWebViewClient()
+    private val _webViewClient = MutableLiveData<WebViewClient>().apply {
+        value = MyWebViewClient()
+    }
+    val webViewClient: LiveData<WebViewClient> = _webViewClient
+
+    fun setUrl(url: String) {
+        _url.value = url
     }
 
-    override fun destroy() {
-        // Nothing to do
+    fun enableInitAction(enable: Boolean) {
+        _initAction.value = enable
     }
 
     private inner class MyWebViewClient : WebViewClient() {
@@ -67,11 +74,6 @@ internal constructor(private val context: Context) : BaseObservable(), ViewModel
                 return true
             }
             return false
-        }
-
-        @TargetApi(Build.VERSION_CODES.N)
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-            return shouldOverrideUrlLoading(view, request.url.toString())
         }
     }
 }
