@@ -91,6 +91,11 @@ android {
     aaptOptions {
         noCompress 'apk'
     }
+
+    kapt {
+        // https://kotlinlang.org/docs/reference/kapt.html#non-existent-type-correction
+        correctErrorTypes = true
+    }
 }
 
 ext {
