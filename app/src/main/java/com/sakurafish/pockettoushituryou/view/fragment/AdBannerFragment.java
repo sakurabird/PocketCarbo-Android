@@ -6,15 +6,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.android.gms.ads.AdListener;
 import com.sakurafish.pockettoushituryou.databinding.FragmentAdbannerBinding;
+import com.sakurafish.pockettoushituryou.di.Injectable;
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper;
 
 import javax.inject.Inject;
@@ -22,7 +25,7 @@ import javax.inject.Inject;
 import static com.sakurafish.pockettoushituryou.view.helper.AdsHelper.ACTION_BANNER_CLICK;
 import static com.sakurafish.pockettoushituryou.view.helper.AdsHelper.INTENT_EXTRAS_KEY_CLASS;
 
-public class AdBannerFragment extends BaseFragment {
+public class AdBannerFragment extends Fragment implements Injectable {
     private static final String TAG = AdBannerFragment.class.getSimpleName();
 
     private FragmentAdbannerBinding binding;
@@ -45,12 +48,6 @@ public class AdBannerFragment extends BaseFragment {
 
     @Inject
     AdsHelper adsHelper;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        getComponent().inject(this);
-    }
 
     @Nullable
     @Override

@@ -1,23 +1,25 @@
 package com.sakurafish.pockettoushituryou.view.fragment;
 
-import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.ViewWebviewBinding;
+import com.sakurafish.pockettoushituryou.di.Injectable;
 import com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel;
 
 import javax.inject.Inject;
 
 import static com.sakurafish.pockettoushituryou.view.activity.WebViewActivity.EXTRA_URL;
 
-public class WebViewFragment extends BaseFragment {
+public class WebViewFragment extends Fragment implements Injectable {
 
     public static final String TAG = WebViewFragment.class.getSimpleName();
 
@@ -35,12 +37,6 @@ public class WebViewFragment extends BaseFragment {
     }
 
     public WebViewFragment() {
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        getComponent().inject(this);
     }
 
     @Nullable

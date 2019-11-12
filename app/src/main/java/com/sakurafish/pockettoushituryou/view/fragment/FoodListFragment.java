@@ -1,6 +1,5 @@
 package com.sakurafish.pockettoushituryou.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodlistBinding;
+import com.sakurafish.pockettoushituryou.di.Injectable;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent;
@@ -51,7 +52,7 @@ import static com.sakurafish.pockettoushituryou.view.activity.SearchResultActivi
 import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED;
 import static com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_DELAY;
 
-public class FoodListFragment extends BaseFragment {
+public class FoodListFragment extends Fragment implements Injectable {
 
     public static final String TAG = FoodListFragment.class.getSimpleName();
 
@@ -115,12 +116,6 @@ public class FoodListFragment extends BaseFragment {
     }
 
     public FoodListFragment() {
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        getComponent().inject(this);
     }
 
     @Override

@@ -1,32 +1,28 @@
 package com.sakurafish.pockettoushituryou.view.fragment;
 
-import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.databinding.FragmentHelpBinding;
+import com.sakurafish.pockettoushituryou.di.Injectable;
 import com.sakurafish.pockettoushituryou.viewmodel.HelpViewModel;
 
 import javax.inject.Inject;
 
-public class HelpFragment extends BaseFragment {
+public class HelpFragment extends Fragment implements Injectable {
     public static final String TAG = HelpFragment.class.getSimpleName();
 
     private FragmentHelpBinding binding;
 
     @Inject
     HelpViewModel viewModel;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        getComponent().inject(this);
-    }
 
     @Nullable
     @Override
