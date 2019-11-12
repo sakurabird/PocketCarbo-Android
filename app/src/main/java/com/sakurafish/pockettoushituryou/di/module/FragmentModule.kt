@@ -6,6 +6,7 @@ import com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment
 import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment
 import com.sakurafish.pockettoushituryou.view.fragment.HelpFragment
 import com.sakurafish.pockettoushituryou.view.fragment.WebViewFragment
+import com.sakurafish.pockettoushituryou.viewmodel.HelpViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel
 import dagger.Binds
 import dagger.Module
@@ -16,6 +17,11 @@ import dagger.multibindings.IntoMap
 internal abstract class FragmentModule {
     @ContributesAndroidInjector
     internal abstract fun contributeFoodListFragment(): FoodListFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HelpViewModel::class)
+    abstract fun bindHelpViewModel(viewModel: HelpViewModel): ViewModel
 
     @ContributesAndroidInjector
     internal abstract fun contributeHelpFragment(): HelpFragment

@@ -290,7 +290,7 @@ public class MainActivity extends BaseActivity implements HasAndroidInjector, Na
                 startActivity(intent);
                 break;
             case R.id.nav_help:
-                startActivity(HelpActivity.createIntent(MainActivity.this));
+                startActivity(HelpActivity.Companion.createIntent(MainActivity.this));
                 break;
         }
 
