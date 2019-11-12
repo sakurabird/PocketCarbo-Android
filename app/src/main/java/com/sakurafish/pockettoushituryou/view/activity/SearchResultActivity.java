@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import com.sakurafish.pockettoushituryou.R;
@@ -32,11 +31,6 @@ public class SearchResultActivity extends BaseActivity implements HasAndroidInje
         Intent intent = new Intent(context, SearchResultActivity.class);
         intent.putExtra(EXTRA_QUERY, query);
         return intent;
-    }
-
-    static {
-        // For Android 5.0 (API level 21) below (https://stackoverflow.com/a/38012842)
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     @Override

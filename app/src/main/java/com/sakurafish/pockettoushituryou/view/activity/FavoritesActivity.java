@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import com.sakurafish.pockettoushituryou.R;
@@ -28,11 +27,6 @@ public class FavoritesActivity extends BaseActivity implements HasAndroidInjecto
 
     public static Intent createIntent(Context context) {
         return new Intent(context, FavoritesActivity.class);
-    }
-
-    static {
-        // For Android 5.0 (API level 21) below (https://stackoverflow.com/a/38012842)
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     @Override

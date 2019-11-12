@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -77,11 +76,6 @@ public class MainActivity extends BaseActivity implements HasAndroidInjector, Na
 
     public static Intent createIntent(Context context) {
         return new Intent(context, MainActivity.class);
-    }
-
-    static {
-        // For Android 5.0 (API level 21) below (https://stackoverflow.com/a/38012842)
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     @Override
