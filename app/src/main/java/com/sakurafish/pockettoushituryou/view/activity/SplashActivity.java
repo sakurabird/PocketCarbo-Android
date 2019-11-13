@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.pref.Pref;
+import com.sakurafish.pockettoushituryou.util.Pref;
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository;
 
 import java.util.concurrent.TimeUnit;

@@ -4,7 +4,7 @@ import android.content.Context
 
 import com.google.android.gms.ads.AdRequest
 import com.sakurafish.pockettoushituryou.R
-import com.sakurafish.pockettoushituryou.pref.Pref
+import com.sakurafish.pockettoushituryou.util.Pref
 
 import javax.inject.Inject
 import javax.inject.Singleton

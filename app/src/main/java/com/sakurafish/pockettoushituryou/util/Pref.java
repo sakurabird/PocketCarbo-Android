@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.pref;
+package com.sakurafish.pockettoushituryou.util;
 
 import android.content.SharedPreferences;
 

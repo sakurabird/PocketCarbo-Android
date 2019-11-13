@@ -26,7 +26,7 @@ import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver;
 import com.sakurafish.pockettoushituryou.data.local.Type;
 import com.sakurafish.pockettoushituryou.data.local.TypesData;
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding;
-import com.sakurafish.pockettoushituryou.pref.Pref;
+import com.sakurafish.pockettoushituryou.util.Pref;
 import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage;
 import com.sakurafish.pockettoushituryou.rxbus.RxBus;
 import com.sakurafish.pockettoushituryou.util.AlarmUtils;
