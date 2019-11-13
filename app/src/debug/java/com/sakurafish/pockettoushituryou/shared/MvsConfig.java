@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.util;
+package com.sakurafish.pockettoushituryou.shared;
 
 /**
  * This class is implemented for MaterialSearchView <br>

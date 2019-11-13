@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.util;
+package com.sakurafish.pockettoushituryou.shared;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

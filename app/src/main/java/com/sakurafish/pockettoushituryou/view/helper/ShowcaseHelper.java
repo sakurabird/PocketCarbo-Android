@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.util.Pref;
+import com.sakurafish.pockettoushituryou.shared.Pref;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

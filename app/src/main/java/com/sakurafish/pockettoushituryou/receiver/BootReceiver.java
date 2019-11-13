@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.util.AlarmUtils;
+import com.sakurafish.pockettoushituryou.shared.AlarmUtils;
 
 public class BootReceiver extends BroadcastReceiver {
 
