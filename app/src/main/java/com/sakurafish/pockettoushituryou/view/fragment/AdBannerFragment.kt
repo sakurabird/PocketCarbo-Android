@@ -115,7 +115,7 @@ class AdBannerFragment : Fragment(), Injectable {
     }
 
     private fun finishInterval() {
-        job.cancel()
+        if (::job.isInitialized && job.isActive) job.cancel()
     }
 
     override fun onDestroy() {
