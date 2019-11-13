@@ -1,12 +1,14 @@
 package com.sakurafish.pockettoushituryou.view.helper;
 
-import androidx.databinding.BindingAdapter;
-import androidx.annotation.ColorRes;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+
+import androidx.annotation.ColorRes;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.BindingAdapter;
 
 public class DataBindingHelper {
 
@@ -19,6 +21,15 @@ public class DataBindingHelper {
     @BindingAdapter("foodTextColor")
     public static void setFoodTextColor(TextView view, @ColorRes int colorResId) {
         view.setTextColor(ContextCompat.getColor(view.getContext(), colorResId));
+    }
+
+    @BindingAdapter("goneUnless")
+    public static void goneUnless(View view, boolean visible) {
+        if (visible) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
     }
 
     @BindingAdapter("webViewUrl")
