@@ -40,7 +40,7 @@ class WebViewFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.lifecycleOwner = this@WebViewFragment
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel = ViewModelProvider(this@WebViewFragment, viewModelFactory)
                 .get(WebViewViewModel::class.java)
         binding.viewModel = viewModel

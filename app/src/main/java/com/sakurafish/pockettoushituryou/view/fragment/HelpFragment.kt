@@ -39,7 +39,7 @@ class HelpFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.lifecycleOwner = this@HelpFragment
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel = ViewModelProvider(this@HelpFragment, viewModelFactory)
                 .get(HelpViewModel::class.java)
         binding.viewModel = viewModel
