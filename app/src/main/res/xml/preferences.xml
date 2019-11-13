@@ -1,24 +1,36 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- 環境設定 -->
-    <PreferenceCategory android:title="@string/environment_setting">
+    <PreferenceCategory app:title="@string/environment_setting">
         <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/PREF_NOTIFICATION"
-            android:summary="@string/text_notification"
-            android:title="@string/text_notification_summary" />
+            app:defaultValue="true"
+            app:key="@string/PREF_NOTIFICATION"
+            app:summary="@string/text_notification"
+            app:title="@string/text_notification_summary" />
     </PreferenceCategory>
 
     <!-- その他 -->
-    <PreferenceCategory android:title="@string/other">
-        <com.sakurafish.pockettoushituryou.pref.PrefCredit
-            android:key="@string/PREF_CREDIT"
-            android:layout="@layout/item_preference" />
-        <com.sakurafish.pockettoushituryou.pref.PrefMailToDev
-            android:key="@string/PREF_MAIL_TO_DEV"
-            android:layout="@layout/item_preference" />
-        <com.sakurafish.pockettoushituryou.pref.PrefPrivacyPolicy
-            android:key="@string/PREF_PRIVACY_POLICY"
-            android:layout="@layout/item_preference" />
+    <PreferenceCategory app:title="@string/other">
+        <Preference
+            app:key="@string/PREF_PRIVACY_POLICY"
+            app:title="@string/setting_privacy_policy" />
+
+        <Preference
+            app:key="webpage"
+            app:title="@string/setting_open_google_play">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/details?id=com.sakurafish.pockettoushituryou" />
+        </Preference>
+
+        <Preference
+            app:key="@string/PREF_CREDIT"
+            app:title="@string/setting_credit" />
+
+        <Preference
+            app:key="@string/PREF_MAIL_TO_DEV"
+            app:summary="@string/setting_mail_to_dev_summary"
+            app:title="@string/setting_mail_to_dev" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -275,7 +275,7 @@ public class MainActivity extends BaseActivity implements HasAndroidInjector, Na
                 startActivity(FavoritesActivity.createIntent(MainActivity.this));
                 break;
             case R.id.nav_setting:
-                startActivity(SettingsActivity.createIntent(MainActivity.this));
+                startActivity(SettingsActivity.Companion.createIntent(MainActivity.this));
                 break;
             case R.id.nav_announcement:
                 startActivity(WebViewActivity.Companion.createIntent(MainActivity.this
