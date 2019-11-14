@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity implements HasAndroidInjector, Na
                     Toast.makeText(MainActivity.this, getString(R.string.action_search_hint), Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                startActivity(SearchResultActivity.createIntent(MainActivity.this, query));
+                startActivity(SearchResultActivity.Companion.createIntent(MainActivity.this, query));
                 return false;
             }
 

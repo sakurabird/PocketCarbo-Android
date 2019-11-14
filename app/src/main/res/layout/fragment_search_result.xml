@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.sakurafish.pockettoushituryou.viewmodel.SearchResultViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- empty message -->
+        <RelativeLayout
+            android:id="@+id/empty_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_16dp"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginRight="@dimen/space_16dp"
+            android:background="@color/white"
+            android:padding="@dimen/space_16dp"
+            app:goneUnless="@{safeUnbox(viewModel.showEmpty)}">
+
+            <ImageView
+                android:id="@+id/img_tamagogohan"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/food_list_content_description_empty_image"
+                app:srcCompat="@drawable/img_tamagogohan" />
+
+            <TextView
+                android:id="@+id/empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/space_4dp"
+                android:layout_toEndOf="@+id/img_tamagogohan"
+                android:text="@string/empty_text"
+                android:textSize="@dimen/text_16sp" />
+
+        </RelativeLayout>
+
+        <!-- Foods list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/space_12dp" />
+
+    </RelativeLayout>
+</layout>

@@ -2,11 +2,9 @@ package com.sakurafish.pockettoushituryou.di.module
 
 import androidx.lifecycle.ViewModel
 import com.sakurafish.pockettoushituryou.di.ViewModelKey
-import com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment
-import com.sakurafish.pockettoushituryou.view.fragment.FoodListFragment
-import com.sakurafish.pockettoushituryou.view.fragment.HelpFragment
-import com.sakurafish.pockettoushituryou.view.fragment.WebViewFragment
+import com.sakurafish.pockettoushituryou.view.fragment.*
 import com.sakurafish.pockettoushituryou.viewmodel.HelpViewModel
+import com.sakurafish.pockettoushituryou.viewmodel.SearchResultViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel
 import dagger.Binds
 import dagger.Module
@@ -17,6 +15,14 @@ import dagger.multibindings.IntoMap
 internal abstract class FragmentModule {
     @ContributesAndroidInjector
     internal abstract fun contributeFoodListFragment(): FoodListFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchResultViewModel::class)
+    abstract fun bindSearchResultViewModel(viewModel: SearchResultViewModel): ViewModel
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeSearchResultFragment(): SearchResultFragment
 
     @Binds
     @IntoMap
