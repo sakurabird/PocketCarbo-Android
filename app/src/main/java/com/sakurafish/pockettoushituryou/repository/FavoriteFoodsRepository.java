@@ -6,6 +6,7 @@ import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods;
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods;
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,16 @@ public class FavoriteFoodsRepository {
         return !orma.relationOfFavoriteFoods().selector().foodsEq(foodsId).isEmpty();
     }
 
+    public List<Foods> findAll() {
+        List<FavoriteFoods> favoriteFoods = orma.relationOfFavoriteFoods().selector().orderByCreatedAtDesc().toList();
+        List<Foods> foods = new ArrayList<>();
+        for (FavoriteFoods favorite : favoriteFoods) {
+            foods.add(favorite.getFoods());
+        }
+        return foods;
+    }
+
+    // TODO後で消す
     public Single<List<FavoriteFoods>> findAllFromLocal() {
         Timber.tag(TAG).d("findAllFromLocal start");
         return orma.relationOfFavoriteFoods().selector().orderByCreatedAtDesc().executeAsObservable().toList();

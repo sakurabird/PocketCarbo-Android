@@ -272,7 +272,7 @@ public class MainActivity extends BaseActivity implements HasAndroidInjector, Na
                 // Do nothing
                 break;
             case R.id.nav_favorite:
-                startActivity(FavoritesActivity.createIntent(MainActivity.this));
+                startActivity(FavoritesActivity.Companion.createIntent(MainActivity.this));
                 break;
             case R.id.nav_setting:
                 startActivity(SettingsActivity.Companion.createIntent(MainActivity.this));

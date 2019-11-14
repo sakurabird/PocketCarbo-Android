@@ -35,14 +35,14 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <!-- contents -->
-            <LinearLayout
-                android:id="@+id/content_view"
+            <fragment
+                android:id="@+id/fragment_favorites"
+                android:name="com.sakurafish.pockettoushituryou.view.fragment.FavoritesFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/space_12dp"
-                android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <fragment
