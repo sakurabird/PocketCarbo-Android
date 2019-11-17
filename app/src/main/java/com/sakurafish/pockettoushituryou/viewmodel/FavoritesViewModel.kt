@@ -3,20 +3,19 @@ package com.sakurafish.pockettoushituryou.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
+import androidx.lifecycle.liveData
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
         private val favoriteFoodsRepository: FavoriteFoodsRepository
 ) : ViewModel() {
 
-    val foods: LiveData<List<Foods>> by lazy {
-        val liveData = MutableLiveData<List<Foods>>()
+    var foods = liveData(Dispatchers.IO) {
         val favorites = favoriteFoodsRepository.findAll()
-        _showEmpty.value = favorites.size == 0
-        liveData.value = favorites
-        return@lazy liveData
+        _showEmpty.postValue(favorites.isEmpty())
+        emit(favorites)
     }
 
     private val _showEmpty = MutableLiveData<Boolean>().apply { value = false }
