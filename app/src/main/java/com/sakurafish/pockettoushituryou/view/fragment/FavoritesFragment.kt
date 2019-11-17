@@ -61,7 +61,7 @@ class FavoritesFragment : Fragment(), Injectable {
         adapter = FoodsAdapter(viewLifecycleOwner)
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun setupViewModel() {

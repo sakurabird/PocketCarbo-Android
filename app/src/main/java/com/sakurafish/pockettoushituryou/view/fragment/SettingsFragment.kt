@@ -50,7 +50,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("sakurafish1@gmail.com"))
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2))
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.setting_mail_to_dev3))
-        if (intent.resolveActivity(activity!!.packageManager) != null) {
+        if (intent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intent)
         }
     }

@@ -19,7 +19,7 @@ public class ShowcaseHelper {
 
     private static final String TAG = ShowcaseHelper.class.getSimpleName();
 
-    public static final int SHOWCASE_DELAY = 500;
+    public static final long SHOWCASE_DELAY = 500;
 
     public static final String SHOWCASE_ID_MAINACTIVITY = "SHOWCASE_ID_MAINACTIVITY";
     public static final String SHOWCASE_ID_FOODLISTFRAGMENT = "SHOWCASE_ID_FOODLISTFRAGMENT";

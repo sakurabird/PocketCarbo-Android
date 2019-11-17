@@ -82,7 +82,7 @@ class AdBannerFragment : Fragment(), Injectable {
     private fun setADClickReceiver() {
         val filter = IntentFilter()
         filter.addAction(ACTION_BANNER_CLICK)
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(receiverADClick, filter)
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiverADClick, filter)
     }
 
     private fun startInterval(clicked: Boolean) {
@@ -94,7 +94,7 @@ class AdBannerFragment : Fragment(), Injectable {
             adsHelper.lastClickTimeMillis = now
             val localIntent = Intent(ACTION_BANNER_CLICK)
             localIntent.putExtra(INTENT_EXTRAS_KEY_CLASS, parentActivityName)
-            LocalBroadcastManager.getInstance(activity!!).sendBroadcast(localIntent)
+            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(localIntent)
         }
         val intervalTimeMillis = adsHelper.getIntervalTimeMillis(now, adsHelper.lastClickTimeMillis)
 
@@ -121,6 +121,6 @@ class AdBannerFragment : Fragment(), Injectable {
     override fun onDestroy() {
         super.onDestroy()
         finishInterval()
-        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(receiverADClick)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiverADClick)
     }
 }

@@ -51,7 +51,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String title = context.getString(R.string.notification_title);
         String text = context.getString(R.string.APP_MESSAGE_TEXT);
 
-        Intent openIntent = MainActivity.createIntent(context);
+        Intent openIntent = MainActivity.Companion.createIntent(context);
         openIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
