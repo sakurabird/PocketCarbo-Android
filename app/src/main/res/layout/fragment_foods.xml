@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!-- Kinds selector -->
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/kind_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_12dp"
+                android:layout_weight="1"
+                android:background="@drawable/kind_spinner"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dropdown" />
+            <!-- Sort order selector -->
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sort_spinner"
+                android:layout_width="@dimen/sort_spinner_width"
+                android:layout_height="@dimen/sort_spinner_width"
+                android:layout_marginLeft="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_12dp"
+                android:layout_marginRight="@dimen/space_16dp"
+                android:background="@drawable/kind_spinner"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dialog" />
+
+        </LinearLayout>
+
+        <!-- Foods list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/space_12dp" />
+
+    </LinearLayout>
+</layout>

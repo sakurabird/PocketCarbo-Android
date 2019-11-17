@@ -16,7 +16,7 @@ class FoodsAdapter(
     val items = ArrayList<FoodItemViewModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SearchResultViewHolder(
+        return ViewHolder(
                 DataBindingUtil.inflate(
                         LayoutInflater.from(parent.context),
                         R.layout.item_food,
@@ -28,7 +28,7 @@ class FoodsAdapter(
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val viewModel = items[position]
-        val holder = viewHolder as SearchResultViewHolder
+        val holder = viewHolder as ViewHolder
         if (viewModel.isExpanded) {
             holder.binding.expandArrow.isSelected = true
             holder.binding.expandableLayout.expand(true)
@@ -55,7 +55,7 @@ class FoodsAdapter(
 
     override fun getItemCount() = items.size
 
-    inner class SearchResultViewHolder(
+    inner class ViewHolder(
             val binding: ItemFoodBinding,
             private val lifecycleOwner: LifecycleOwner
     ) : RecyclerView.ViewHolder(binding.root) {

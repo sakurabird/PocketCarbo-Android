@@ -11,14 +11,16 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
 import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.*
 
 class FoodItemViewModel(
@@ -28,8 +30,8 @@ class FoodItemViewModel(
         private val foods: Foods
 ) : ViewModel() {
 
-    private val _carboRatedColorResId = MutableLiveData<Int>().apply {
-        value = when {
+    val carboRatedColorResId = liveData {
+        val value: Int = when {
             foods.carbohydratePer100g < 5 -> // 糖質量が少ない
                 R.color.colorCarboSafe
             foods./**/carbohydratePer100g >= 5 && foods.carbohydratePer100g < 15 -> // 糖質量がやや多い
@@ -39,91 +41,85 @@ class FoodItemViewModel(
             else -> // 糖質量が非常に多い
                 R.color.colorCarboDangerHigh
         }
+        emit(value)
     }
-    val carboRatedColorResId: LiveData<Int> = _carboRatedColorResId
 
-    private val _name = MutableLiveData<String>().apply {
-        value = foods.name
+    val name = liveData {
+        emit(foods.name)
     }
-    val name: LiveData<String> = _name
 
-    private val _kindName = MutableLiveData<String>().apply {
-        value = kindsRepository.findName(foods.kindId)
+    val kindName = liveData(Dispatchers.IO) {
+        val result = kindsRepository.findName(foods.kindId)
+        emit(result)
     }
-    val kindName: LiveData<String> = _kindName
 
-    private val _carbohydratePer100g = MutableLiveData<String>().apply {
-        value = foods.carbohydratePer100g.toString() + " g"
+    val carbohydratePer100g = liveData {
+        emit(foods.carbohydratePer100g.toString() + " g")
     }
-    val carbohydratePer100g: LiveData<String> = _carbohydratePer100g
 
-    private val _cubeSugarPer100 = MutableLiveData<String>().apply {
+    val cubeSugarPer100 = liveData {
         // 角砂糖換算(100gあたり)
-        value = createCubeSugarString(foods.carbohydratePer100g)
+        emit(createCubeSugarString(foods.carbohydratePer100g))
     }
-    val cubeSugarPer100: LiveData<String> = _cubeSugarPer100
 
-    private val _expandedTitle = MutableLiveData<String>().apply {
-        value = when {
+    val expandedTitle = liveData {
+        val title = when {
             TextUtils.isEmpty(foods.weightHint) -> context.getString(R.string.expanded_title, foods.weight.toString() + " g")
             else -> {
                 val str = foods.weight.toString() + " g" + "(" + foods.weightHint + ")"
                 context.getString(R.string.expanded_title, str)
             }
         }
+        emit(title)
     }
-    val expandedTitle: LiveData<String> = _expandedTitle
 
-    private val _carbohydratePerWeight = MutableLiveData<String>().apply {
-        value = foods.carbohydratePerWeight.toString() + " g"
+    val carbohydratePerWeight = liveData {
+        emit(foods.carbohydratePerWeight.toString() + " g")
     }
-    val carbohydratePerWeight: LiveData<String> = _carbohydratePerWeight
 
-    private val _calory = MutableLiveData<String>().apply {
-        value = foods.calory.toString() + " kcal"
+    val calory = liveData {
+        emit(foods.calory.toString() + " kcal")
     }
-    val calory: LiveData<String> = _calory
 
-    private val _protein = MutableLiveData<String>().apply {
-        value = foods.protein.toString() + " g"
+    val protein = liveData {
+        emit(foods.protein.toString() + " g")
     }
-    val protein: LiveData<String> = _protein
 
-    private val _fat = MutableLiveData<String>().apply {
-        value = foods.fat.toString() + " g"
+    val fat = liveData {
+        emit(foods.fat.toString() + " g")
     }
-    val fat: LiveData<String> = _fat
 
-    private val _sodium = MutableLiveData<String>().apply {
-        value = foods.sodium.toString() + " g"
+    val sodium = liveData {
+        emit(foods.sodium.toString() + " g")
     }
-    val sodium: LiveData<String> = _sodium
 
-    private val _notes = MutableLiveData<String>().apply {
-        value = foods.notes
+    val notes = liveData {
+        emit(foods.notes)
     }
-    val notes: LiveData<String> = _notes
 
-    private val _showNotes = MutableLiveData<Boolean>().apply {
-        value = !TextUtils.isEmpty(foods.notes)
+    val showNotes = liveData {
+        emit(!TextUtils.isEmpty(foods.notes))
     }
-    val showNotes: LiveData<Boolean> = _showNotes
 
-    private val _cubeSugarPerWeight = MutableLiveData<String>().apply {
+    val cubeSugarPerWeight = liveData {
         // 角砂糖換算
-        value = createCubeSugarString(foods.carbohydratePerWeight)
+        val str = createCubeSugarString(foods.carbohydratePerWeight)
+        emit(str)
     }
-    val cubeSugarPerWeight: LiveData<String> = _cubeSugarPerWeight
 
-    private val _isFavState = MutableLiveData<Boolean>().apply {
-        value = favoriteFoodsRepository.isFavorite(foods.id)
-    }
+    private val _isFavState = MutableLiveData<Boolean>()
     val isFavState: LiveData<Boolean> = _isFavState
 
     private var onClickListener: View.OnClickListener? = null
     var isExpanded: Boolean = false
 
     private var favAnimatorSet: AnimatorSet? = null
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isFavState.postValue(favoriteFoodsRepository.isFavorite(foods.id))
+        }
+    }
 
     private fun createCubeSugarString(carbohydrate: Float): String {
         // 1個4gで計算。 小数点第二位で四捨五入
@@ -148,22 +144,35 @@ class FoodItemViewModel(
     }
 
     fun onClickFavButton(view: View) {
-        if (favoriteFoodsRepository.isFavorite(foods.id)) {
-            favoriteFoodsRepository.delete(foods).subscribe()
-            _isFavState.value = false
-            (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.grey600))
-        } else {
-            favoriteFoodsRepository.save(foods).subscribe()
-            _isFavState.value = true
-            (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.dark_red))
+        viewModelScope.launch {
+            val result = updateFavoritesDB()
+            if (result) {
+                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.dark_red))
+            } else {
+                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.grey600))
+            }
+            animateFavButton(view)
         }
-        animateFavButton(view)
+    }
+
+    @WorkerThread
+    private suspend fun updateFavoritesDB(): Boolean {
+        val result = viewModelScope.async(Dispatchers.IO) {
+            if (favoriteFoodsRepository.isFavorite(foods.id)) {
+                favoriteFoodsRepository.delete(foods).subscribe()
+                _isFavState.postValue(false)
+                return@async false
+            } else {
+                favoriteFoodsRepository.save(foods).subscribe()
+                _isFavState.postValue(true)
+                return@async true
+            }
+        }
+        return result.await()
     }
 
     private fun animateFavButton(view: View) {
-        if (favAnimatorSet != null) {
-            favAnimatorSet!!.cancel()
-        }
+        favAnimatorSet?.cancel()
         view.animate().cancel()
         view.scaleX = 0f
         view.scaleY = 0f
@@ -180,12 +189,12 @@ class FoodItemViewModel(
         starScaleXAnimator.startDelay = 250
         starScaleXAnimator.interpolator = OVERSHOOT_INTERPOLATOR
 
-        favAnimatorSet!!.playTogether(
+        favAnimatorSet?.playTogether(
                 starScaleYAnimator,
                 starScaleXAnimator
         )
 
-        favAnimatorSet!!.start()
+        favAnimatorSet?.start()
     }
 
     fun onLongClickExpandButton(view: View): Boolean {
@@ -204,7 +213,7 @@ class FoodItemViewModel(
     private fun createRowString(): String {
         val builder = StringBuilder()
         builder.append("[")
-        builder.append(kindName)
+        builder.append(kindName.value)
         builder.append("] ")
         builder.append(name.value?.trim())
         builder.append("100gあたりの糖質量")
