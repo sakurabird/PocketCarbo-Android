@@ -3,10 +3,7 @@ package com.sakurafish.pockettoushituryou.di.module
 import androidx.lifecycle.ViewModel
 import com.sakurafish.pockettoushituryou.di.ViewModelKey
 import com.sakurafish.pockettoushituryou.view.fragment.*
-import com.sakurafish.pockettoushituryou.viewmodel.FavoritesViewModel
-import com.sakurafish.pockettoushituryou.viewmodel.HelpViewModel
-import com.sakurafish.pockettoushituryou.viewmodel.SearchResultViewModel
-import com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel
+import com.sakurafish.pockettoushituryou.viewmodel.*
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -14,8 +11,14 @@ import dagger.multibindings.IntoMap
 
 @Module
 internal abstract class FragmentModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FoodsViewModel::class)
+    abstract fun bindFoodsViewModel(viewModel: FoodsViewModel): ViewModel
+
     @ContributesAndroidInjector
-    internal abstract fun contributeFoodListFragment(): FoodListFragment
+    internal abstract fun contributeFoodsFragment(): FoodsFragment
 
     @Binds
     @IntoMap
