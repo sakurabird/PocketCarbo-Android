@@ -4,10 +4,9 @@ import androidx.annotation.WorkerThread
 import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.sakurafish.pockettoushituryou.shared.rxbus.FavoritesUpdateEvent
+import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,20 +29,20 @@ internal constructor(private val orma: OrmaDatabase) {
     }
 
     @WorkerThread
-    fun delete(foods: Foods): Single<Int> {
-        return orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).executeAsSingle()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    fun delete(foods: Foods, hostClass: HostClass) {
+        orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
+
+        val rxBus = RxBus.getIntanceBus()
+        rxBus.post(FavoritesUpdateEvent(hostClass, foods.id))
     }
 
     @WorkerThread
-    fun save(foods: Foods): Completable {
-        return orma.transactionAsCompletable {
-            orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
-            orma.relationOfFavoriteFoods().inserter().execute(FavoriteFoods(foods, Date()))
-        }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    fun save(foods: Foods, hostClass: HostClass) {
+        orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
+        orma.relationOfFavoriteFoods().inserter().execute(FavoriteFoods(foods, Date()))
+
+        val rxBus = RxBus.getIntanceBus()
+        rxBus.post(FavoritesUpdateEvent(hostClass, foods.id))
     }
 
     @WorkerThread

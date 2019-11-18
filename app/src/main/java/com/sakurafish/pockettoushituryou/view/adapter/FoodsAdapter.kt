@@ -55,6 +55,12 @@ class FoodsAdapter(
 
     override fun getItemCount() = items.size
 
+    fun refreshFavoriteStatus(foodsId: Int) {
+        items.filter { it.foods.id == foodsId }
+                .forEach { it.refreshFavoriteStatus() }
+                .also { notifyDataSetChanged() }
+    }
+
     inner class ViewHolder(
             val binding: ItemFoodBinding,
             private val lifecycleOwner: LifecycleOwner

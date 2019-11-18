@@ -23,6 +23,7 @@ import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.repository.KindsRepository
 import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
+import com.sakurafish.pockettoushituryou.shared.rxbus.FavoritesUpdateEvent
 import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
 import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.sakurafish.pockettoushituryou.view.activity.MainActivity
@@ -122,8 +123,6 @@ class FoodsFragment : Fragment(), Injectable {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // TODO MUST OBSERVE FAVORUITES
 
         initKindsSpinner()
         initSortSpinner()
@@ -266,6 +265,12 @@ class FoodsFragment : Fragment(), Injectable {
             // DBに食品データが全て追加された
             if (TextUtils.equals(rxBusMessage.message, FoodsRepository.EVENT_DB_UPDATED)) {
                 loadDB()
+            }
+        })
+
+        registerRxBus(FavoritesUpdateEvent::class.java, Consumer {
+            if (it.hostClass == HostClass.FAVORITES || it.hostClass == HostClass.SEARCH) {
+                adapter.refreshFavoriteStatus(it.foodsId)
             }
         })
 

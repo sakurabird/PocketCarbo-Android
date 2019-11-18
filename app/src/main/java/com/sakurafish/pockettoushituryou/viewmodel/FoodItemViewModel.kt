@@ -33,7 +33,7 @@ class FoodItemViewModel(
         private val context: Context,
         private val kindsRepository: KindsRepository,
         private val favoriteFoodsRepository: FavoriteFoodsRepository,
-        private val foods: Foods,
+        val foods: Foods,
         private val hostClass: HostClass
 ) : ViewModel() {
 
@@ -170,11 +170,11 @@ class FoodItemViewModel(
     private suspend fun updateFavoritesDB(): Boolean {
         val result = viewModelScope.async(Dispatchers.IO) {
             if (favoriteFoodsRepository.isFavorite(foods.id)) {
-                favoriteFoodsRepository.delete(foods).subscribe()
+                favoriteFoodsRepository.delete(foods, hostClass)
                 _isFavState.postValue(false)
                 return@async false
             } else {
-                favoriteFoodsRepository.save(foods).subscribe()
+                favoriteFoodsRepository.save(foods, hostClass)
                 _isFavState.postValue(true)
                 return@async true
             }
