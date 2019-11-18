@@ -13,9 +13,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -23,11 +20,12 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.sakurafish.pockettoushituryou.data.local.TypesData
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
-import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
-import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser
+import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
+import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
@@ -42,7 +40,6 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnNavigationItemSelectedListener {
@@ -192,7 +189,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        val adapter = MyPagerAdapter(supportFragmentManager)
+        val adapter = MainPagerAdapter(supportFragmentManager)
         val json: String
         try {
             json = LocalJsonResolver.loadJsonFromAsset(this, "json/type.json")
@@ -212,7 +209,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     override fun onBackPressed() {
@@ -305,28 +301,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
-    private class MyPagerAdapter internal constructor(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-        private val mFragmentList = ArrayList<Fragment>()
-        private val mFragmentTitleList = ArrayList<String>()
-
-        internal fun addFragment(fragment: Fragment, title: String?) {
-            mFragmentList.add(fragment)
-            mFragmentTitleList.add(title!!)
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return mFragmentList[position]
-        }
-
-        override fun getCount(): Int {
-            return mFragmentList.size
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return mFragmentTitleList[position]
-        }
-    }
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
