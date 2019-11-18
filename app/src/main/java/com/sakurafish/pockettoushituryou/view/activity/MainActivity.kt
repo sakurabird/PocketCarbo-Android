@@ -23,8 +23,8 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.sakurafish.pockettoushituryou.data.local.TypesData
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
-import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage
-import com.sakurafish.pockettoushituryou.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
+import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser

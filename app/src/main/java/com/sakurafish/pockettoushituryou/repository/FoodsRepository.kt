@@ -8,8 +8,8 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
 import com.sakurafish.pockettoushituryou.data.local.FoodsData
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
-import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent
-import com.sakurafish.pockettoushituryou.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
+import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable

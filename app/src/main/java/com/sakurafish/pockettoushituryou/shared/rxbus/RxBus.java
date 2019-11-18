@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.rxbus;
+package com.sakurafish.pockettoushituryou.shared.rxbus;
 
 import java.util.HashMap;
 

@@ -75,7 +75,7 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
 
         val disposable = Single.zip(foodsRepository.findAllFromAssets(),
                 Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
-                BiFunction { foodsFata: FoodsData, _: Any ->
+                BiFunction { _: FoodsData, _: Any ->
                     Observable.empty<Any>()
                 })
                 .subscribeOn(Schedulers.io())

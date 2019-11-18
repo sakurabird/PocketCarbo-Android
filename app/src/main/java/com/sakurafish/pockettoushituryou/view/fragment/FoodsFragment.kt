@@ -22,9 +22,9 @@ import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.repository.KindsRepository
-import com.sakurafish.pockettoushituryou.rxbus.EventWithMessage
-import com.sakurafish.pockettoushituryou.rxbus.FoodsUpdatedEvent
-import com.sakurafish.pockettoushituryou.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
+import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
+import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.sakurafish.pockettoushituryou.view.activity.MainActivity
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
