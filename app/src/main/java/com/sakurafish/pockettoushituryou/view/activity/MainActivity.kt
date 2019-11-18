@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,24 +21,15 @@ import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser
-import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
-import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
-import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.EVENT_SHOWCASE_MAINACTIVITY_FINISHED
-import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.SHOWCASE_DELAY
-import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.SHOWCASE_ID_MAINACTIVITY
 import com.squareup.moshi.Moshi
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import timber.log.Timber
-import uk.co.deanwild.materialshowcaseview.IShowcaseListener
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 import java.io.IOException
 import javax.inject.Inject
 
@@ -123,7 +112,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
-        showTutorialOnce()
+        showcaseHelper.showTutorialOnce(this@MainActivity, binding)
         return true
     }
 
@@ -244,62 +233,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return false
-    }
-
-    private fun showTutorialOnce() {
-        Handler().post {
-            val config = ShowcaseConfig()
-            config.delay = SHOWCASE_DELAY
-
-            val sequence = MaterialShowcaseSequence(this@MainActivity, SHOWCASE_ID_MAINACTIVITY)
-            sequence.setConfig(config)
-
-            // Menu tutorial
-            val drawerIcon = binding.toolbar.getChildAt(1)
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(this@MainActivity)
-                            .setTarget(drawerIcon)
-                            .setContentText(getString(R.string.tutorial_nav_text))
-                            .setDismissText(getString(android.R.string.ok))
-                            .setDismissOnTouch(true)
-                            .build()
-            )
-
-            // Search tutorial
-            val searchIcon = findViewById<View>(R.id.action_search)
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(this@MainActivity)
-                            .setTarget(searchIcon)
-                            .setContentText(getString(R.string.tutorial_search_text))
-                            .setDismissText(getString(android.R.string.ok))
-                            .setDismissOnTouch(true)
-                            .build()
-            )
-
-            // Tab tutorial
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(this@MainActivity)
-                            .setTarget(binding.tabLayout)
-                            .setContentText(getString(R.string.tutorial_tab_text))
-                            .setDismissText(getString(android.R.string.ok))
-                            .withRectangleShape(true)
-                            .setListener(object : IShowcaseListener {
-                                override fun onShowcaseDisplayed(materialShowcaseView: MaterialShowcaseView) {
-
-                                }
-
-                                override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
-                                    showcaseHelper.setPrefShowcaseMainactivityFinished(true)
-                                    val rxBus = RxBus.getIntanceBus()
-                                    rxBus.post(EventWithMessage(EVENT_SHOWCASE_MAINACTIVITY_FINISHED))
-
-                                }
-                            })
-                            .setDismissOnTouch(true)
-                            .build()
-            )
-            sequence.start()
-        }
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector

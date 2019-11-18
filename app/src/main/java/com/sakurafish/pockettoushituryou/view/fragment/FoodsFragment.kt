@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.annotation.IntRange
-import androidx.appcompat.app.AlertDialog
 import androidx.browser.browseractions.BrowserActionsIntent.EXTRA_TYPE
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -26,21 +25,15 @@ import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
 import com.sakurafish.pockettoushituryou.shared.rxbus.FavoritesUpdateEvent
 import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
 import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
-import com.sakurafish.pockettoushituryou.view.activity.MainActivity
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
-import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.SHOWCASE_DELAY
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import io.reactivex.functions.Consumer
 import timber.log.Timber
-import uk.co.deanwild.materialshowcaseview.IShowcaseListener
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 import javax.inject.Inject
 
 
@@ -189,75 +182,6 @@ class FoodsFragment : Fragment(), Injectable {
         }
     }
 
-    private fun showTutorialOnce() {
-        val mainActivity = requireActivity()
-        if (!showcaseHelper.isShowcaseMainActivityFinished
-                || showcaseHelper.isShowcaseFoodListFragmentFinished
-                || binding.recyclerView.getChildAt(0) == null)
-            return
-        if ((mainActivity as MainActivity).currentPagerPosition + 1 != typeId) return
-
-        val config = ShowcaseConfig()
-        config.delay = SHOWCASE_DELAY
-
-        val sequence = MaterialShowcaseSequence(mainActivity, ShowcaseHelper.SHOWCASE_ID_FOODLISTFRAGMENT)
-        sequence.setConfig(config)
-
-        // Kind Spinner tutorial
-        sequence.addSequenceItem(
-                MaterialShowcaseView.Builder(mainActivity)
-                        .setTarget(binding.kindSpinner)
-                        .setContentText(getString(R.string.tutorial_kind_text))
-                        .setDismissText(getString(android.R.string.ok))
-                        .withRectangleShape()
-                        .setDismissOnTouch(true)
-                        .build()
-        )
-
-        sequence.addSequenceItem(
-                MaterialShowcaseView.Builder(mainActivity)
-                        .setTarget(binding.sortSpinner)
-                        .setContentText(getString(R.string.tutorial_sort_text))
-                        .setDismissText(getString(android.R.string.ok))
-                        .withRectangleShape()
-                        .setDismissOnTouch(true)
-                        .build()
-        )
-
-        // List tutorial
-        if (binding.recyclerView.getChildAt(0) != null) {
-            val view = binding.recyclerView.getChildAt(0)
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(mainActivity)
-                            .setTarget(view)
-                            .setContentText(getString(R.string.tutorial_food_list_text))
-                            .setDismissText(getString(android.R.string.ok))
-                            .withRectangleShape()
-                            .setListener(object : IShowcaseListener {
-                                override fun onShowcaseDisplayed(materialShowcaseView: MaterialShowcaseView) {
-                                }
-
-                                override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
-                                    try {
-                                        val layout = mainActivity.layoutInflater.inflate(R.layout.view_tutorial_finished, null)
-                                        val alert = AlertDialog.Builder(requireContext())
-                                        alert.setView(layout)
-                                        alert.setPositiveButton("OK") { _, _ ->
-                                            showcaseHelper.setPrefShowcaseFoodListFragmentFinished(true)
-                                        }
-                                        alert.show()
-                                    } catch (exception: Exception) {
-                                        exception.printStackTrace()
-                                    }
-                                }
-                            })
-                            .setDismissOnTouch(true)
-                            .build()
-            )
-        }
-        sequence.start()
-    }
-
     private fun initRxBus() {
         this.rxBus = RxBus.getIntanceBus()
 
@@ -277,7 +201,7 @@ class FoodsFragment : Fragment(), Injectable {
         registerRxBus(EventWithMessage::class.java, Consumer { rxBusMessage ->
             // MainActivityのチュートリアルが表示済みになった
             if (TextUtils.equals(rxBusMessage.message, ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED)) {
-                showTutorialOnce()
+                showcaseHelper.showTutorialOnce(this@FoodsFragment, binding, typeId)
             }
         })
     }
