@@ -29,7 +29,9 @@ import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
-import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.*
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.EVENT_SHOWCASE_MAINACTIVITY_FINISHED
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.SHOWCASE_DELAY
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.SHOWCASE_ID_MAINACTIVITY
 import com.squareup.moshi.Moshi
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -247,7 +249,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     private fun showTutorialOnce() {
         Handler().post {
             val config = ShowcaseConfig()
-            config.delay = SHOWCASE_DELAY.toLong()
+            config.delay = SHOWCASE_DELAY
 
             val sequence = MaterialShowcaseSequence(this@MainActivity, SHOWCASE_ID_MAINACTIVITY)
             sequence.setConfig(config)

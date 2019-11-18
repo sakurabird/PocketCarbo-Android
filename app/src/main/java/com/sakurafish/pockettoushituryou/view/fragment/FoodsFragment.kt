@@ -31,7 +31,7 @@ import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
-import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_DELAY
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.Companion.SHOWCASE_DELAY
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass
