@@ -33,6 +33,7 @@ import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper.SHOWCASE_DELAY
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
+import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import io.reactivex.functions.Consumer
 import timber.log.Timber
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener
@@ -134,7 +135,8 @@ class FoodsFragment : Fragment(), Injectable {
 
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
-                adapterItems += FoodItemViewModel(requireContext(), kindsRepository, favoriteFoodsRepository, food)
+                adapterItems += FoodItemViewModel(
+                        requireContext(), kindsRepository, favoriteFoodsRepository, food, HostClass.FOODS)
             }
 
             adapter.run {

@@ -17,6 +17,7 @@ import com.sakurafish.pockettoushituryou.repository.KindsRepository
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FavoritesViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
+import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import javax.inject.Inject
 
 class FavoritesFragment : Fragment(), Injectable {
@@ -53,7 +54,6 @@ class FavoritesFragment : Fragment(), Injectable {
 
         initView()
         setupViewModel()
-
     }
 
     private fun initView() {
@@ -70,7 +70,8 @@ class FavoritesFragment : Fragment(), Injectable {
 
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
-                adapterItems += FoodItemViewModel(requireContext(), kindsRepository, favoriteFoodsRepository, food)
+                adapterItems += FoodItemViewModel(
+                        requireContext(), kindsRepository, favoriteFoodsRepository, food, HostClass.FAVORITES)
             }
 
             adapter.run {

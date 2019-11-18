@@ -23,11 +23,18 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 
+enum class HostClass {
+    FOODS,
+    FAVORITES,
+    SEARCH
+}
+
 class FoodItemViewModel(
         private val context: Context,
         private val kindsRepository: KindsRepository,
         private val favoriteFoodsRepository: FavoriteFoodsRepository,
-        private val foods: Foods
+        private val foods: Foods,
+        private val hostClass: HostClass
 ) : ViewModel() {
 
     val carboRatedColorResId = liveData {
@@ -116,9 +123,7 @@ class FoodItemViewModel(
     private var favAnimatorSet: AnimatorSet? = null
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            _isFavState.postValue(favoriteFoodsRepository.isFavorite(foods.id))
-        }
+        refreshFavoriteStatus()
     }
 
     private fun createCubeSugarString(carbohydrate: Float): String {
@@ -141,6 +146,12 @@ class FoodItemViewModel(
 
     fun setExpandListener(onClickListener: View.OnClickListener) {
         this.onClickListener = onClickListener
+    }
+
+    fun refreshFavoriteStatus() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isFavState.postValue(favoriteFoodsRepository.isFavorite(foods.id))
+        }
     }
 
     fun onClickFavButton(view: View) {

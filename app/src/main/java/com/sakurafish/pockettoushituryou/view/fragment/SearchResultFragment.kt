@@ -17,6 +17,7 @@ import com.sakurafish.pockettoushituryou.repository.KindsRepository
 import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.Companion.EXTRA_QUERY
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
+import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import com.sakurafish.pockettoushituryou.viewmodel.SearchResultViewModel
 import javax.inject.Inject
 
@@ -82,7 +83,8 @@ class SearchResultFragment : Fragment(), Injectable {
 
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
-                adapterItems += FoodItemViewModel(requireContext(), kindsRepository, favoriteFoodsRepository, food)
+                adapterItems += FoodItemViewModel(
+                        requireContext(), kindsRepository, favoriteFoodsRepository, food, HostClass.SEARCH)
             }
 
             adapter.run {
