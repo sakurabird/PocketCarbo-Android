@@ -55,9 +55,8 @@ class FoodItemViewModel(
         emit(foods.name)
     }
 
-    val kindName = liveData(Dispatchers.IO) {
-        val result = kindsRepository.findName(foods.kindId)
-        emit(result)
+    val kindName = liveData {
+        emit(foods.kinds?.name)
     }
 
     val carbohydratePer100g = liveData {

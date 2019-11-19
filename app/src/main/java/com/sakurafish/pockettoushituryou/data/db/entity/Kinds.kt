@@ -15,7 +15,7 @@ class Kinds {
     @Json(name = "id")
     var id: Int = 0
 
-    @Column(value = "name")
+    @Column(value = "name", indexed = true)
     @Json(name = "name")
     var name: String? = null
 

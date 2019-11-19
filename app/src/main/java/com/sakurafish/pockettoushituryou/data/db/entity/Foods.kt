@@ -67,6 +67,10 @@ class Foods {
     @Json(name = "kind_id")
     var kindId: Int = 0
 
+    @Column(value = "kinds", indexed = true)
+    @Transient
+    var kinds: Kinds? = null
+
     override fun toString(): String {
         val builder = StringBuilder()
         builder.append("Foods id:")
