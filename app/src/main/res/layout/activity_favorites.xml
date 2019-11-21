@@ -35,23 +35,25 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_favorites"
                 android:name="com.sakurafish.pockettoushituryou.view.fragment.FavoritesFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/space_12dp"
+                android:tag="fragment_favorites"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_adBanner"
             android:name="com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:tag="fragment_adBanner" />
 
     </RelativeLayout>
 

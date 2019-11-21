@@ -24,11 +24,12 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_settings"
             android:name="com.sakurafish.pockettoushituryou.view.fragment.SettingsFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:tag="fragment_settings" />
 
     </LinearLayout>
 

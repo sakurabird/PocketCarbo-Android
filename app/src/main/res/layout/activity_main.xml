@@ -64,13 +64,14 @@
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_adBanner"
                 android:name="com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:tag="fragment_adBanner" />
 
         </RelativeLayout>
 
