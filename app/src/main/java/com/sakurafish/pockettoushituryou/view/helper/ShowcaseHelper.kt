@@ -9,10 +9,11 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
-import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.store.Action
+import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.view.activity.MainActivity
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
@@ -26,7 +27,8 @@ import javax.inject.Singleton
 @Singleton
 class ShowcaseHelper @Inject constructor(
         private val context: Context,
-        private val pref: Pref
+        private val pref: Pref,
+        private val dispatcher: Dispatcher
 ) {
 
     // true: 表示済みをあらわす
@@ -56,6 +58,7 @@ class ShowcaseHelper @Inject constructor(
         pref.setPref(PREF_KEY_SHOWCASE_FOODLISTFRAGMENT_FINISHED, finished)
     }
 
+    @ExperimentalCoroutinesApi
     fun showTutorialOnce(activity: MainActivity, binding: ActivityMainBinding) {
         Handler().post {
             val config = ShowcaseConfig()
@@ -100,9 +103,7 @@ class ShowcaseHelper @Inject constructor(
 
                                 override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
                                     setPrefShowcaseMainactivityFinished(true)
-                                    val rxBus = RxBus.getIntanceBus()
-                                    rxBus.post(EventWithMessage(EVENT_SHOWCASE_MAINACTIVITY_FINISHED))
-
+                                    dispatcher.launchAndDispatch(Action.ShowcaseProceeded)
                                 }
                             })
                             .setDismissOnTouch(true)
@@ -192,7 +193,5 @@ class ShowcaseHelper @Inject constructor(
 
         const val PREF_KEY_SHOWCASE_MAINACTIVITY_FINISHED = "PREF_KEY_MAINACTIVITY_FINISHED"
         const val PREF_KEY_SHOWCASE_FOODLISTFRAGMENT_FINISHED = "PREF_KEY_FOODLISTFRAGMENT_FINISHED"
-
-        const val EVENT_SHOWCASE_MAINACTIVITY_FINISHED = "EVENT_SHOWCASE_MAINACTIVITY_FINISHED"
     }
 }

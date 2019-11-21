@@ -30,4 +30,9 @@ class FoodsStore @Inject constructor(
     val favoritesChanged: LiveData<Action.FavoritesFoodsUpdated> = dispatcher.subscribe<Action.FavoritesFoodsUpdated>()
             .map { it }
             .toLiveDataEndless(null)
+
+    @ExperimentalCoroutinesApi
+    val showcaseProceeded: LiveData<Action.ShowcaseProceeded> = dispatcher.subscribe<Action.ShowcaseProceeded>()
+            .map { it }
+            .toLiveDataEndless(null)
 }

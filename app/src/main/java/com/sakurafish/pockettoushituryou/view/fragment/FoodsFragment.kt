@@ -146,6 +146,10 @@ class FoodsFragment : Fragment(), Injectable {
                 adapter.refreshFavoriteStatus()
             }
         }
+
+        foodsStore.showcaseProceeded.changed(viewLifecycleOwner) {
+            showcaseHelper.showTutorialOnce(this@FoodsFragment, binding, typeId)
+        }
     }
 
     private fun setupViewModel() {
