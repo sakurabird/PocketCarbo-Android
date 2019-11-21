@@ -21,6 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -67,6 +68,7 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
         pref.setPref(getString(com.sakurafish.pockettoushituryou.R.string.PREF_LAUNCH_COUNT), ++launchCount)
     }
 
+    @ExperimentalCoroutinesApi
     private fun findAllDataFromAssets() {
         val dataVersion = resources.getInteger(com.sakurafish.pockettoushituryou.R.integer.data_version)
         if (dataVersion == pref.getPrefInt(getString(com.sakurafish.pockettoushituryou.R.string.PREF_DATA_VERSION))) {

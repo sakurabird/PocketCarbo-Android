@@ -36,6 +36,7 @@ import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import io.reactivex.functions.Consumer
 import timber.log.Timber
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 
@@ -85,6 +86,7 @@ class FoodsFragment : Fragment(), Injectable {
                 .get(FoodsViewModel::class.java)
 
         initView()
+        setupStore()
         setupViewModel()
 
         if (savedInstanceState != null) {
@@ -130,7 +132,8 @@ class FoodsFragment : Fragment(), Injectable {
         initSortSpinner()
     }
 
-    private fun setupViewModel() {
+    @ExperimentalCoroutinesApi
+    private fun setupStore() {
         foodsStore.populateState.changed(viewLifecycleOwner) {
             if (it == FoodsStore.PopulateState.Populated) {
                 viewModel.setTypeId(typeId)
@@ -138,6 +141,14 @@ class FoodsFragment : Fragment(), Injectable {
             }
         }
 
+        foodsStore.favoritesChanged.changed(viewLifecycleOwner) {
+            if (it.hostClass == HostClass.FAVORITES || it.hostClass == HostClass.SEARCH) {
+                adapter.refreshFavoriteStatus()
+            }
+        }
+    }
+
+    private fun setupViewModel() {
         viewModel.foods.observe(viewLifecycleOwner, Observer {
             it ?: return@Observer
 

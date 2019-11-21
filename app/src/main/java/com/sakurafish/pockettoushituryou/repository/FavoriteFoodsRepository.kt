@@ -4,16 +4,19 @@ import androidx.annotation.WorkerThread
 import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
-import com.sakurafish.pockettoushituryou.shared.rxbus.FavoritesUpdateEvent
-import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.store.Action
+import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FavoriteFoodsRepository @Inject
-internal constructor(private val orma: OrmaDatabase) {
+internal constructor(
+        private val orma: OrmaDatabase,
+        private val dispatcher: Dispatcher) {
 
     @WorkerThread
     fun isFavorite(foodsId: Int): Boolean {
@@ -28,21 +31,19 @@ internal constructor(private val orma: OrmaDatabase) {
         return foods
     }
 
+    @ExperimentalCoroutinesApi
     @WorkerThread
     fun delete(foods: Foods, hostClass: HostClass) {
         orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
-
-        val rxBus = RxBus.getIntanceBus()
-        rxBus.post(FavoritesUpdateEvent(hostClass, foods.id))
+        dispatcher.launchAndDispatch(Action.FavoritesFoodsUpdated(hostClass))
     }
 
+    @ExperimentalCoroutinesApi
     @WorkerThread
     fun save(foods: Foods, hostClass: HostClass) {
         orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
         orma.relationOfFavoriteFoods().inserter().execute(FavoriteFoods(foods, Date()))
-
-        val rxBus = RxBus.getIntanceBus()
-        rxBus.post(FavoritesUpdateEvent(hostClass, foods.id))
+        dispatcher.launchAndDispatch(Action.FavoritesFoodsUpdated(hostClass))
     }
 
     @WorkerThread
