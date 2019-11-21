@@ -1,5 +1,6 @@
 package com.sakurafish.pockettoushituryou.shared.rxbus;
 
+@Deprecated
 public class EventWithMessage {
     private String message;
 

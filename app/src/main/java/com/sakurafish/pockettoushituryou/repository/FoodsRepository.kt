@@ -159,8 +159,6 @@ class FoodsRepository @Inject internal constructor(
                 .subscribeOn(Schedulers.io())
                 .doOnComplete {
                     Timber.tag(TAG).d("updateAllAsync completed")
-                    val rxBus = RxBus.getIntanceBus()
-                    rxBus.post(FoodsUpdatedEvent(EVENT_DB_UPDATED))
                     dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
                 }
                 .subscribe()
@@ -168,7 +166,5 @@ class FoodsRepository @Inject internal constructor(
 
     companion object {
         private val TAG = FoodsRepository::class.java.simpleName
-
-        const val EVENT_DB_UPDATED = "EVENT_DB_UPDATED"
     }
 }

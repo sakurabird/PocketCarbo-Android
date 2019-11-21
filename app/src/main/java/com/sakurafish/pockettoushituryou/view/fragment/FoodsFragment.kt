@@ -1,7 +1,6 @@
 package com.sakurafish.pockettoushituryou.view.fragment
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +18,8 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
-import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.repository.KindsRepository
 import com.sakurafish.pockettoushituryou.shared.ext.changed
-import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
-import com.sakurafish.pockettoushituryou.shared.rxbus.FavoritesUpdateEvent
-import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
-import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
 import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
@@ -34,11 +28,8 @@ import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass
-import io.reactivex.functions.Consumer
-import timber.log.Timber
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
-
 
 class FoodsFragment : Fragment(), Injectable {
 
@@ -61,7 +52,6 @@ class FoodsFragment : Fragment(), Injectable {
     private var kindId: Int = Kinds.ALL
     private var sort: Int = 0 // デフォルトは名前順;
     private var sortToast: Boolean = false
-    private var rxBus: RxBus? = null
     private var kindSpinnerInit: Boolean = true
     private var sortSpinnerInit: Boolean = true
 
@@ -96,11 +86,6 @@ class FoodsFragment : Fragment(), Injectable {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterRxBus()
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(EXTRA_TYPE, this.typeId)
@@ -119,8 +104,6 @@ class FoodsFragment : Fragment(), Injectable {
         viewModel.setTypeId(this.typeId)
         kindSpinnerInit = true
         sortSpinnerInit = true
-
-        initRxBus()
 
         binding.lifecycleOwner = viewLifecycleOwner
         adapter = FoodsAdapter(viewLifecycleOwner)
@@ -219,40 +202,6 @@ class FoodsFragment : Fragment(), Injectable {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-    }
-
-    private fun initRxBus() {
-        this.rxBus = RxBus.getIntanceBus()
-
-        registerRxBus(FoodsUpdatedEvent::class.java, Consumer { rxBusMessage ->
-            // DBに食品データが全て追加された
-            if (TextUtils.equals(rxBusMessage.message, FoodsRepository.EVENT_DB_UPDATED)) {
-                loadDB()
-            }
-        })
-
-        registerRxBus(FavoritesUpdateEvent::class.java, Consumer {
-            if (it.hostClass == HostClass.FAVORITES || it.hostClass == HostClass.SEARCH) {
-                adapter.refreshFavoriteStatus(it.foodsId)
-            }
-        })
-
-        registerRxBus(EventWithMessage::class.java, Consumer { rxBusMessage ->
-            // MainActivityのチュートリアルが表示済みになった
-            if (TextUtils.equals(rxBusMessage.message, ShowcaseHelper.EVENT_SHOWCASE_MAINACTIVITY_FINISHED)) {
-                showcaseHelper.showTutorialOnce(this@FoodsFragment, binding, typeId)
-            }
-        })
-    }
-
-    private fun <T> registerRxBus(eventType: Class<T>, action: Consumer<T>) {
-        val disposable = rxBus?.doSubscribe(eventType, action,
-                Consumer { throwable -> Timber.tag(TAG).e(throwable, "Failed to register RxBus") })
-        rxBus?.addSubscription(this, disposable)
-    }
-
-    private fun unregisterRxBus() {
-        rxBus?.unSubscribe(this)
     }
 
     companion object {

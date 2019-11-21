@@ -12,6 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
+@Deprecated
 public class RxBus {
     // http://blog.csdn.net/zcpHappy/article/details/75255918 RxJava2
     private HashMap<String, CompositeDisposable> mSubscriptionMap;
