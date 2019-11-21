@@ -21,10 +21,12 @@ import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.shared.ext.changed
 import com.sakurafish.pockettoushituryou.shared.rxbus.EventWithMessage
 import com.sakurafish.pockettoushituryou.shared.rxbus.FavoritesUpdateEvent
 import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
 import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter
@@ -47,6 +49,8 @@ class FoodsFragment : Fragment(), Injectable {
     lateinit var favoriteFoodsRepository: FavoriteFoodsRepository
     @Inject
     lateinit var showcaseHelper: ShowcaseHelper
+    @Inject
+    lateinit var foodsStore: FoodsStore
 
     private lateinit var viewModel: FoodsViewModel
     private lateinit var binding: FragmentFoodsBinding
@@ -57,6 +61,8 @@ class FoodsFragment : Fragment(), Injectable {
     private var sort: Int = 0 // デフォルトは名前順;
     private var sortToast: Boolean = false
     private var rxBus: RxBus? = null
+    private var kindSpinnerInit: Boolean = true
+    private var sortSpinnerInit: Boolean = true
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -86,7 +92,6 @@ class FoodsFragment : Fragment(), Injectable {
             this.kindId = savedInstanceState.getInt("kindId")
             this.sort = savedInstanceState.getInt("sort")
         }
-        loadDB()
     }
 
     override fun onDestroy() {
@@ -102,12 +107,16 @@ class FoodsFragment : Fragment(), Injectable {
     }
 
     private fun loadDB() {
-        viewModel.setTypeId(typeId)
-        viewModel.findFoods(kindId, sort)
+        val state = foodsStore.populateState.value
+        state?.let {
+            viewModel.findFoods(kindId, sort)
+        }
     }
 
     private fun initView() {
         viewModel.setTypeId(this.typeId)
+        kindSpinnerInit = true
+        sortSpinnerInit = true
 
         initRxBus()
 
@@ -122,6 +131,13 @@ class FoodsFragment : Fragment(), Injectable {
     }
 
     private fun setupViewModel() {
+        foodsStore.populateState.changed(viewLifecycleOwner) {
+            if (it == FoodsStore.PopulateState.Populated) {
+                viewModel.setTypeId(typeId)
+                loadDB()
+            }
+        }
+
         viewModel.foods.observe(viewLifecycleOwner, Observer {
             it ?: return@Observer
 
@@ -151,6 +167,10 @@ class FoodsFragment : Fragment(), Injectable {
         binding.kindSpinner.adapter = kindSpinnerAdapter
         binding.kindSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (kindSpinnerInit) {
+                    kindSpinnerInit = false
+                    return
+                }
                 kindId = if (position == 0) {
                     Kinds.ALL
                 } else {
@@ -168,6 +188,10 @@ class FoodsFragment : Fragment(), Injectable {
         binding.sortSpinner.adapter = adapter
         binding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (sortSpinnerInit) {
+                    sortSpinnerInit = false
+                    return
+                }
                 sort = position
                 if (position < 0 || position > 3) sort = 0
                 if (sortToast) {

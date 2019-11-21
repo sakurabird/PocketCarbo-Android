@@ -8,8 +8,9 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
 import com.sakurafish.pockettoushituryou.data.local.FoodsData
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
-import com.sakurafish.pockettoushituryou.shared.rxbus.FoodsUpdatedEvent
-import com.sakurafish.pockettoushituryou.shared.rxbus.RxBus
+import com.sakurafish.pockettoushituryou.store.Action
+import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class FoodsRepository @Inject internal constructor(
         private val orma: OrmaDatabase,
         private val context: Context,
-        private val moshi: Moshi
+        private val moshi: Moshi,
+        private val dispatcher: Dispatcher
 ) {
 
     @WorkerThread
@@ -159,6 +161,7 @@ class FoodsRepository @Inject internal constructor(
                     Timber.tag(TAG).d("updateAllAsync completed")
                     val rxBus = RxBus.getIntanceBus()
                     rxBus.post(FoodsUpdatedEvent(EVENT_DB_UPDATED))
+                    dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
                 }
                 .subscribe()
     }

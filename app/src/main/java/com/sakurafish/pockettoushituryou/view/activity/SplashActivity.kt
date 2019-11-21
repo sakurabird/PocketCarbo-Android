@@ -9,6 +9,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.sakurafish.pockettoushituryou.data.local.FoodsData
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.shared.Pref
+import com.sakurafish.pockettoushituryou.store.Action
+import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.store.FoodsStore
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -35,6 +38,8 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
     lateinit var foodsRepository: FoodsRepository
+    @Inject
+    lateinit var dispatcher: Dispatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,13 +70,18 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
     private fun findAllDataFromAssets() {
         val dataVersion = resources.getInteger(com.sakurafish.pockettoushituryou.R.integer.data_version)
         if (dataVersion == pref.getPrefInt(getString(com.sakurafish.pockettoushituryou.R.string.PREF_DATA_VERSION))) {
+
+            dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
             Timber.tag(TAG).d("DB is maintained latest version:%d", dataVersion)
+
             val disposable = Observable.interval(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { startNextActivity() }
             compositeDisposable.add(disposable)
             return
         }
+
+        dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populate))
 
         val disposable = Single.zip(foodsRepository.findAllFromAssets(),
                 Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
@@ -80,10 +90,11 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally { this.startNextActivity() }
+                .doFinally {
+                    if (!isFinishing) this.startNextActivity()
+                }
                 .subscribe({
                     pref.setPref(getString(com.sakurafish.pockettoushituryou.R.string.PREF_DATA_VERSION), dataVersion)
-                    Timber.tag(TAG).d("Succeeded in loading foods from Assets.")
                 },
                         { throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods from Assets.") })
 
