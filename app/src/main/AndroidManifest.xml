@@ -19,7 +19,7 @@
             android:name="com.sakurafish.pockettoushituryou.view.activity.SplashActivity"
             android:launchMode="singleTask"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -17,6 +17,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- Launcher theme -->
+    <style name="AppTheme.Launcher" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <style name="CustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
