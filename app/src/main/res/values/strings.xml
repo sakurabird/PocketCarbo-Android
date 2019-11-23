@@ -3,6 +3,7 @@
     <string name="app_url">http://play.google.com/store/apps/details?id=com.sakurafish.pockettoushituryou</string>
     <string name="app_website">http://www.pockettoushituryou.com/</string>
 
+    <string name="cancel">キャンセル</string>
     <string name="splash_content_description_app_image">App Image</string>
 
     <!-- Side Menu -->

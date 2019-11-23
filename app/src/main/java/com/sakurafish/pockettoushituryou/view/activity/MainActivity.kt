@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
             // Google Play
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url))))
         }
+        dialog.negativeButton(R.string.cancel)
         dialog.show()
 
         pref.setPref(getString(R.string.PREF_ASK_REVIEW), true)
