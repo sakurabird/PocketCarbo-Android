@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.sakurafish.pockettoushituryou.data.local.TypesData
@@ -51,12 +52,16 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     val currentPagerPosition: Int
         get() = binding.pager.currentItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle())
 
         mainViewModel = ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)

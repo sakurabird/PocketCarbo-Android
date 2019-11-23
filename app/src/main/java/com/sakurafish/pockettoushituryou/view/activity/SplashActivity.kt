@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -14,16 +13,11 @@ import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity(), HasAndroidInjector {
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle())
 
         DataBindingUtil.setContentView<ViewDataBinding>(this, com.sakurafish.pockettoushituryou.R.layout.activity_splash)
 
