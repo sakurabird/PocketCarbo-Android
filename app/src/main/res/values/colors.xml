@@ -9,5 +9,6 @@
     <color name="colorCarboDanger">#f44336</color>
     <color name="colorCarboDangerHigh">#9c27b0</color>
 
+    <color name="foodsBG">#E1F5F2</color>
     <color name="adBannerBG">#3F3F3F</color>
 </resources>
