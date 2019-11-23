@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sakurafish.pockettoushituryou.di.ViewModelFactory
 import com.sakurafish.pockettoushituryou.di.ViewModelKey
-import com.sakurafish.pockettoushituryou.view.activity.*
+import com.sakurafish.pockettoushituryou.view.activity.FavoritesActivity
+import com.sakurafish.pockettoushituryou.view.activity.HelpActivity
+import com.sakurafish.pockettoushituryou.view.activity.MainActivity
+import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity
 import com.sakurafish.pockettoushituryou.viewmodel.MainViewModel
 import dagger.Binds
 import dagger.Module
@@ -16,9 +19,6 @@ internal abstract class ActivityModule {
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
-
-    @ContributesAndroidInjector
-    internal abstract fun contributeSplashActivity(): SplashActivity
 
     @Binds
     @IntoMap

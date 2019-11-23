@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         get() = binding.pager.currentItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
