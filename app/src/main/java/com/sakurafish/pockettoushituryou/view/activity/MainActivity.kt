@@ -61,11 +61,18 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         mainViewModel = ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        setLaunchCount()
+
         initView()
 
         pleaseReview()
 
         showAppMessage()
+    }
+
+    private fun setLaunchCount() {
+        var launchCount = pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT))
+        pref.setPref(getString(R.string.PREF_LAUNCH_COUNT), ++launchCount)
     }
 
     private fun pleaseReview() {
