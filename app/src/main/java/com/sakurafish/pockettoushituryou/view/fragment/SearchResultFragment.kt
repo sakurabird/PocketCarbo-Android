@@ -84,7 +84,7 @@ class SearchResultFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), kindsRepository, favoriteFoodsRepository, food, HostClass.SEARCH)
+                        requireContext(), favoriteFoodsRepository, food, HostClass.SEARCH)
             }
 
             adapter.run {

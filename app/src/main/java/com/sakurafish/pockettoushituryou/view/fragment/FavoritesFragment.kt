@@ -71,7 +71,7 @@ class FavoritesFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), kindsRepository, favoriteFoodsRepository, food, HostClass.FAVORITES)
+                        requireContext(), favoriteFoodsRepository, food, HostClass.FAVORITES)
             }
 
             adapter.run {

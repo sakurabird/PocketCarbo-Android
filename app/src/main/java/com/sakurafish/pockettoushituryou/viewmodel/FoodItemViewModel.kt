@@ -17,7 +17,6 @@ import androidx.lifecycle.*
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
-import com.sakurafish.pockettoushituryou.repository.KindsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -31,7 +30,6 @@ enum class HostClass {
 
 class FoodItemViewModel(
         private val context: Context,
-        private val kindsRepository: KindsRepository,
         private val favoriteFoodsRepository: FavoriteFoodsRepository,
         val foods: Foods,
         private val hostClass: HostClass

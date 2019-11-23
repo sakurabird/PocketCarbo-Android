@@ -142,7 +142,7 @@ class FoodsFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), kindsRepository, favoriteFoodsRepository, food, HostClass.FOODS)
+                        requireContext(), favoriteFoodsRepository, food, HostClass.FOODS)
             }
 
             adapter.run {
