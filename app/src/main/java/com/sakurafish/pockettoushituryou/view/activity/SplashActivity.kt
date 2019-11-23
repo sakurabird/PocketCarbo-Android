@@ -6,24 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.sakurafish.pockettoushituryou.data.local.FoodsData
-import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
-import com.sakurafish.pockettoushituryou.store.FoodsStore
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -35,12 +21,6 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
     @Inject
     lateinit var pref: Pref
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-    @Inject
-    lateinit var foodsRepository: FoodsRepository
-    @Inject
-    lateinit var dispatcher: Dispatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,52 +35,12 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
 
         setLaunchCount()
 
-        findAllDataFromAssets()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.dispose()
+        startNextActivity()
     }
 
     private fun setLaunchCount() {
         var launchCount = pref.getPrefInt(getString(com.sakurafish.pockettoushituryou.R.string.PREF_LAUNCH_COUNT))
         pref.setPref(getString(com.sakurafish.pockettoushituryou.R.string.PREF_LAUNCH_COUNT), ++launchCount)
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun findAllDataFromAssets() {
-        val dataVersion = resources.getInteger(com.sakurafish.pockettoushituryou.R.integer.data_version)
-        if (dataVersion == pref.getPrefInt(getString(com.sakurafish.pockettoushituryou.R.string.PREF_DATA_VERSION))) {
-
-            dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
-            Timber.tag(TAG).d("DB is maintained latest version:%d", dataVersion)
-
-            val disposable = Observable.interval(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { startNextActivity() }
-            compositeDisposable.add(disposable)
-            return
-        }
-
-        dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populate))
-
-        val disposable = Single.zip(foodsRepository.findAllFromAssets(),
-                Single.timer(MINIMUM_LOADING_TIME, TimeUnit.MILLISECONDS),
-                BiFunction { _: FoodsData, _: Any ->
-                    Observable.empty<Any>()
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally {
-                    if (!isFinishing) this.startNextActivity()
-                }
-                .subscribe({
-                    pref.setPref(getString(com.sakurafish.pockettoushituryou.R.string.PREF_DATA_VERSION), dataVersion)
-                },
-                        { throwable -> Timber.tag(TAG).e(throwable, "Failed to load foods from Assets.") })
-
-        compositeDisposable.add(disposable)
     }
 
     private fun startNextActivity() {
@@ -110,11 +50,4 @@ class SplashActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
-    companion object {
-
-        private val TAG = SplashActivity::class.java.simpleName
-
-        private const val MINIMUM_LOADING_TIME = 1000L
-    }
 }

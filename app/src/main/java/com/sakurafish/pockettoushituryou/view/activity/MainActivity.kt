@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -18,6 +19,7 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.sakurafish.pockettoushituryou.data.local.TypesData
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
+import com.sakurafish.pockettoushituryou.di.ViewModelFactory
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser
@@ -25,6 +27,7 @@ import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
+import com.sakurafish.pockettoushituryou.viewmodel.MainViewModel
 import com.squareup.moshi.Moshi
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -43,8 +46,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     lateinit var pref: Pref
     @Inject
     lateinit var showcaseHelper: ShowcaseHelper
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
 
     val currentPagerPosition: Int
         get() = binding.pager.currentItem
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mainViewModel = ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         initView()

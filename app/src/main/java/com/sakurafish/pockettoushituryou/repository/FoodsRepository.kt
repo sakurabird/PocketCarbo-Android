@@ -8,39 +8,34 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
 import com.sakurafish.pockettoushituryou.data.local.FoodsData
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
-import com.sakurafish.pockettoushituryou.store.FoodsStore
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import io.reactivex.Single
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
 class FoodsRepository @Inject internal constructor(
         private val orma: OrmaDatabase,
         private val context: Context,
-        private val moshi: Moshi,
-        private val dispatcher: Dispatcher
+        private val moshi: Moshi
 ) {
 
     @WorkerThread
-    fun findAllFromAssets(): Single<FoodsData> {
-        val json: String
-        return try {
-            json = LocalJsonResolver.loadJsonFromAsset(context, "json/foods_and_kinds.json")
-            val jsonAdapter = moshi.adapter(FoodsData::class.java)
-            val foodsData = jsonAdapter.fromJson(json)
-            foodsData?.let {
-                updateAllAsync(foodsData)
+    fun count(): Int {
+        return orma.relationOfFoods().count()
+    }
+
+    @WorkerThread
+    fun insertAll(foodsData: FoodsData?) {
+        foodsData.let {
+            for (kinds in foodsData?.kinds!!) {
+                orma.relationOfKinds().upsert(kinds)
             }
-            Single.create { emitter -> emitter.onSuccess(foodsData!!) }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Single.create { emitter -> emitter.onError(e) }
+            for (foods in foodsData?.foods!!) {
+                foods.kinds = orma.relationOfKinds().selector().idEq(foods.kindId).toList().firstOrNull()
+                orma.relationOfFoods().upsert(foods)
+            }
+            Timber.tag(TAG).d("insertAll completed kinds size:" + it?.kinds!!.size + " foods size:" + it.foods!!.size)
         }
     }
 
@@ -146,22 +141,10 @@ class FoodsRepository @Inject internal constructor(
     }
 
     @WorkerThread
-    private fun updateAllAsync(foodsData: FoodsData): Disposable {
-        return orma.transactionAsCompletable {
-            for (kinds in foodsData.kinds!!) {
-                orma.relationOfKinds().upsert(kinds)
-            }
-            for (foods in foodsData.foods!!) {
-                foods.kinds = orma.relationOfKinds().selector().idEq(foods.kindId).toList().firstOrNull()
-                orma.relationOfFoods().upsert(foods)
-            }
-        }
-                .subscribeOn(Schedulers.io())
-                .doOnComplete {
-                    Timber.tag(TAG).d("updateAllAsync completed")
-                    dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
-                }
-                .subscribe()
+    fun parseJsonToFoodsData(): FoodsData? {
+        val json = LocalJsonResolver.loadJsonFromAsset(context, "json/foods_and_kinds.json")
+        val adapter: JsonAdapter<FoodsData> = moshi.adapter(FoodsData::class.java)
+        return adapter.fromJson(json)
     }
 
     companion object {
