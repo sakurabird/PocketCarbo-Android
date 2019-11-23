@@ -121,6 +121,8 @@ class FoodsFragment : Fragment(), Injectable {
             if (it == FoodsStore.PopulateState.Populated) {
                 viewModel.setTypeId(typeId)
                 loadDB()
+            } else {
+                viewModel.enableIsLoading(true)
             }
         }
 

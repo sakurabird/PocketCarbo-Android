@@ -25,16 +25,27 @@ class FoodsViewModel @Inject constructor(
         emit(result)
     }
 
+    private val _isLoading = MutableLiveData<Boolean>().apply {
+        value = true
+    }
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun setTypeId(@IntRange(from = 1, to = 6) typeId: Int) {
         this.typeId = typeId
     }
 
     fun findFoods(kindId: Int, sort: Int) {
         viewModelScope.launch(Dispatchers.IO) {
+            enableIsLoading(true)
             val foods = foodsRepository.findByTypeAndKind(typeId, kindId, sort)
             _foods.postValue(foods)
             Timber.tag(TAG).d("type:" + typeId + " foods size:" + foods.size)
+            enableIsLoading(false)
         }
+    }
+
+    fun enableIsLoading(enable: Boolean) {
+        _isLoading.postValue(enable)
     }
 
     companion object {
