@@ -12,11 +12,13 @@ import com.sakurafish.pockettoushituryou.store.Action
 import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.store.FoodsStore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
 @Singleton
 class MainViewModel @Inject constructor(
         private val context: Context,
@@ -29,11 +31,11 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             if (mustPopulate()) {
-                dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populate))
+                dispatcher.dispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populate))
                 populateDB()
-                dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
+                dispatcher.dispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
             } else {
-                dispatcher.launchAndDispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
+                dispatcher.dispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
             }
         }
     }
