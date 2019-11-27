@@ -47,6 +47,10 @@ class Foods {
     @Json(name = "fat")
     var fat: Float = 0.toFloat()
 
+    @Column(value = "fat_per100g")
+    @Json(name = "fat_per100g")
+    var fatPer100g: Float = 0.toFloat()
+
     @Column(value = "sodium")
     @Json(name = "sodium")
     var sodium: Float = 0.toFloat()
