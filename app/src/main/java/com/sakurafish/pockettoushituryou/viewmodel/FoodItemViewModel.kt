@@ -66,6 +66,10 @@ class FoodItemViewModel(
         emit(createCubeSugarString(foods.carbohydratePer100g))
     }
 
+    val fatPer100 = liveData {
+        emit(foods.fatPer100g.toString() + " g")
+    }
+
     val expandedTitle = liveData {
         val title = when {
             TextUtils.isEmpty(foods.weightHint) -> context.getString(R.string.expanded_title, foods.weight.toString() + " g")
