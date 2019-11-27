@@ -35,8 +35,9 @@
                 <data
                     android:host="www.pockettoushituryou.com"
                     android:pathPattern="/foods"
-                    android:scheme="http" />
+                    android:scheme="https" />
             </intent-filter>
+
         </activity>
 
         <activity
