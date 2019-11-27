@@ -47,9 +47,9 @@ class Foods {
     @Json(name = "fat")
     var fat: Float = 0.toFloat()
 
-    @Column(value = "fat_per100g")
+    @Column(value = "fat_per100g", indexed = true)
     @Json(name = "fat_per100g")
-    var fatPer100g: Float = 0.toFloat()
+    var fatPer100g: Float? = 0.toFloat()
 
     @Column(value = "sodium")
     @Json(name = "sodium")

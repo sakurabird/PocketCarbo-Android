@@ -44,7 +44,7 @@ class SortSpinnerAdapter(private val context: Context) : BaseAdapter() {
     }
 
     companion object {
-        val texts = arrayOf("食品名順", "食品名逆順", "糖質量の少ない順", "糖質量の多い順")
+        val texts = arrayOf("食品名順", "食品名逆順", "糖質量の少ない順", "糖質量の多い順", "脂質量の少ない順", "脂質量の多い順")
     }
 
 }

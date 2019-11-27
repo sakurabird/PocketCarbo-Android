@@ -193,7 +193,7 @@ class FoodsFragment : Fragment(), Injectable {
                     return
                 }
                 sort = position
-                if (position < 0 || position > 3) sort = 0
+                if (position < 0 || position > 5) sort = 0
                 if (sortToast) {
                     Toast.makeText(requireContext(), SortSpinnerAdapter.texts[position] + "にソートしました。", Toast.LENGTH_SHORT).show()
                 } else {

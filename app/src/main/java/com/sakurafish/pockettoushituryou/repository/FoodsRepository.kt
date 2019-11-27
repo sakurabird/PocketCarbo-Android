@@ -28,10 +28,12 @@ class FoodsRepository @Inject internal constructor(
     @WorkerThread
     fun insertAll(foodsData: FoodsData?) {
         foodsData.let {
+            orma.relationOfKinds().deleter().execute()
             for (kinds in foodsData?.kinds!!) {
                 orma.relationOfKinds().upsert(kinds)
             }
-            for (foods in foodsData?.foods!!) {
+            orma.relationOfFoods().deleter().execute()
+            for (foods in foodsData.foods!!) {
                 foods.kinds = orma.relationOfKinds().selector().idEq(foods.kindId).toList().firstOrNull()
                 orma.relationOfFoods().upsert(foods)
             }
@@ -40,7 +42,12 @@ class FoodsRepository @Inject internal constructor(
     }
 
     @WorkerThread
-    fun findByTypeAndKind(@IntRange(from = 1, to = 6) typeId: Int, kindId: Int, sort: Int): List<Foods> {
+    fun findByTypeAndKind(
+            @IntRange(from = 1, to = 6) typeId: Int,
+            kindId: Int,
+            @IntRange(from = 0, to = 5) sort: Int
+    ): List<Foods> {
+
         val selector = orma.relationOfFoods().selector()
         selector.typeIdEq(typeId)
         if (kindId != 0) {
@@ -58,15 +65,21 @@ class FoodsRepository @Inject internal constructor(
                 // 糖質量の少ない順
                 selector.orderByCarbohydratePer100gAsc()
             3 ->
-                // 糖質量の少ない順
+                // 糖質量の多い順
                 selector.orderByCarbohydratePer100gDesc()
+            4 ->
+                // 脂質量の少ない順
+                selector.orderByFatPer100gAsc()
+            5 ->
+                // 脂質量の多い順
+                selector.orderByFatPer100gDesc()
         }
         return selector.toList()
     }
 
     @WorkerThread
     fun search(searchQuery: String?): List<Foods> {
-        // TODO LIKE句 nameLike()などのメソッドを使うと部分一致検索が出来ないかも（完全に一致していれば検索できる。SQLを見ると検索語句が%で囲まれていない）
+        // LIKE句 nameLike()などのメソッドを使うと部分一致検索が出来ないかも（完全に一致していれば検索できる。SQLを見ると検索語句が%で囲まれていない）
         var query = searchQuery
         if (query == null) {
             // 基本的にqueryがemptyなことはないが、特定の端末でNPEが発生するためこの処理を入れた(ver2.3)
@@ -123,15 +136,16 @@ class FoodsRepository @Inject internal constructor(
                 model.calory = c.getFloat(5)
                 model.protein = c.getFloat(6)
                 model.fat = c.getFloat(7)
-                model.sodium = c.getFloat(8)
-                model.searchWord = if (c.isNull(9)) null else c.getString(9)
-                model.notes = if (c.isNull(10)) null else c.getString(10)
-                model.typeId = c.getInt(11)
-                model.kindId = c.getInt(12)
+                model.fatPer100g = c.getFloat(8)
+                model.sodium = c.getFloat(9)
+                model.searchWord = if (c.isNull(10)) null else c.getString(10)
+                model.notes = if (c.isNull(11)) null else c.getString(11)
+                model.typeId = c.getInt(12)
+                model.kindId = c.getInt(13)
                 model.kinds = orma.relationOfKinds().selector().idEq(model.kindId).toList().firstOrNull()
-                // ver2.5.0 リレーションのフィールドが間に挟まるとnewModelFromCursorメソッドのcolumnIndexがずれてidのcolumnIndexが18となってクラッシュする
-                // java.lang.IllegalStateException: Couldn't read row 0, col 18 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
-                model.id = c.getInt(14)
+                // ver2.5.0 リレーションのフィールドが間に挟まるとnewModelFromCursorメソッドのcolumnIndexがずれてidのcolumnIndexが19となってクラッシュする
+                // java.lang.IllegalStateException: Couldn't read row 0, col 19 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
+                model.id = c.getInt(15)
 
                 list += model
                 pos++
