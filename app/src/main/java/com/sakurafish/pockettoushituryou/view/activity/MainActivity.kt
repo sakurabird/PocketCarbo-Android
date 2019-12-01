@@ -23,7 +23,9 @@ import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.di.ViewModelFactory
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
 import com.sakurafish.pockettoushituryou.shared.Pref
+import com.sakurafish.pockettoushituryou.shared.ext.changed
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser
+import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
@@ -33,6 +35,7 @@ import com.squareup.moshi.Moshi
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -49,6 +52,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     lateinit var showcaseHelper: ShowcaseHelper
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var foodsStore: FoodsStore
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
@@ -66,14 +71,22 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
         mainViewModel = ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this@MainActivity
+        binding.viewModel = mainViewModel
 
         setLaunchCount()
-
         initView()
-
-        pleaseReview()
-
+        setupStore()
         showAppMessage()
+        pleaseReview()
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun setupStore() {
+        foodsStore.showcaseReady.changed(this@MainActivity) {
+            mainViewModel.enablePreventClick(false)
+            showcaseHelper.showTutorialOnce(this@MainActivity, binding)
+        }
     }
 
     private fun setLaunchCount() {
@@ -133,7 +146,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
-        showcaseHelper.showTutorialOnce(this@MainActivity, binding)
         return true
     }
 
@@ -148,6 +160,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     }
 
     private fun initView() {
+        if (!showcaseHelper.isShowcaseMainActivityFinished) {
+            mainViewModel.enablePreventClick(true)
+        }
+
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setTitle(R.string.list_title)
 

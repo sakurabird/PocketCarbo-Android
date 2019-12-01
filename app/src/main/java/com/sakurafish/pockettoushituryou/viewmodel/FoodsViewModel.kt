@@ -1,10 +1,17 @@
 package com.sakurafish.pockettoushituryou.viewmodel
 
 import androidx.annotation.IntRange
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
 import com.sakurafish.pockettoushituryou.repository.FoodsRepository
 import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.store.Action
+import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -12,7 +19,9 @@ import javax.inject.Inject
 
 class FoodsViewModel @Inject constructor(
         private val foodsRepository: FoodsRepository,
-        private val kindsRepository: KindsRepository
+        private val kindsRepository: KindsRepository,
+        private val dispatcher: Dispatcher,
+        private val showcaseHelper: ShowcaseHelper
 ) : ViewModel() {
 
     private var typeId = 1
@@ -47,6 +56,10 @@ class FoodsViewModel @Inject constructor(
             _foods.postValue(foods)
             Timber.tag(TAG).d(" foods size:" + foods.size)
             enableIsLoading(false)
+
+            if (!showcaseHelper.isShowcaseMainActivityFinished
+                    && !showcaseHelper.isShowcaseFoodListFragmentFinished)
+                dispatcher.dispatch(Action.ShowcaseReady)
         }
     }
 

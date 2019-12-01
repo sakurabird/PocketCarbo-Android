@@ -2,6 +2,8 @@ package com.sakurafish.pockettoushituryou.viewmodel
 
 import android.content.Context
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakurafish.pockettoushituryou.R
@@ -27,6 +29,11 @@ class MainViewModel @Inject constructor(
         private val kindsRepository: KindsRepository,
         private val dispatcher: Dispatcher
 ) : ViewModel() {
+
+    private val _preventClick = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+    val preventClick: LiveData<Boolean> = _preventClick
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -58,6 +65,10 @@ class MainViewModel @Inject constructor(
             foodsRepository.insertAll(it)
             pref.setPref(context.getString(R.string.PREF_DATA_VERSION), it.dataVersion)
         }
+    }
+
+    fun enablePreventClick(enable: Boolean) {
+        _preventClick.value = enable
     }
 
     companion object {

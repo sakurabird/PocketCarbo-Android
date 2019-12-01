@@ -1,7 +1,5 @@
 package com.sakurafish.pockettoushituryou.view.helper
 
-import android.content.Context
-import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.sakurafish.pockettoushituryou.R
@@ -25,7 +23,6 @@ import javax.inject.Singleton
  */
 @Singleton
 class ShowcaseHelper @Inject constructor(
-        private val context: Context,
         private val pref: Pref,
         private val dispatcher: Dispatcher
 ) {
@@ -48,57 +45,55 @@ class ShowcaseHelper @Inject constructor(
 
     @ExperimentalCoroutinesApi
     fun showTutorialOnce(activity: MainActivity, binding: ActivityMainBinding) {
-        Handler().post {
-            val config = ShowcaseConfig()
-            config.delay = SHOWCASE_DELAY
+        setPrefShowcaseFoodListFragmentFinished(false)
+        val config = ShowcaseConfig()
+        config.delay = SHOWCASE_DELAY
 
-            val sequence = MaterialShowcaseSequence(activity, SHOWCASE_ID_MAINACTIVITY)
-            sequence.setConfig(config)
+        val sequence = MaterialShowcaseSequence(activity, SHOWCASE_ID_MAINACTIVITY)
+        sequence.setConfig(config)
 
-            // Menu tutorial
-            val drawerIcon = binding.toolbar.getChildAt(1)
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(activity)
-                            .setTarget(drawerIcon)
-                            .setContentText(activity.getString(R.string.tutorial_nav_text))
-                            .setDismissText(activity.getString(android.R.string.ok))
-                            .setDismissOnTouch(true)
-                            .build()
-            )
+        // Menu tutorial
+        val drawerIcon = binding.toolbar.getChildAt(1)
+        sequence.addSequenceItem(
+                MaterialShowcaseView.Builder(activity)
+                        .setTarget(drawerIcon)
+                        .setContentText(activity.getString(R.string.tutorial_nav_text))
+                        .setDismissText(activity.getString(android.R.string.ok))
+                        .setDismissOnTouch(true)
+                        .build()
+        )
 
-            // Search tutorial
-            val searchIcon = activity.findViewById<View>(R.id.action_search)
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(activity)
-                            .setTarget(searchIcon)
-                            .setContentText(activity.getString(R.string.tutorial_search_text))
-                            .setDismissText(activity.getString(android.R.string.ok))
-                            .setDismissOnTouch(true)
-                            .build()
-            )
+        // Search tutorial
+        val searchIcon = activity.findViewById<View>(R.id.action_search)
+        sequence.addSequenceItem(
+                MaterialShowcaseView.Builder(activity)
+                        .setTarget(searchIcon)
+                        .setContentText(activity.getString(R.string.tutorial_search_text))
+                        .setDismissText(activity.getString(android.R.string.ok))
+                        .setDismissOnTouch(true)
+                        .build()
+        )
 
-            // Tab tutorial
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(activity)
-                            .setTarget(binding.tabLayout)
-                            .setContentText(activity.getString(R.string.tutorial_tab_text))
-                            .setDismissText(activity.getString(android.R.string.ok))
-                            .withRectangleShape(true)
-                            .setListener(object : IShowcaseListener {
-                                override fun onShowcaseDisplayed(materialShowcaseView: MaterialShowcaseView) {
+        // Tab tutorial
+        sequence.addSequenceItem(
+                MaterialShowcaseView.Builder(activity)
+                        .setTarget(binding.tabLayout)
+                        .setContentText(activity.getString(R.string.tutorial_tab_text))
+                        .setDismissText(activity.getString(android.R.string.ok))
+                        .withRectangleShape(true)
+                        .setListener(object : IShowcaseListener {
+                            override fun onShowcaseDisplayed(materialShowcaseView: MaterialShowcaseView) {
+                            }
 
-                                }
-
-                                override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
-                                    setPrefShowcaseMainactivityFinished(true)
-                                    dispatcher.launchAndDispatch(Action.ShowcaseProceeded)
-                                }
-                            })
-                            .setDismissOnTouch(true)
-                            .build()
-            )
-            sequence.start()
-        }
+                            override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
+                                setPrefShowcaseMainactivityFinished(true)
+                                dispatcher.launchAndDispatch(Action.ShowcaseProceeded)
+                            }
+                        })
+                        .setDismissOnTouch(true)
+                        .build()
+        )
+        sequence.start()
     }
 
     fun showTutorialOnce(foodsFragment: FoodsFragment, binding: FragmentFoodsBinding, typeId: Int) {
@@ -137,43 +132,39 @@ class ShowcaseHelper @Inject constructor(
         )
 
         // List tutorial
-        if (binding.recyclerView.getChildAt(0) != null) {
-            val view = binding.recyclerView.getChildAt(0)
-            sequence.addSequenceItem(
-                    MaterialShowcaseView.Builder(mainActivity)
-                            .setTarget(view)
-                            .setContentText(mainActivity.getString(R.string.tutorial_food_list_text))
-                            .setDismissText(mainActivity.getString(android.R.string.ok))
-                            .withRectangleShape()
-                            .setListener(object : IShowcaseListener {
-                                override fun onShowcaseDisplayed(materialShowcaseView: MaterialShowcaseView) {
-                                }
+        val view = binding.recyclerView.getChildAt(0)
+        sequence.addSequenceItem(
+                MaterialShowcaseView.Builder(mainActivity)
+                        .setTarget(view)
+                        .setContentText(mainActivity.getString(R.string.tutorial_food_list_text))
+                        .setDismissText(mainActivity.getString(android.R.string.ok))
+                        .withRectangleShape()
+                        .setListener(object : IShowcaseListener {
+                            override fun onShowcaseDisplayed(materialShowcaseView: MaterialShowcaseView) {
+                            }
 
-                                override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
-                                    try {
-                                        val layout = mainActivity.layoutInflater.inflate(R.layout.view_tutorial_finished, null)
-                                        val alert = AlertDialog.Builder(foodsFragment.requireContext())
-                                        alert.setView(layout)
-                                        alert.setPositiveButton("OK") { _, _ ->
-                                            setPrefShowcaseFoodListFragmentFinished(true)
-                                        }
-                                        alert.show()
-                                    } catch (exception: Exception) {
-                                        exception.printStackTrace()
+                            override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
+                                setPrefShowcaseFoodListFragmentFinished(true)
+
+                                try {
+                                    val layout = mainActivity.layoutInflater.inflate(R.layout.view_tutorial_finished, null)
+                                    val alert = AlertDialog.Builder(foodsFragment.requireContext())
+                                    alert.setView(layout)
+                                    alert.setPositiveButton("OK") { _, _ ->
                                     }
+                                    alert.show()
+                                } catch (exception: Exception) {
+                                    exception.printStackTrace()
                                 }
-                            })
-                            .setDismissOnTouch(true)
-                            .build()
-            )
-        }
+                            }
+                        })
+                        .setDismissOnTouch(true)
+                        .build()
+        )
         sequence.start()
     }
 
     companion object {
-
-        private val TAG = ShowcaseHelper::class.java.simpleName
-
         const val SHOWCASE_DELAY: Long = 500
 
         const val SHOWCASE_ID_MAINACTIVITY = "SHOWCASE_ID_MAINACTIVITY"
