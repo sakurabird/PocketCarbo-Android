@@ -11,8 +11,8 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.sakurafish.pockettoushituryou.R;
 import com.sakurafish.pockettoushituryou.view.activity.MainActivity;
@@ -51,7 +51,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String title = context.getString(R.string.notification_title);
         String text = context.getString(R.string.APP_MESSAGE_TEXT);
 
-        Intent openIntent = MainActivity.createIntent(context);
+        Intent openIntent = MainActivity.Companion.createIntent(context);
         openIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

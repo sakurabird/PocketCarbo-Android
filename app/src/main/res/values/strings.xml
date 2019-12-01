@@ -3,8 +3,7 @@
     <string name="app_url">http://play.google.com/store/apps/details?id=com.sakurafish.pockettoushituryou</string>
     <string name="app_website">http://www.pockettoushituryou.com/</string>
 
-    <!-- Splash -->
-    <string name="splash_content_description_app_image">App Image</string>
+    <string name="cancel">キャンセル</string>
 
     <!-- Side Menu -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -31,12 +30,13 @@
     <string name="list_title">糖質量一覧・検索</string>
     <string name="empty_text">データが見つかりませんでした。</string>
     <string name="kind_all">全ての種類</string>
-    <string name="carbohydrate_exp"> /100g</string>
+    <string name="carbohydrate_exp">100g あたりの値</string>
     <string name="expanded_title">%1$s あたりの値</string>
     <string name="conversion_cube_sugar">角砂糖%1$s個分</string>
     <string name="carbohydrate_per_weight_title">糖質：</string>
     <string name="calory_title">カロリー：</string>
     <string name="protein_title">たんぱく質：</string>
+    <string name="fat100g_title">脂質概算：</string>
     <string name="fat_title">脂質：</string>
     <string name="sodium_title">塩分：</string>
     <string name="notes_title">備考：</string>
@@ -51,21 +51,19 @@
     <string name="ask_review_message">いつもアプリをご利用してくださってありがとうございます！\nもしこのアプリがお役に立っていましたらアプリの評価をしていただけますと大変励みになります(*^_^*)\nOKボタンでGoogle Playに移動いたします。</string>
 
     <!-- Tutorial -->
-    <string name="tutorial_reset_text">このボタンをクリックすると、次回起動した時にインストール時に表示したチュートリアルを再度表示します。</string>
-    <string name="tutorial_reset_button_text">チュートリアルを表示する</string>
-    <string name="tutorial_reset_toast_text">チュートリアル表示済み設定をリセットしました。次回チュートリアルを表示します。</string>
-    <string name="tutorial_nav_text">インストールありがとうございます！このアイコンをクリックすると全体のメニューが表示されます。\n\n画面左端付近で右にスワイプしても表示できますよ。</string>
+    <string name="tutorial_prevent_click_text">インストールありがとうございます！\n\n初期データロード中です。\nこの後チュートリアルが表示されます。</string>
+    <string name="tutorial_nav_text">左上のメニューボタンをクリックすると全体のメニューが表示されます。\n\nお気に入り・設定・ヘルプ画面などがあります。</string>
     <string name="tutorial_search_text">この虫メガネアイコンをクリックすると任意の文字で食品を検索できます。\n\nひらがな、カタカナ、漢字の一部を入れてみてくださいね。\n\nスペースで区切って複数の検索文字で絞り込むことも出来ます。</string>
     <string name="tutorial_tab_text">ここはタブです。食品の分類別に６つのタブが隣り合っています。\n\n左右にスワイプするかタブの文字をクリックして表示を切り替えて見てくださいね！</string>
-    <string name="tutorial_kind_text">あともう少しお付き合いください！左端のバーを押すと更に食品の種類を絞り込むことが出来ます。\n1400以上の食品データがありますから上手く絞り込んで表示してみてくださいね。</string>
-    <string name="tutorial_sort_text">右側はソートボタンです。\n\nデフォルトでは食品名順に並んでいますが糖質量順に並び替えたりすることが出来ます。</string>
-    <string name="tutorial_food_list_text">リストの行をクリックして詳細情報を表示します。\nシェアやお気に入り登録も出来ますよ。長押しでコピーします。</string>
+    <string name="tutorial_kind_text">あともう少しお付き合いください！\n左端のバーを押すと更に食品の種類を絞り込むことが出来ます。\n1600以上の食品データがありますから上手く絞り込んで表示してみてくださいね。</string>
+    <string name="tutorial_sort_text">右側はソートボタンです。\n\nデフォルトでは食品名順に並んでいますが糖質量順や脂質量順に並び替えが出来ます。</string>
+    <string name="tutorial_food_list_text">リストの行をクリックすると詳細情報が表示されます。\nシェアやお気に入り登録も出来ますよ。長押しでテキストコピーできます。</string>
     <string name="tutorial_clear_text1">読んでくれてありがとうございました！\n\nなお食品は糖質量率によって色分けしています。</string>
     <string name="tutorial_clear_text2">青：糖質量が少ないい</string>
     <string name="tutorial_clear_text3">緑：糖質量がやや多い</string>
     <string name="tutorial_clear_text4">赤：糖質量が多い</string>
     <string name="tutorial_clear_text5">紫：糖質量が非常に多い</string>
-    <string name="tutorial_clear_text6">ポケット糖質量を毎日のご健康にお役立てください！</string>
+    <string name="tutorial_clear_text6">ポケット糖質量を毎日のご健康にお役立てください！\nチュートリアルの内容はヘルプ画面でご覧いただけます。</string>
 
     <!-- Notification -->
     <string name="notification_title">アプリからのお知らせ</string>

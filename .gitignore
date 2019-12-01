@@ -16,7 +16,6 @@ out/
 # Gradle files
 .gradle/
 build/
-gradle.properties
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -38,10 +37,13 @@ captures/
 .idea/*
 !.idea/codeStyleSettings.xml
 
-# Fabric build secret file (Crashlytics)
-fabric.properties
+# Google Services (e.g. APIs or Firebase)
+app/google-services.json
+app/fabric.properties
 
 # Keystore files
+*.jks
+keystore.properties
 sakurafish.keystore
 
 # secret values
@@ -50,3 +52,12 @@ type.json
 foods_and_kinds.json
 
 .DS_Store
+
+# Others
+app/mapping.txt
+app/unused.txt
+app/seeds.txt
+depends.txt
+
+# Script for my local environment
+/script/ex-*

@@ -2,7 +2,7 @@ package com.sakurafish.pockettoushituryou.view.adapter;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.model.Kinds;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public class KindSpinnerAdapter extends BaseAdapter {
             }
             Kinds kinds = (Kinds) getItem(listPos);
             if (kinds != null) {
-                tv.setText(kinds.name);
+                tv.setText(kinds.getName());
             }
         }
     }

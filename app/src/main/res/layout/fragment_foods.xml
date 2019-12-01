@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment">
+
+        <LinearLayout
+            android:id="@+id/spinner_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/space_12dp"
+            android:orientation="horizontal">
+
+            <!-- Kinds selector -->
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/kind_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_12dp"
+                android:layout_weight="1"
+                android:background="@drawable/kind_spinner"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dropdown" />
+
+            <!-- Sort order selector -->
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sort_spinner"
+                android:layout_width="@dimen/sort_spinner_width"
+                android:layout_height="@dimen/sort_spinner_width"
+                android:layout_marginLeft="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_12dp"
+                android:layout_marginRight="@dimen/space_16dp"
+                android:background="@drawable/kind_spinner"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dialog" />
+
+        </LinearLayout>
+
+        <!-- Foods list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/spinner_area"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:visibility="gone"
+            app:goneUnless="@{safeUnbox(viewModel.isLoading)}" />
+
+    </RelativeLayout>
+</layout>

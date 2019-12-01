@@ -1,6 +1,6 @@
 package br.com.mauker;
 
-import com.sakurafish.pockettoushituryou.util.MvsConfig;
+import com.sakurafish.pockettoushituryou.shared.MvsConfig;
 
 /**
  * This class is implemented for MaterialSearchView <br>

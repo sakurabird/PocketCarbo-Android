@@ -6,9 +6,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_main">
+        android:background="@color/foodsBG">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -18,12 +18,12 @@
 
             <!-- header -->
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
@@ -31,27 +31,29 @@
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                </android.support.v7.widget.Toolbar>
+                </androidx.appcompat.widget.Toolbar>
 
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-            <!-- contents -->
-            <LinearLayout
-                android:id="@+id/content_view"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_favorites"
+                android:name="com.sakurafish.pockettoushituryou.view.fragment.FavoritesFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/space_12dp"
-                android:orientation="vertical"
+                android:tag="fragment_favorites"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </android.support.design.widget.CoordinatorLayout>
 
-        <fragment
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_adBanner"
             android:name="com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:tag="fragment_adBanner" />
 
     </RelativeLayout>
 

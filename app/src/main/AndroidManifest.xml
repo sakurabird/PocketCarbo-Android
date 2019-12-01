@@ -9,16 +9,17 @@
     <application
         android:name="com.sakurafish.pockettoushituryou.MainApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.SplashActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name="com.sakurafish.pockettoushituryou.view.activity.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,47 +33,37 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="www.pockettoushituryou.com"
-                    android:pathPattern="/foods" />
+                    android:pathPattern="/foods"
+                    android:scheme="https" />
             </intent-filter>
-        </activity>
 
-        <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.MainActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
+        </activity>
 
         <activity
             android:name="com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:exported="false" />
 
         <activity
             android:name="com.sakurafish.pockettoushituryou.view.activity.FavoritesActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:exported="false" />
 
         <activity
             android:name="com.sakurafish.pockettoushituryou.view.activity.SettingsActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:exported="false" />
 
         <activity
             android:name="com.sakurafish.pockettoushituryou.view.activity.HelpActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:exported="false" />
 
         <activity
             android:name="com.sakurafish.pockettoushituryou.view.activity.WebViewActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:exported="false" />
 
         <receiver
             android:name=".receiver.BootReceiver"
@@ -110,7 +101,7 @@
             android:value="5d6fabbcde793289c1e4057daced02012118e520" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id"/>
+            android:value="@string/admob_app_id" />
     </application>
 
 </manifest>

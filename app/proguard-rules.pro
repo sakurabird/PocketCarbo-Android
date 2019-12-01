@@ -31,26 +31,6 @@
 }
 
 # ----------------------------------------
-# Retrofit and OkHttp
-# ----------------------------------------
--dontwarn com.squareup.okhttp3.**
--dontwarn okio.**
--dontwarn retrofit2.**
-
-
-# ----------------------------------------
-# Picasso
-# ----------------------------------------
--dontwarn com.squareup.picasso.**
-
-
-# ----------------------------------------
-# retrolambda
-# ----------------------------------------
--dontwarn java.lang.invoke.*
-
-
-# ----------------------------------------
 # Icepick
 # ----------------------------------------
 -dontwarn icepick.**
@@ -61,19 +41,11 @@
 }
 -keepnames class * { @icepick.State *;}
 
-
 # ----------------------------------------
 # Mauker1/MaterialSearchView
 # ----------------------------------------
 -keep class br.com.mauker.MsvAuthority
 -keepclassmembers class br.com.mauker.** { *; }
-
-# ----------------------------------------
-# App
-# ----------------------------------------
--keep class com.konifar.droidkaigi2017.** { *; }
--keepnames class ** { *; }
-
 
 # ----------------------------------------
 # Android and Java
@@ -152,3 +124,13 @@
 -keep class * {
     public private *;
 }
+
+# ----------------------------------------
+# Clashlytics
+# ----------------------------------------
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-printmapping mapping.txt
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
