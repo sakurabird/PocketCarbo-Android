@@ -86,11 +86,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="@dimen/space_24dp"
                     android:text="@string/tutorial_prevent_click_text"
                     android:textColor="@color/white"
-                    android:textSize="30sp" />
+                    android:textSize="24sp" />
 
             </FrameLayout>
 
