@@ -51,9 +51,6 @@
     <string name="ask_review_message">いつもアプリをご利用してくださってありがとうございます！\nもしこのアプリがお役に立っていましたらアプリの評価をしていただけますと大変励みになります(*^_^*)\nOKボタンでGoogle Playに移動いたします。</string>
 
     <!-- Tutorial -->
-    <string name="tutorial_reset_text">このボタンをクリックすると、次回起動した時にインストール時に表示したチュートリアルを再度表示します。</string>
-    <string name="tutorial_reset_button_text">チュートリアルを表示する</string>
-    <string name="tutorial_reset_toast_text">チュートリアル表示済み設定をリセットしました。次回チュートリアルを表示します。</string>
     <string name="tutorial_nav_text">インストールありがとうございます！このアイコンをクリックすると全体のメニューが表示されます。\n\n画面左端付近で右にスワイプしても表示できますよ。</string>
     <string name="tutorial_search_text">この虫メガネアイコンをクリックすると任意の文字で食品を検索できます。\n\nひらがな、カタカナ、漢字の一部を入れてみてくださいね。\n\nスペースで区切って複数の検索文字で絞り込むことも出来ます。</string>
     <string name="tutorial_tab_text">ここはタブです。食品の分類別に６つのタブが隣り合っています。\n\n左右にスワイプするかタブの文字をクリックして表示を切り替えて見てくださいね！</string>

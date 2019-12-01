@@ -3,7 +3,6 @@ package com.sakurafish.pockettoushituryou.view.helper
 import android.content.Context
 import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
@@ -38,17 +37,6 @@ class ShowcaseHelper @Inject constructor(
     // true: 表示済みをあらわす
     val isShowcaseFoodListFragmentFinished: Boolean
         get() = pref.getPrefBool(PREF_KEY_SHOWCASE_FOODLISTFRAGMENT_FINISHED, false)
-
-    fun resetShowCase() {
-        // チュートリアルを表示できるように設定をリセットする
-        pref.setPref(PREF_KEY_SHOWCASE_MAINACTIVITY_FINISHED, false)
-        MaterialShowcaseView.resetSingleUse(context, SHOWCASE_ID_MAINACTIVITY)
-
-        pref.setPref(PREF_KEY_SHOWCASE_FOODLISTFRAGMENT_FINISHED, false)
-        MaterialShowcaseView.resetSingleUse(context, SHOWCASE_ID_FOODLISTFRAGMENT)
-
-        Toast.makeText(context, context.getString(R.string.tutorial_reset_toast_text), Toast.LENGTH_SHORT).show()
-    }
 
     fun setPrefShowcaseMainactivityFinished(finished: Boolean) {
         pref.setPref(PREF_KEY_SHOWCASE_MAINACTIVITY_FINISHED, finished)
