@@ -15,15 +15,13 @@ class FoodsViewModel @Inject constructor(
         private val kindsRepository: KindsRepository
 ) : ViewModel() {
 
+    private var typeId = 1
+
     private val _foods = MutableLiveData<List<Foods>>()
     val foods: LiveData<List<Foods>> = _foods
 
-    private var typeId = 1
-
-    val kinds = liveData(Dispatchers.IO) {
-        val result = kindsRepository.findByType(typeId)
-        emit(result)
-    }
+    private val _kinds = MutableLiveData<List<Kinds>>()
+    val kinds: LiveData<List<Kinds>> = _kinds
 
     private val _isLoading = MutableLiveData<Boolean>().apply {
         value = true
@@ -34,12 +32,20 @@ class FoodsViewModel @Inject constructor(
         this.typeId = typeId
     }
 
-    fun findFoods(kindId: Int, sort: Int) {
+    fun findKinds() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val kinds = kindsRepository.findByType(typeId)
+            _kinds.postValue(kinds)
+            Timber.tag(TAG).d("type:" + typeId + " kinds size:" + kinds.size)
+        }
+    }
+
+    fun findFoods(kindId: Int, @IntRange(from = 0, to = 5) sort: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             enableIsLoading(true)
             val foods = foodsRepository.findByTypeAndKind(typeId, kindId, sort)
             _foods.postValue(foods)
-            Timber.tag(TAG).d("type:" + typeId + " foods size:" + foods.size)
+            Timber.tag(TAG).d(" foods size:" + foods.size)
             enableIsLoading(false)
         }
     }

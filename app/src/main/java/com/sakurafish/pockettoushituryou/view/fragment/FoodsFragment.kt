@@ -96,6 +96,7 @@ class FoodsFragment : Fragment(), Injectable {
     private fun loadDB() {
         val state = foodsStore.populateState.value
         state?.let {
+            viewModel.findKinds()
             viewModel.findFoods(kindId, sort)
         }
     }
