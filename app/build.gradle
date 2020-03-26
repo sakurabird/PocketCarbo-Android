@@ -1,6 +1,6 @@
 plugins {
     // ./gradlew dependencyUpdates で新しいバージョンを検出
-    id "com.github.ben-manes.versions" version "0.27.0"
+    id "com.github.ben-manes.versions" version "0.28.0"
 }
 
 apply plugin: 'com.android.application'
@@ -100,8 +100,8 @@ android {
 
 ext {
     supportLibraryVersion = '1.1.0'
-    lifecycleVersion = "2.2.0-rc02"
-    daggerVersion = "2.25.2"
+    lifecycleVersion = "2.2.0"
+    daggerVersion = "2.27"
     ormaVersion = "6.0.2"
     moshiVersion = "1.8.0"
     ankoVersion = "0.10.8"
@@ -117,8 +117,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.appcompat:appcompat:$supportLibraryVersion"
     implementation "androidx.preference:preference:$supportLibraryVersion"
-    implementation 'com.google.android.material:material:1.1.0-beta01'
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
 
     // architecture components
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
@@ -142,7 +141,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     // Data
@@ -154,7 +153,7 @@ dependencies {
     // UI
     implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
-    implementation 'com.afollestad.material-dialogs:core:3.1.1'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
     // Utility
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -166,7 +165,7 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 }
 
 // MUST BE AT THE BOTTOM
