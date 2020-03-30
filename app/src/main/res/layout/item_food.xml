@@ -163,7 +163,7 @@
                 android:layout_marginEnd="30dp"
                 android:contentDescription="@string/food_list_content_description_fav_button"
                 android:onClick="@{viewModel::onClickFavButton}"
-                android:tint="@{viewModel.favState ? @color/dark_red : @color/grey600}"
+                app:favImageColor="@{safeUnbox(viewModel.isFavState)}"
                 app:srcCompat="@drawable/ic_favorite_black_24dp" />
 
             <net.cachapa.expandablelayout.ExpandableLayout

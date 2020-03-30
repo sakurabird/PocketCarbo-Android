@@ -3,12 +3,17 @@ package com.sakurafish.pockettoushituryou.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.WorkerThread
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodBinding
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FoodsAdapter(
         private val lifecycleOwner: LifecycleOwner
@@ -56,8 +61,19 @@ class FoodsAdapter(
     override fun getItemCount() = items.size
 
     fun refreshFavoriteStatus() {
-        items.forEach(FoodItemViewModel::refreshFavoriteStatus)
-                .also { notifyDataSetChanged() }
+        GlobalScope.launch {
+            updateFavoritesView()
+        }
+    }
+
+    @WorkerThread
+    suspend fun updateFavoritesView() {
+        withContext(Dispatchers.IO) {
+            items.forEach(FoodItemViewModel::refreshFavoriteStatus)
+            withContext(Dispatchers.Main) {
+                notifyDataSetChanged()
+            }
+        }
     }
 
     inner class ViewHolder(

@@ -12,12 +12,12 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.WorkerThread
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.Foods
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
@@ -157,12 +157,7 @@ class FoodItemViewModel(
 
     fun onClickFavButton(view: View) {
         viewModelScope.launch {
-            val result = updateFavoritesDB()
-            if (result) {
-                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.dark_red))
-            } else {
-                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.grey600))
-            }
+            _isFavState.value = updateFavoritesDB()
             animateFavButton(view)
         }
     }
@@ -172,11 +167,9 @@ class FoodItemViewModel(
         val result = viewModelScope.async(Dispatchers.IO) {
             if (favoriteFoodsRepository.isFavorite(foods.id)) {
                 favoriteFoodsRepository.delete(foods, hostClass)
-                _isFavState.postValue(false)
                 return@async false
             } else {
                 favoriteFoodsRepository.save(foods, hostClass)
-                _isFavState.postValue(true)
                 return@async true
             }
         }

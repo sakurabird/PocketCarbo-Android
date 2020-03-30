@@ -4,11 +4,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
+
+import com.sakurafish.pockettoushituryou.R;
 
 public class DataBindingHelper {
 
@@ -29,6 +32,15 @@ public class DataBindingHelper {
             view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.GONE);
+        }
+    }
+
+    @BindingAdapter("favImageColor")
+    public static void setFavImageColor(View view, boolean isFavorite) {
+        if (isFavorite) {
+            ((ImageView) view).setColorFilter(ContextCompat.getColor(view.getContext(), R.color.dark_red));
+        } else {
+            ((ImageView) view).setColorFilter(ContextCompat.getColor(view.getContext(), R.color.grey600));
         }
     }
 
