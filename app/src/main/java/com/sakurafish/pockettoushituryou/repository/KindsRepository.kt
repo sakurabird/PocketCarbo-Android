@@ -1,8 +1,8 @@
 package com.sakurafish.pockettoushituryou.repository
 
 import androidx.annotation.WorkerThread
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
-import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import javax.inject.Inject
 
 class KindsRepository @Inject internal constructor(private val orma: OrmaDatabase) {

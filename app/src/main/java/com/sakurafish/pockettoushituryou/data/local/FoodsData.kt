@@ -1,7 +1,7 @@
 package com.sakurafish.pockettoushituryou.data.local
 
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

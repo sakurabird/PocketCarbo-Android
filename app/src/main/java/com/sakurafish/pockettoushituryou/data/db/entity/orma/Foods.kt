@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.data.db.entity
+package com.sakurafish.pockettoushituryou.data.db.entity.orma
 
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
@@ -72,6 +72,7 @@ class Foods {
     var kindId: Int = 0
 
     @Column(value = "kinds", indexed = true)
+
     @Transient
     var kinds: Kinds? = null
 

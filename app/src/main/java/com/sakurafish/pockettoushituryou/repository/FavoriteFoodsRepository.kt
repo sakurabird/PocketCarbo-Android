@@ -1,9 +1,9 @@
 package com.sakurafish.pockettoushituryou.repository
 
 import androidx.annotation.WorkerThread
-import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
-import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.FavoriteFoods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.sakurafish.pockettoushituryou.store.Action
 import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass

@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.R
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository

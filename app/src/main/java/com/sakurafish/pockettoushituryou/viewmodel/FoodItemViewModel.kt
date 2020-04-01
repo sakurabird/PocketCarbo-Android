@@ -14,10 +14,9 @@ import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.*
 import com.sakurafish.pockettoushituryou.R
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
 import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*

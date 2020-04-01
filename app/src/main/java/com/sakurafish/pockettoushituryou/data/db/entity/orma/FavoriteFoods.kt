@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.data.db.entity
+package com.sakurafish.pockettoushituryou.data.db.entity.orma
 
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey

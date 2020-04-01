@@ -4,8 +4,8 @@ import android.content.Context
 import android.database.Cursor
 import androidx.annotation.IntRange
 import androidx.annotation.WorkerThread
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
-import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.sakurafish.pockettoushituryou.data.local.FoodsData
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.squareup.moshi.JsonAdapter

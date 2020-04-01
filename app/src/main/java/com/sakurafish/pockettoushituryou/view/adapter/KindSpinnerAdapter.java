@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds;
 
 import java.util.List;
 
