@@ -101,6 +101,7 @@ android {
 ext {
     supportLibraryVersion = '1.1.0'
     lifecycleVersion = "2.2.0"
+    roomVersion = "2.2.5"
     daggerVersion = "2.27"
     ormaVersion = "6.0.2"
     moshiVersion = "1.8.0"
@@ -125,6 +126,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+
+    // Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    testImplementation "androidx.room:room-testing:$roomVersion"
 
     // Google Services
     implementation 'com.google.firebase:firebase-core:17.2.3'
