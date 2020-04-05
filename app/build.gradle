@@ -32,6 +32,12 @@ android {
         archivesBaseName = "${applicationName}-v${versionName}-vc${versionCode}"
     }
 
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+
     dataBinding {
         enabled = true
     }
