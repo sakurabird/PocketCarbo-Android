@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.repository
+package com.sakurafish.pockettoushituryou.repository.orma
 
 import androidx.annotation.WorkerThread
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds

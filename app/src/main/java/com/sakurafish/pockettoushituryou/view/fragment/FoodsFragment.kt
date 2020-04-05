@@ -17,8 +17,8 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
-import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
-import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.FavoriteFoodsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.KindsRepository
 import com.sakurafish.pockettoushituryou.shared.ext.changed
 import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter

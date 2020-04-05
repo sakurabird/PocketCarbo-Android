@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
-import com.sakurafish.pockettoushituryou.repository.FoodsRepository
-import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.FoodsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.KindsRepository
 import com.sakurafish.pockettoushituryou.store.Action
 import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper

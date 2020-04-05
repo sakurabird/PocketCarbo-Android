@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.FavoriteFoodsRepository
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 

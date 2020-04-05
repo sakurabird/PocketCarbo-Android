@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentSearchResultBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
-import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
-import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.FavoriteFoodsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.KindsRepository
 import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.Companion.EXTRA_QUERY
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel

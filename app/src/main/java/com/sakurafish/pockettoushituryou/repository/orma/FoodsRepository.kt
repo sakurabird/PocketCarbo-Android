@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.repository
+package com.sakurafish.pockettoushituryou.repository.orma
 
 import android.content.Context
 import android.database.Cursor

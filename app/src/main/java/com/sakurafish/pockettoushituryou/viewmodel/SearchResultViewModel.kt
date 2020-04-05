@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
-import com.sakurafish.pockettoushituryou.repository.FoodsRepository
+import com.sakurafish.pockettoushituryou.repository.orma.FoodsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
