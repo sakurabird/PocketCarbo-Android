@@ -14,6 +14,11 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Foods data access class with Orma
+ * This class has been deprecated from version 3.5.1 due to migration with the Room library
+ */
+@Deprecated("This class is not used from version 3.5.1. Use 'FoodRepository' and 'FoodDao' class")
 class FoodsRepository @Inject internal constructor(
         private val orma: OrmaDatabase,
         private val context: Context,
@@ -154,12 +159,13 @@ class FoodsRepository @Inject internal constructor(
         return list
     }
 
-    @WorkerThread
-    fun parseJsonToFoodsData(): FoodsData? {
-        val json = LocalJsonResolver.loadJsonFromAsset(context, "json/foods_and_kinds.json")
-        val adapter: JsonAdapter<FoodsData> = moshi.adapter(FoodsData::class.java)
-        return adapter.fromJson(json)
-    }
+    // TODO
+//    @WorkerThread
+//    fun parseJsonToFoodsData(): FoodsData? {
+//        val json = LocalJsonResolver.loadJsonFromAsset(context, "json/foods_and_kinds.json")
+//        val adapter: JsonAdapter<FoodsData> = moshi.adapter(FoodsData::class.java)
+//        return adapter.fromJson(json)
+//    }
 
     companion object {
         private val TAG = FoodsRepository::class.java.simpleName
