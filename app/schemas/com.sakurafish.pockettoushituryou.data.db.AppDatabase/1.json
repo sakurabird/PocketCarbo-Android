@@ -1,0 +1,341 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "f883e235cb91a1319a0e4594ad83ce02",
+    "entities": [
+      {
+        "tableName": "Food",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `weight` INTEGER NOT NULL, `weight_hint` TEXT, `carbohydrate_per_100g` REAL NOT NULL, `carbohydrate_per_weight` REAL NOT NULL, `calory` REAL NOT NULL, `protein` REAL NOT NULL, `fat` REAL NOT NULL, `fat_per100g` REAL, `sodium` REAL NOT NULL, `search_word` TEXT, `notes` TEXT, `type_id` INTEGER NOT NULL, `kind_id` INTEGER NOT NULL, `e_id` INTEGER, `e_name` TEXT, `e_search_word` TEXT, `e_type_id` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weightHint",
+            "columnName": "weight_hint",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carbohydratePer100g",
+            "columnName": "carbohydrate_per_100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbohydratePerWeight",
+            "columnName": "carbohydrate_per_weight",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calory",
+            "columnName": "calory",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "protein",
+            "columnName": "protein",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fat",
+            "columnName": "fat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatPer100g",
+            "columnName": "fat_per100g",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sodium",
+            "columnName": "sodium",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "searchWord",
+            "columnName": "search_word",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "typeId",
+            "columnName": "type_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kindId",
+            "columnName": "kind_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kind.id",
+            "columnName": "e_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind.name",
+            "columnName": "e_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind.searchWord",
+            "columnName": "e_search_word",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind.typeId",
+            "columnName": "e_type_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Food_name_carbohydrate_per_100g_fat_per100g",
+            "unique": false,
+            "columnNames": [
+              "name",
+              "carbohydrate_per_100g",
+              "fat_per100g"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Food_name_carbohydrate_per_100g_fat_per100g` ON `${TABLE_NAME}` (`name`, `carbohydrate_per_100g`, `fat_per100g`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Kind",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `search_word` TEXT, `type_id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchWord",
+            "columnName": "search_word",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "typeId",
+            "columnName": "type_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Favorite",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`food_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `id` INTEGER NOT NULL, `name` TEXT, `weight` INTEGER NOT NULL, `weight_hint` TEXT, `carbohydrate_per_100g` REAL NOT NULL, `carbohydrate_per_weight` REAL NOT NULL, `calory` REAL NOT NULL, `protein` REAL NOT NULL, `fat` REAL NOT NULL, `fat_per100g` REAL, `sodium` REAL NOT NULL, `search_word` TEXT, `notes` TEXT, `type_id` INTEGER NOT NULL, `kind_id` INTEGER NOT NULL, `e_id` INTEGER, `e_name` TEXT, `e_search_word` TEXT, `e_type_id` INTEGER, PRIMARY KEY(`food_id`))",
+        "fields": [
+          {
+            "fieldPath": "foodId",
+            "columnName": "food_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.weight",
+            "columnName": "weight",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.weightHint",
+            "columnName": "weight_hint",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.carbohydratePer100g",
+            "columnName": "carbohydrate_per_100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.carbohydratePerWeight",
+            "columnName": "carbohydrate_per_weight",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.calory",
+            "columnName": "calory",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.protein",
+            "columnName": "protein",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.fat",
+            "columnName": "fat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.fatPer100g",
+            "columnName": "fat_per100g",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.sodium",
+            "columnName": "sodium",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.searchWord",
+            "columnName": "search_word",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.typeId",
+            "columnName": "type_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.kindId",
+            "columnName": "kind_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "food.kind.id",
+            "columnName": "e_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.kind.name",
+            "columnName": "e_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.kind.searchWord",
+            "columnName": "e_search_word",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "food.kind.typeId",
+            "columnName": "e_type_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "food_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Favorite_food_id_created_at",
+            "unique": false,
+            "columnNames": [
+              "food_id",
+              "created_at"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Favorite_food_id_created_at` ON `${TABLE_NAME}` (`food_id`, `created_at`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f883e235cb91a1319a0e4594ad83ce02')"
+    ]
+  }
+}
