@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 
 /**
  * Local json data access class with
- * This class has been deprecated from version 3.5.1 due to migration with the Room library
+ * This class has been deprecated from version 2.5.1 due to migration with the Room library
  */
-@Deprecated("This class is not used from version 3.5.1. Use 'FoodsAndKinds' class")
+@Deprecated("This class is not used from version 2.5.1. Use 'FoodsAndKinds' class")
 @JsonClass(generateAdapter = true)
 data class FoodsData(
         @Json(name = "data_version")

@@ -4,7 +4,7 @@ import androidx.room.*
 import com.sakurafish.pockettoushituryou.data.db.entity.Favorite
 
 /**
- * Data access object class for Room since version 3.5.1
+ * Data access object class for Room since version 2.5.1
  */
 @Dao
 interface FavoriteDao {

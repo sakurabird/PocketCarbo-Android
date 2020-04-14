@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
 /**
- * Entity class for Room since version 3.5.1
+ * Entity class for Room since version 2.5.1
  */
 @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
 @Entity(indices = [Index(value = ["name", "carbohydrate_per_100g", "fat_per100g"])])

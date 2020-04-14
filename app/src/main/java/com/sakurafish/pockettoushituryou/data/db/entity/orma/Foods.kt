@@ -7,9 +7,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * This class has been deprecated from version 3.5.1 due to migration with the Room library
+ * This class has been deprecated from version 2.5.1 due to migration with the Room library
  */
-@Deprecated("This class is not used from version 3.5.1. Use 'Food' class")
+@Deprecated("This class is not used from version 2.5.1. Use 'Food' class")
 @JsonClass(generateAdapter = true)
 @Table
 class Foods {

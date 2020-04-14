@@ -8,7 +8,7 @@ import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
 /**
- * Entity class for Room since version 3.5.1
+ * Entity class for Room since version 2.5.1
  */
 @Entity
 @JsonClass(generateAdapter = true)

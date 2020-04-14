@@ -10,7 +10,7 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Food
 import com.sakurafish.pockettoushituryou.data.db.entity.Kind
 
 /**
- * AppDatabase class for Room since version 3.5.1
+ * AppDatabase class for Room since version 2.5.1
  */
 @Database(
         entities = [

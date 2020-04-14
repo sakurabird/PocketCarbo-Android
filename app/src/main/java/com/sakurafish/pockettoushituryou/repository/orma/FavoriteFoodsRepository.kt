@@ -14,9 +14,9 @@ import javax.inject.Singleton
 
 /**
  * FavoritesFoods data access class with Orma
- * This class has been deprecated from version 3.5.1 due to migration with the Room library
+ * This class has been deprecated from version 2.5.1 due to migration with the Room library
  */
-@Deprecated("This class is not used from version 3.5.1. Use 'FavoriteRepository' and 'FavoriteDao' class")
+@Deprecated("This class is not used from version 2.5.1. Use 'FavoriteRepository' and 'FavoriteDao' class")
 @Singleton
 class FavoriteFoodsRepository @Inject
 internal constructor(

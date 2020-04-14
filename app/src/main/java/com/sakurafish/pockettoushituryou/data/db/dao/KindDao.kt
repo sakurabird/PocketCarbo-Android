@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.sakurafish.pockettoushituryou.data.db.entity.Kind
 
 /**
- * Data access object class for Room since version 3.5.1
+ * Data access object class for Room since version 2.5.1
  */
 @Dao
 interface KindDao {

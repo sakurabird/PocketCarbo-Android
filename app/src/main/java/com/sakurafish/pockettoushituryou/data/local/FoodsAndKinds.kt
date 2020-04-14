@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * Entity class for Local data ('assets/json/foods_and_kinds.json') since version 3.5.1
+ * Entity class for Local data ('assets/json/foods_and_kinds.json') since version 2.5.1
  */
 @JsonClass(generateAdapter = true)
 data class FoodsAndKinds(

@@ -3,7 +3,7 @@ package com.sakurafish.pockettoushituryou.data.db.entity
 import androidx.room.*
 
 /**
- * Entity class for Room since version 3.5.1
+ * Entity class for Room since version 2.5.1
  */
 @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
 @Entity(indices = [Index(value = ["food_id", "created_at"])])
