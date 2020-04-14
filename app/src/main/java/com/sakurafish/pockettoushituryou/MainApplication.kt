@@ -5,6 +5,7 @@ import com.google.android.gms.ads.MobileAds
 import com.sakurafish.pockettoushituryou.di.ApplicationModule
 import com.sakurafish.pockettoushituryou.di.DaggerApplicationComponent
 import com.sakurafish.pockettoushituryou.di.applyAutoInjector
+import com.sakurafish.pockettoushituryou.di.module.DatabaseModule
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
@@ -30,5 +31,6 @@ class MainApplication : DaggerApplication() {
             .application(this)
             .context(this.applicationContext)
             .applicationModule(ApplicationModule(this))
+            .databaseModule(DatabaseModule(this))
             .build()
 }
