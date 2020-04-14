@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentFavoritesBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
-import com.sakurafish.pockettoushituryou.repository.orma.FavoriteFoodsRepository
-import com.sakurafish.pockettoushituryou.repository.orma.KindsRepository
+import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
+import com.sakurafish.pockettoushituryou.repository.KindRepository
+import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FavoritesViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
@@ -24,10 +25,15 @@ class FavoritesFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
-    lateinit var kindsRepository: KindsRepository
+    lateinit var kindRepository: KindRepository
+
     @Inject
-    lateinit var favoriteFoodsRepository: FavoriteFoodsRepository
+    lateinit var favoriteRepository: FavoriteRepository
+
+    @Inject
+    lateinit var dispatcher: Dispatcher
 
     private lateinit var viewModel: FavoritesViewModel
     private lateinit var binding: FragmentFavoritesBinding
@@ -71,7 +77,7 @@ class FavoritesFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), favoriteFoodsRepository, food, HostClass.FAVORITES)
+                        requireContext(), favoriteRepository, food, dispatcher, HostClass.FAVORITES)
             }
 
             adapter.run {

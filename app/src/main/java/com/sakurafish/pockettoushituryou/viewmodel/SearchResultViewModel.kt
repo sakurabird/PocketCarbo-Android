@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
-import com.sakurafish.pockettoushituryou.repository.orma.FoodsRepository
+import com.sakurafish.pockettoushituryou.data.db.entity.Food
+import com.sakurafish.pockettoushituryou.repository.FoodRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 class SearchResultViewModel @Inject constructor(
-        private val foodsRepository: FoodsRepository
+        private val foodRepository: FoodRepository
 ) : ViewModel() {
 
     private val query = MutableLiveData<String>()
 
-    private val _foods = MutableLiveData<List<Foods>>()
-    val foods: LiveData<List<Foods>> = _foods
+    private val _foods = MutableLiveData<List<Food>>()
+    val foods: LiveData<List<Food>> = _foods
 
     private val _showEmpty = MutableLiveData<Boolean>().apply { value = false }
     val showEmpty: LiveData<Boolean> = _showEmpty
@@ -30,7 +30,7 @@ class SearchResultViewModel @Inject constructor(
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
-            val foods = foodsRepository.search(queryString)
+            val foods = foodRepository.search(queryString)
             when (foods.size) {
                 0 -> _showEmpty.postValue(true)
                 else -> _showEmpty.postValue(false)
