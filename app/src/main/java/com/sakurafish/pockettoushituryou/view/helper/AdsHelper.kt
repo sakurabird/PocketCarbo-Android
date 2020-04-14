@@ -1,11 +1,9 @@
 package com.sakurafish.pockettoushituryou.view.helper
 
 import android.content.Context
-
 import com.google.android.gms.ads.AdRequest
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.shared.Pref
-
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,15 +20,7 @@ class AdsHelper @Inject constructor(private val context: Context, private val pr
             return passedTime >= CLICK_DELAY_MILLIS
         }
 
-    val adRequest: AdRequest
-        get() {
-            val ids = context.resources.getStringArray(R.array.admob_test_device)
-            val builder = AdRequest.Builder()
-            for (id in ids) {
-                builder.addTestDevice(id)
-            }
-            return builder.build()
-        }
+    val adRequest: AdRequest= AdRequest.Builder().build()
 
     var lastClickTimeMillis: Long
         get() = pref.getPrefLong(context.getString(R.string.PREF_LAST_AD_CLICK_TIME), 0)

@@ -2,6 +2,7 @@ package com.sakurafish.pockettoushituryou
 
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.sakurafish.pockettoushituryou.di.ApplicationModule
 import com.sakurafish.pockettoushituryou.di.DaggerApplicationComponent
 import com.sakurafish.pockettoushituryou.di.applyAutoInjector
@@ -14,6 +15,7 @@ class MainApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
         applyAutoInjector()
 
         if (BuildConfig.DEBUG) {
@@ -22,8 +24,14 @@ class MainApplication : DaggerApplication() {
 
         Fabric.with(this, Crashlytics())
 
-        // adMob
+        initAdMob()
+    }
+
+    private fun initAdMob() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
+        val testDeviceIds = resources.getStringArray(R.array.admob_test_device).toList()
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        MobileAds.setRequestConfiguration(configuration)
     }
 
     override fun applicationInjector() = DaggerApplicationComponent
