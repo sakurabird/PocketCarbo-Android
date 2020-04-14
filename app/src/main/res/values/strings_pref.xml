@@ -1,4 +1,5 @@
 <resources>
+    <!-- TODO Refactoring  -->
     <!-- Preference keys -->
     <string name="PREF_DATA_VERSION">PREF_DATA_VERSION</string>
     <string name="PREF_LAUNCH_COUNT">PREF_LAUNCH_COUNT</string>
@@ -9,6 +10,7 @@
     <string name="PREF_MAIL_TO_DEV">PREF_MAIL_TO_DEV</string>
     <string name="PREF_PRIVACY_POLICY">PREF_PRIVACY_POLICY</string>
     <string name="PREF_LAST_AD_CLICK_TIME">PREF_LAST_AD_CLICK_TIME</string>
+    <string name="PREF_FINISH_MIGRATE_ROOM">PREF_FINISH_MIGRATE_ROOM</string>
 
     <!-- text -->
     <string name="environment_setting">環境設定</string>
