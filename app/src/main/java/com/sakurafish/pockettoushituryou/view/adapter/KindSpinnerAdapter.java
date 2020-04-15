@@ -1,44 +1,44 @@
 package com.sakurafish.pockettoushituryou.view.adapter;
 
-
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.sakurafish.pockettoushituryou.R;
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds;
+import com.sakurafish.pockettoushituryou.data.db.entity.Kind;
 
 import java.util.List;
 
 public class KindSpinnerAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Kinds> kindsList;
+    private List<Kind> kinds;
 
     public KindSpinnerAdapter(Context context) {
         super();
         this.context = context;
-        kindsList = null;
+        kinds = null;
     }
 
-    public void setData(List<Kinds> data) {
-        kindsList = data;
+    public void setData(List<Kind> kinds) {
+        this.kinds = kinds;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (kindsList == null) return 0;
-        return kindsList.size() + 1;
+        if (kinds == null) return 0;
+        return kinds.size() + 1;
     }
 
     @Override
     public Object getItem(int position) {
-        return kindsList.get(position);
+        return kinds.get(position);
     }
 
     @Override
@@ -77,10 +77,10 @@ public class KindSpinnerAdapter extends BaseAdapter {
             tv.setText(context.getString(R.string.kind_all));
         } else {
             int listPos = position - 1;
-            if (listPos < 0 || listPos > kindsList.size() - 1) {
+            if (listPos < 0 || listPos > kinds.size() - 1) {
                 return;
             }
-            Kinds kinds = (Kinds) getItem(listPos);
+            Kind kinds = (Kind) getItem(listPos);
             if (kinds != null) {
                 tv.setText(kinds.getName());
             }

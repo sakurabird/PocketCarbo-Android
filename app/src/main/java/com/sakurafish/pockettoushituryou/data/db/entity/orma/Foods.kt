@@ -1,4 +1,4 @@
-package com.sakurafish.pockettoushituryou.data.db.entity
+package com.sakurafish.pockettoushituryou.data.db.entity.orma
 
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
@@ -6,6 +6,10 @@ import com.github.gfx.android.orma.annotation.Table
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+/**
+ * This class has been deprecated from version 2.5.1 due to migration with the Room library
+ */
+@Deprecated("This class is not used from version 2.5.1. Use 'Food' class")
 @JsonClass(generateAdapter = true)
 @Table
 class Foods {
@@ -72,6 +76,7 @@ class Foods {
     var kindId: Int = 0
 
     @Column(value = "kinds", indexed = true)
+
     @Transient
     var kinds: Kinds? = null
 

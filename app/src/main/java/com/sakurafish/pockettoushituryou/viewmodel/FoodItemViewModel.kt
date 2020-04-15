@@ -12,11 +12,13 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.WorkerThread
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.sakurafish.pockettoushituryou.R
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
-import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
+import com.sakurafish.pockettoushituryou.data.db.entity.Favorite
+import com.sakurafish.pockettoushituryou.data.db.entity.Food
+import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
+import com.sakurafish.pockettoushituryou.store.Action
+import com.sakurafish.pockettoushituryou.store.Dispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -30,18 +32,19 @@ enum class HostClass {
 
 class FoodItemViewModel(
         private val context: Context,
-        private val favoriteFoodsRepository: FavoriteFoodsRepository,
-        val foods: Foods,
+        private val favoriteRepository: FavoriteRepository,
+        val food: Food,
+        private val dispatcher: Dispatcher,
         private val hostClass: HostClass
 ) : ViewModel() {
 
     val carboRatedColorResId = liveData {
         val value: Int = when {
-            foods.carbohydratePer100g < 5 -> // 糖質量が少ない
+            food.carbohydratePer100g < 5 -> // 糖質量が少ない
                 R.color.colorCarboSafe
-            foods./**/carbohydratePer100g >= 5 && foods.carbohydratePer100g < 15 -> // 糖質量がやや多い
+            food./**/carbohydratePer100g >= 5 && food.carbohydratePer100g < 15 -> // 糖質量がやや多い
                 R.color.colorCarboWarning
-            foods.carbohydratePer100g >= 15 && foods.carbohydratePer100g < 50 -> // 糖質量が多い
+            food.carbohydratePer100g >= 15 && food.carbohydratePer100g < 50 -> // 糖質量が多い
                 R.color.colorCarboDanger
             else -> // 糖質量が非常に多い
                 R.color.colorCarboDangerHigh
@@ -50,31 +53,31 @@ class FoodItemViewModel(
     }
 
     val name = liveData {
-        emit(foods.name)
+        emit(food.name)
     }
 
     val kindName = liveData {
-        emit(foods.kinds?.name)
+        emit(food.kind?.name)
     }
 
     val carbohydratePer100g = liveData {
-        emit(foods.carbohydratePer100g.toString() + " g")
+        emit(food.carbohydratePer100g.toString() + " g")
     }
 
     val cubeSugarPer100 = liveData {
         // 角砂糖換算(100gあたり)
-        emit(createCubeSugarString(foods.carbohydratePer100g))
+        emit(createCubeSugarString(food.carbohydratePer100g))
     }
 
     val fatPer100 = liveData {
-        emit(foods.fatPer100g.toString() + " g")
+        emit(food.fatPer100g.toString() + " g")
     }
 
     val expandedTitle = liveData {
         val title = when {
-            TextUtils.isEmpty(foods.weightHint) -> context.getString(R.string.expanded_title, foods.weight.toString() + " g")
+            TextUtils.isEmpty(food.weightHint) -> context.getString(R.string.expanded_title, food.weight.toString() + " g")
             else -> {
-                val str = foods.weight.toString() + " g" + "(" + foods.weightHint + ")"
+                val str = food.weight.toString() + " g" + "(" + food.weightHint + ")"
                 context.getString(R.string.expanded_title, str)
             }
         }
@@ -82,36 +85,36 @@ class FoodItemViewModel(
     }
 
     val carbohydratePerWeight = liveData {
-        emit(foods.carbohydratePerWeight.toString() + " g")
+        emit(food.carbohydratePerWeight.toString() + " g")
     }
 
     val calory = liveData {
-        emit(foods.calory.toString() + " kcal")
+        emit(food.calory.toString() + " kcal")
     }
 
     val protein = liveData {
-        emit(foods.protein.toString() + " g")
+        emit(food.protein.toString() + " g")
     }
 
     val fat = liveData {
-        emit(foods.fat.toString() + " g")
+        emit(food.fat.toString() + " g")
     }
 
     val sodium = liveData {
-        emit(foods.sodium.toString() + " g")
+        emit(food.sodium.toString() + " g")
     }
 
     val notes = liveData {
-        emit(foods.notes)
+        emit(food.notes)
     }
 
     val showNotes = liveData {
-        emit(!TextUtils.isEmpty(foods.notes))
+        emit(!TextUtils.isEmpty(food.notes))
     }
 
     val cubeSugarPerWeight = liveData {
         // 角砂糖換算
-        val str = createCubeSugarString(foods.carbohydratePerWeight)
+        val str = createCubeSugarString(food.carbohydratePerWeight)
         emit(str)
     }
 
@@ -151,18 +154,13 @@ class FoodItemViewModel(
 
     fun refreshFavoriteStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-            _isFavState.postValue(favoriteFoodsRepository.isFavorite(foods.id))
+            _isFavState.postValue(favoriteRepository.isFavorite(food.id))
         }
     }
 
     fun onClickFavButton(view: View) {
         viewModelScope.launch {
-            val result = updateFavoritesDB()
-            if (result) {
-                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.dark_red))
-            } else {
-                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.grey600))
-            }
+            _isFavState.value = updateFavoritesDB()
             animateFavButton(view)
         }
     }
@@ -170,16 +168,18 @@ class FoodItemViewModel(
     @WorkerThread
     private suspend fun updateFavoritesDB(): Boolean {
         val result = viewModelScope.async(Dispatchers.IO) {
-            if (favoriteFoodsRepository.isFavorite(foods.id)) {
-                favoriteFoodsRepository.delete(foods, hostClass)
-                _isFavState.postValue(false)
+
+            val favorite = favoriteRepository.findByFoodId(food.id)
+            if (favorite != null) {
+                favoriteRepository.delete(favorite)
                 return@async false
             } else {
-                favoriteFoodsRepository.save(foods, hostClass)
-                _isFavState.postValue(true)
+                val favorite = Favorite(food.id, food, Date().time)
+                favoriteRepository.save(favorite)
                 return@async true
             }
         }
+        dispatcher.launchAndDispatch(Action.FavoritesFoodsUpdated(hostClass))
         return result.await()
     }
 
@@ -234,7 +234,7 @@ class FoodItemViewModel(
         builder.append(", ")
 
         // 同じ100gをコピーしても仕方ないので
-        if (foods.weight != 0 && foods.weight != 100) {
+        if (food.weight != 0 && food.weight != 100) {
             builder.append(expandedTitle.value?.replace(" ", ""))
             builder.append(":")
             builder.append(carbohydratePerWeight.value?.replace(" ", ""))
@@ -247,7 +247,7 @@ class FoodItemViewModel(
         builder.append(fat.value?.replace(" ", ""))
         builder.append(", 塩分:")
         builder.append(sodium.value?.replace(" ", ""))
-        if (!TextUtils.isEmpty(foods.notes)) {
+        if (!TextUtils.isEmpty(food.notes)) {
             builder.append(", 備考:")
             builder.append(notes.value)
         }

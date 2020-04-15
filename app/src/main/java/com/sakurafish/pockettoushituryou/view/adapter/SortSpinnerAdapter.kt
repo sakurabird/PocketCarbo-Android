@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.sakurafish.pockettoushituryou.R
+import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
 
 class SortSpinnerAdapter(private val context: Context) : BaseAdapter() {
     override fun getCount(): Int {
-        return texts.size
+        return FoodSortOrder.values().size
     }
 
     override fun getItem(position: Int): Any {
-        return texts[position]
+        return FoodSortOrder.values()[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -39,12 +40,7 @@ class SortSpinnerAdapter(private val context: Context) : BaseAdapter() {
             view = inflater.inflate(R.layout.item_kind_spinner_dropdown, null)
         }
         val tv = view?.findViewById<View>(R.id.name) as TextView
-        tv.text = texts[position]
+        tv.text = FoodSortOrder.values()[position].title
         return view
     }
-
-    companion object {
-        val texts = arrayOf("食品名順", "食品名逆順", "糖質量の少ない順", "糖質量の多い順", "脂質量の少ない順", "脂質量の多い順")
-    }
-
 }

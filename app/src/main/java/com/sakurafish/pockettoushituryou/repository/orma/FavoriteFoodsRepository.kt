@@ -1,9 +1,9 @@
-package com.sakurafish.pockettoushituryou.repository
+package com.sakurafish.pockettoushituryou.repository.orma
 
 import androidx.annotation.WorkerThread
-import com.sakurafish.pockettoushituryou.data.db.entity.FavoriteFoods
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
-import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.FavoriteFoods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.sakurafish.pockettoushituryou.store.Action
 import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.viewmodel.HostClass
@@ -12,6 +12,11 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * FavoritesFoods data access class with Orma
+ * This class has been deprecated from version 2.5.1 due to migration with the Room library
+ */
+@Deprecated("This class is not used from version 2.5.1. Use 'FavoriteRepository' and 'FavoriteDao' class")
 @Singleton
 class FavoriteFoodsRepository @Inject
 internal constructor(

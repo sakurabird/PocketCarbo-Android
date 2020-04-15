@@ -1,10 +1,14 @@
-package com.sakurafish.pockettoushituryou.data.db.entity
+package com.sakurafish.pockettoushituryou.data.db.entity.orma
 
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
 import com.github.gfx.android.orma.annotation.Table
 import java.util.*
 
+/**
+ * This class has been deprecated from version 2.5.1 due to migration with the Room library
+ */
+@Deprecated("This class is not used from version 2.5.1. Use 'Favorite' class")
 @Table
 class FavoriteFoods {
 

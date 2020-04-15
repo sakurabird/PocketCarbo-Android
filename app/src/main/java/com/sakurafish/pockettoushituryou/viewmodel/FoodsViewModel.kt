@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sakurafish.pockettoushituryou.data.db.entity.Foods
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
-import com.sakurafish.pockettoushituryou.repository.FoodsRepository
-import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.data.db.entity.Food
+import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
+import com.sakurafish.pockettoushituryou.data.db.entity.Kind
+import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion
+import com.sakurafish.pockettoushituryou.repository.FoodRepository
+import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.store.Action
 import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
@@ -18,19 +20,19 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class FoodsViewModel @Inject constructor(
-        private val foodsRepository: FoodsRepository,
-        private val kindsRepository: KindsRepository,
+        private val foodRepository: FoodRepository,
+        private val kindRepository: KindRepository,
         private val dispatcher: Dispatcher,
         private val showcaseHelper: ShowcaseHelper
 ) : ViewModel() {
 
     private var typeId = 1
 
-    private val _foods = MutableLiveData<List<Foods>>()
-    val foods: LiveData<List<Foods>> = _foods
+    private val _foods = MutableLiveData<List<Food>>()
+    val foods: LiveData<List<Food>> = _foods
 
-    private val _kinds = MutableLiveData<List<Kinds>>()
-    val kinds: LiveData<List<Kinds>> = _kinds
+    private val _kinds = MutableLiveData<List<Kind>>()
+    val kinds: LiveData<List<Kind>> = _kinds
 
     private val _isLoading = MutableLiveData<Boolean>().apply {
         value = true
@@ -43,18 +45,22 @@ class FoodsViewModel @Inject constructor(
 
     fun findKinds() {
         viewModelScope.launch(Dispatchers.IO) {
-            val kinds = kindsRepository.findByType(typeId)
+            val kinds = kindRepository.findByTypeId(typeId)
             _kinds.postValue(kinds)
-            Timber.tag(TAG).d("type:" + typeId + " kinds size:" + kinds.size)
         }
     }
 
-    fun findFoods(kindId: Int, @IntRange(from = 0, to = 5) sort: Int) {
+    fun findFoods(kindId: Int, sortOrder: FoodSortOrder) {
         viewModelScope.launch(Dispatchers.IO) {
             enableIsLoading(true)
-            val foods = foodsRepository.findByTypeAndKind(typeId, kindId, sort)
-            _foods.postValue(foods)
-            Timber.tag(TAG).d(" foods size:" + foods.size)
+
+            if (kindId == KindCompanion.KIND_ALL) {
+                val foods = foodRepository.findByType(typeId, sortOrder)
+                _foods.postValue(foods)
+            } else {
+                val foods = foodRepository.findByTypeAndKind(typeId, kindId, sortOrder)
+                _foods.postValue(foods)
+            }
             enableIsLoading(false)
 
             if (!showcaseHelper.isShowcaseMainActivityFinished

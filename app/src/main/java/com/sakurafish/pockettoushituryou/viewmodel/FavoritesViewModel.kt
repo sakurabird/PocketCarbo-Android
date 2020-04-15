@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
+import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
-        private val favoriteFoodsRepository: FavoriteFoodsRepository
+        private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
 
     var foods = liveData(Dispatchers.IO) {
-        val favorites = favoriteFoodsRepository.findAll()
+        val favorites = favoriteRepository.findAll()
         _showEmpty.postValue(favorites.isEmpty())
         emit(favorites)
     }

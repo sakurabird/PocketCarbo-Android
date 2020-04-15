@@ -1,4 +1,5 @@
 <resources>
+    <!-- TODO Refactoring  -->
     <!-- Preference keys -->
     <string name="PREF_DATA_VERSION">PREF_DATA_VERSION</string>
     <string name="PREF_LAUNCH_COUNT">PREF_LAUNCH_COUNT</string>
@@ -9,6 +10,7 @@
     <string name="PREF_MAIL_TO_DEV">PREF_MAIL_TO_DEV</string>
     <string name="PREF_PRIVACY_POLICY">PREF_PRIVACY_POLICY</string>
     <string name="PREF_LAST_AD_CLICK_TIME">PREF_LAST_AD_CLICK_TIME</string>
+    <string name="PREF_FINISH_MIGRATE_ROOM">PREF_FINISH_MIGRATE_ROOM</string>
 
     <!-- text -->
     <string name="environment_setting">環境設定</string>
@@ -18,8 +20,8 @@
     <string name="setting_privacy_policy">プライバシーポリシー</string>
     <string name="setting_open_google_play">Google Playを開く</string>
     <string name="setting_mail_to_dev">開発へのご要望・ご感想</string>
-    <string name="setting_mail_to_dev2">【ポケット糖質量】ご意見・ご要望</string>
-    <string name="setting_mail_to_dev3">ポケット糖質量へのご意見・ご要望をご記入ください。\nユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。\n返信が必要な場合、sakurafish1@gmail.comというメールアドレスよりお送りいたします。\n--------------------\n</string>
     <string name="setting_mail_to_dev_summary">必ずしもご返信できるとは限りませんのであらかじめご了承下さい</string>
+    <string name="setting_mail_to_dev_subject">【ポケット糖質量 Android】ご意見・ご要望</string>
+    <string name="setting_mail_to_dev_body">\n-------ここを消さないでください-------\nApp version=%1$s\nDevice=%2$s\nOS version=%3$d\n----------------------------------------\nポケット糖質量へのご意見・ご要望をご記入ください。\nユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。\n返信が必要な場合、sakurafish1@gmail.comというメールアドレスよりお送りいたします。\n----------------------------------------\n</string>
 
 </resources>

@@ -3,7 +3,7 @@ package com.sakurafish.pockettoushituryou.di
 import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.sakurafish.pockettoushituryou.data.db.entity.OrmaDatabase
+import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

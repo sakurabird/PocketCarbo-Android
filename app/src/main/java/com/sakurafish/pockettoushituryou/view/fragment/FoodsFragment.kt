@@ -14,12 +14,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.R
-import com.sakurafish.pockettoushituryou.data.db.entity.Kinds
+import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
+import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion.KIND_ALL
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
-import com.sakurafish.pockettoushituryou.repository.FavoriteFoodsRepository
-import com.sakurafish.pockettoushituryou.repository.KindsRepository
+import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
+import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.shared.ext.changed
+import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
@@ -35,22 +37,29 @@ class FoodsFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
-    lateinit var kindsRepository: KindsRepository
+    lateinit var kindRepository: KindRepository
+
     @Inject
-    lateinit var favoriteFoodsRepository: FavoriteFoodsRepository
+    lateinit var favoriteRepository: FavoriteRepository
+
     @Inject
     lateinit var showcaseHelper: ShowcaseHelper
+
     @Inject
     lateinit var foodsStore: FoodsStore
+
+    @Inject
+    lateinit var dispatcher: Dispatcher
 
     private lateinit var viewModel: FoodsViewModel
     private lateinit var binding: FragmentFoodsBinding
     private lateinit var adapter: FoodsAdapter
     private lateinit var kindSpinnerAdapter: KindSpinnerAdapter
     private var typeId: Int = 0
-    private var kindId: Int = Kinds.ALL
-    private var sort: Int = 0 // デフォルトは名前順;
+    private var kindId: Int = KIND_ALL
+    private var sortOrder: FoodSortOrder = FoodSortOrder.DEFAULT_SORT_ORDER // デフォルトは名前順
     private var sortToast: Boolean = false
     private var kindSpinnerInit: Boolean = true
     private var sortSpinnerInit: Boolean = true
@@ -82,7 +91,7 @@ class FoodsFragment : Fragment(), Injectable {
         if (savedInstanceState != null) {
             this.typeId = savedInstanceState.getInt(EXTRA_TYPE)
             this.kindId = savedInstanceState.getInt("kindId")
-            this.sort = savedInstanceState.getInt("sort")
+            this.sortOrder = savedInstanceState.getSerializable("sort") as FoodSortOrder
         }
     }
 
@@ -90,14 +99,14 @@ class FoodsFragment : Fragment(), Injectable {
         super.onSaveInstanceState(outState)
         outState.putInt(EXTRA_TYPE, this.typeId)
         outState.putInt("kindId", this.kindId)
-        outState.putInt("sort", this.sort)
+        outState.putSerializable("sort", this.sortOrder)
     }
 
     private fun loadDB() {
         val state = foodsStore.populateState.value
         state?.let {
             viewModel.findKinds()
-            viewModel.findFoods(kindId, sort)
+            viewModel.findFoods(this.kindId, this.sortOrder)
         }
     }
 
@@ -145,7 +154,7 @@ class FoodsFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), favoriteFoodsRepository, food, HostClass.FOODS)
+                        requireContext(), favoriteRepository, food, dispatcher, HostClass.FOODS)
             }
 
             adapter.run {
@@ -173,7 +182,7 @@ class FoodsFragment : Fragment(), Injectable {
                     return
                 }
                 kindId = if (position == 0) {
-                    Kinds.ALL
+                    KIND_ALL
                 } else {
                     viewModel.kinds.value?.get(position - 1)?.id!!
                 }
@@ -193,10 +202,10 @@ class FoodsFragment : Fragment(), Injectable {
                     sortSpinnerInit = false
                     return
                 }
-                sort = position
-                if (position < 0 || position > 5) sort = 0
+                sortOrder = FoodSortOrder.fromInt(position) ?: FoodSortOrder.DEFAULT_SORT_ORDER
                 if (sortToast) {
-                    Toast.makeText(requireContext(), SortSpinnerAdapter.texts[position] + "にソートしました。", Toast.LENGTH_SHORT).show()
+                    val message = FoodSortOrder.values()[position].title + "にソートしました。"
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 } else {
                     sortToast = true
                 }

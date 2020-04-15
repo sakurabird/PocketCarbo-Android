@@ -1,6 +1,6 @@
 plugins {
     // ./gradlew dependencyUpdates で新しいバージョンを検出
-    id "com.github.ben-manes.versions" version "0.27.0"
+    id "com.github.ben-manes.versions" version "0.28.0"
 }
 
 apply plugin: 'com.android.application'
@@ -24,12 +24,18 @@ android {
         applicationId "com.sakurafish.pockettoushituryou"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 23020500
-        versionName "2.5.0"
+        versionCode 23020501
+        versionName "2.5.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         archivesBaseName = "${applicationName}-v${versionName}-vc${versionCode}"
+    }
+
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
     }
 
     dataBinding {
@@ -100,8 +106,9 @@ android {
 
 ext {
     supportLibraryVersion = '1.1.0'
-    lifecycleVersion = "2.2.0-rc02"
-    daggerVersion = "2.25.2"
+    lifecycleVersion = "2.2.0"
+    roomVersion = "2.2.5"
+    daggerVersion = "2.27"
     ormaVersion = "6.0.2"
     moshiVersion = "1.8.0"
     ankoVersion = "0.10.8"
@@ -117,8 +124,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.appcompat:appcompat:$supportLibraryVersion"
     implementation "androidx.preference:preference:$supportLibraryVersion"
-    implementation 'com.google.android.material:material:1.1.0-beta01'
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
 
     // architecture components
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
@@ -127,10 +133,16 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 
+    // Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    testImplementation "androidx.room:room-testing:$roomVersion"
+
     // Google Services
-    implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-appindexing:19.0.0'
-    implementation "com.google.firebase:firebase-ads:18.3.0"
+    implementation 'com.google.firebase:firebase-core:17.2.3'
+    implementation 'com.google.firebase:firebase-appindexing:19.1.0'
+    implementation "com.google.firebase:firebase-ads:19.0.1"
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
@@ -142,7 +154,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     // Data
@@ -154,7 +166,7 @@ dependencies {
     // UI
     implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
-    implementation 'com.afollestad.material-dialogs:core:3.1.1'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
     // Utility
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -163,10 +175,11 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$ankoVersion"
 
     // Test
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:core:1.2.0'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'junit:junit:4.13'
 }
 
 // MUST BE AT THE BOTTOM
