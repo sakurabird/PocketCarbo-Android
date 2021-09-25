@@ -97,9 +97,6 @@
 
         <!-- meta data -->
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="5d6fabbcde793289c1e4057daced02012118e520" />
-        <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
     </application>

@@ -1,6 +1,5 @@
 package com.sakurafish.pockettoushituryou
 
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.sakurafish.pockettoushituryou.di.ApplicationModule
@@ -8,7 +7,6 @@ import com.sakurafish.pockettoushituryou.di.DaggerApplicationComponent
 import com.sakurafish.pockettoushituryou.di.applyAutoInjector
 import com.sakurafish.pockettoushituryou.di.module.DatabaseModule
 import dagger.android.support.DaggerApplication
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 class MainApplication : DaggerApplication() {
@@ -22,8 +20,6 @@ class MainApplication : DaggerApplication() {
             Timber.plant(Timber.DebugTree())
         }
 
-        Fabric.with(this, Crashlytics())
-
         initAdMob()
     }
 
@@ -35,10 +31,10 @@ class MainApplication : DaggerApplication() {
     }
 
     override fun applicationInjector() = DaggerApplicationComponent
-            .builder()
-            .application(this)
-            .context(this.applicationContext)
-            .applicationModule(ApplicationModule(this))
-            .databaseModule(DatabaseModule(this))
-            .build()
+        .builder()
+        .application(this)
+        .context(this.applicationContext)
+        .applicationModule(ApplicationModule(this))
+        .databaseModule(DatabaseModule(this))
+        .build()
 }
