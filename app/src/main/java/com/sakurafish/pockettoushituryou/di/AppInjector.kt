@@ -37,7 +37,7 @@ fun Application.applyAutoInjector() = registerActivityLifecycleCallbacks(
             override fun onActivityStopped(activity: Activity) {
             }
 
-            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
             }
 
             override fun onActivityDestroyed(activity: Activity) {
