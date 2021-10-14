@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -31,6 +32,9 @@ class ApplicationModule(val application: Application) {
 
     @Provides
     fun provideMoshi(): Moshi {
-        return Moshi.Builder().build()
+        val moshi = Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+        return moshi
     }
 }
