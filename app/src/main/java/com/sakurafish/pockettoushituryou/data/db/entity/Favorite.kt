@@ -5,7 +5,11 @@ import androidx.room.*
 /**
  * Entity class for Room since version 2.5.1
  */
-@SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
+@SuppressWarnings(
+        RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED,
+        RoomWarnings.INDEX_FROM_EMBEDDED_ENTITY_IS_DROPPED,
+        RoomWarnings.INDEX_FROM_EMBEDDED_FIELD_IS_DROPPED
+)
 @Entity(indices = [Index(value = ["food_id", "created_at"])])
 data class Favorite(
 
