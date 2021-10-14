@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -22,10 +23,10 @@ import com.sakurafish.pockettoushituryou.data.local.TypesData
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.di.ViewModelFactory
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.shared.ext.changed
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser
-import com.sakurafish.pockettoushituryou.store.FoodsStore
 import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
@@ -35,7 +36,7 @@ import com.squareup.moshi.Moshi
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     @Inject
-    lateinit var foodsStore: FoodsStore
+    lateinit var events: Events
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
@@ -76,16 +77,20 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
         setLaunchCount()
         initView()
-        setupStore()
+        setupObservers()
         showAppMessage()
         pleaseReview()
     }
 
-    @ExperimentalCoroutinesApi
-    private fun setupStore() {
-        foodsStore.showcaseReady.changed(this@MainActivity) {
-            mainViewModel.enablePreventClick(false)
-            showcaseHelper.showTutorialOnce(this@MainActivity, binding)
+    private fun setupObservers() {
+        // Show tutorial
+        lifecycleScope.launchWhenStarted {
+            events.showcaseState.collect { showcaseState ->
+                if (showcaseState == ShowcaseState.READY) {
+                    mainViewModel.enablePreventClick(false)
+                    showcaseHelper.showTutorialOnce(this@MainActivity, binding)
+                }
+            }
         }
     }
 

@@ -14,11 +14,11 @@ import com.sakurafish.pockettoushituryou.databinding.FragmentSearchResultBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
-import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.HostClass
 import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.Companion.EXTRA_QUERY
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
-import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import com.sakurafish.pockettoushituryou.viewmodel.SearchResultViewModel
 import javax.inject.Inject
 
@@ -34,7 +34,7 @@ class SearchResultFragment : Fragment(), Injectable {
     lateinit var favoriteRepository: FavoriteRepository
 
     @Inject
-    lateinit var dispatcher: Dispatcher
+    lateinit var events: Events
 
     private lateinit var viewModel: SearchResultViewModel
     private lateinit var binding: FragmentSearchResultBinding
@@ -90,7 +90,7 @@ class SearchResultFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), favoriteRepository, food, dispatcher, HostClass.SEARCH)
+                    requireContext(), favoriteRepository, food, events, HostClass.SEARCH)
             }
 
             adapter.run {

@@ -14,11 +14,11 @@ import com.sakurafish.pockettoushituryou.databinding.FragmentFavoritesBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
-import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.HostClass
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FavoritesViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
-import com.sakurafish.pockettoushituryou.viewmodel.HostClass
 import javax.inject.Inject
 
 class FavoritesFragment : Fragment(), Injectable {
@@ -33,21 +33,21 @@ class FavoritesFragment : Fragment(), Injectable {
     lateinit var favoriteRepository: FavoriteRepository
 
     @Inject
-    lateinit var dispatcher: Dispatcher
+    lateinit var events: Events
 
     private lateinit var viewModel: FavoritesViewModel
     private lateinit var binding: FragmentFavoritesBinding
     private lateinit var adapter: FoodsAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = DataBindingUtil.inflate<FragmentFavoritesBinding>(
-            inflater,
-            R.layout.fragment_favorites,
-            container,
-            false
+        inflater,
+        R.layout.fragment_favorites,
+        container,
+        false
     ).also {
         binding = it
     }.root
@@ -56,7 +56,7 @@ class FavoritesFragment : Fragment(), Injectable {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProvider(this@FavoritesFragment, viewModelFactory)
-                .get(FavoritesViewModel::class.java)
+            .get(FavoritesViewModel::class.java)
 
         initView()
         setupViewModel()
@@ -77,7 +77,8 @@ class FavoritesFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), favoriteRepository, food, dispatcher, HostClass.FAVORITES)
+                    requireContext(), favoriteRepository, food, events, HostClass.FAVORITES
+                )
             }
 
             adapter.run {

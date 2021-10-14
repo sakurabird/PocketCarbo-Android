@@ -17,24 +17,18 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.Favorite
 import com.sakurafish.pockettoushituryou.data.db.entity.Food
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.HostClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 
-enum class HostClass {
-    FOODS,
-    FAVORITES,
-    SEARCH
-}
-
 class FoodItemViewModel(
         private val context: Context,
         private val favoriteRepository: FavoriteRepository,
         val food: Food,
-        private val dispatcher: Dispatcher,
+        private val events: Events,
         private val hostClass: HostClass
 ) : ViewModel() {
 
@@ -162,6 +156,7 @@ class FoodItemViewModel(
         viewModelScope.launch {
             _isFavState.value = updateFavoritesDB()
             animateFavButton(view)
+            events.invokeFavoritesClickedEvent(hostClass)
         }
     }
 
@@ -179,7 +174,6 @@ class FoodItemViewModel(
                 return@async true
             }
         }
-        dispatcher.launchAndDispatch(Action.FavoritesFoodsUpdated(hostClass))
         return result.await()
     }
 

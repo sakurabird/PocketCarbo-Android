@@ -5,12 +5,12 @@ import androidx.appcompat.app.AlertDialog
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
 import com.sakurafish.pockettoushituryou.view.activity.MainActivity
 import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
@@ -23,9 +23,11 @@ import javax.inject.Singleton
  */
 @Singleton
 class ShowcaseHelper @Inject constructor(
-        private val pref: Pref,
-        private val dispatcher: Dispatcher
+    private val pref: Pref,
+    private val events: Events
 ) {
+    // TODO CoroutineScopeはinjectする
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     // true: 表示済みをあらわす
     val isShowcaseMainActivityFinished: Boolean
@@ -43,7 +45,6 @@ class ShowcaseHelper @Inject constructor(
         pref.setPref(PREF_KEY_SHOWCASE_FOODLISTFRAGMENT_FINISHED, finished)
     }
 
-    @ExperimentalCoroutinesApi
     fun showTutorialOnce(activity: MainActivity, binding: ActivityMainBinding) {
         setPrefShowcaseFoodListFragmentFinished(false)
         val config = ShowcaseConfig()
@@ -87,7 +88,9 @@ class ShowcaseHelper @Inject constructor(
 
                             override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
                                 setPrefShowcaseMainactivityFinished(true)
-                                dispatcher.launchAndDispatch(Action.ShowcaseProceeded)
+                                scope.launch {
+                                    events.setShowcaseState(ShowcaseState.PROCEEDED)
+                                }
                             }
                         })
                         .setDismissOnTouch(true)

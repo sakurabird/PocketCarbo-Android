@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
@@ -20,17 +21,18 @@ import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
-import com.sakurafish.pockettoushituryou.shared.ext.changed
-import com.sakurafish.pockettoushituryou.store.Dispatcher
-import com.sakurafish.pockettoushituryou.store.FoodsStore
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.HostClass
+import com.sakurafish.pockettoushituryou.shared.events.PopulateState
+import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.KindSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
-import com.sakurafish.pockettoushituryou.viewmodel.HostClass
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class FoodsFragment : Fragment(), Injectable {
@@ -48,10 +50,7 @@ class FoodsFragment : Fragment(), Injectable {
     lateinit var showcaseHelper: ShowcaseHelper
 
     @Inject
-    lateinit var foodsStore: FoodsStore
-
-    @Inject
-    lateinit var dispatcher: Dispatcher
+    lateinit var events: Events
 
     private lateinit var viewModel: FoodsViewModel
     private lateinit var binding: FragmentFoodsBinding
@@ -85,7 +84,7 @@ class FoodsFragment : Fragment(), Injectable {
                 .get(FoodsViewModel::class.java)
 
         initView()
-        setupStore()
+        setupObservers()
         setupViewModel()
 
         if (savedInstanceState != null) {
@@ -103,8 +102,8 @@ class FoodsFragment : Fragment(), Injectable {
     }
 
     private fun loadDB() {
-        val state = foodsStore.populateState.value
-        state?.let {
+        val state = events.dataPopulateState.value
+        if (state == PopulateState.POPULATED) {
             viewModel.findKinds()
             viewModel.findFoods(this.kindId, this.sortOrder)
         }
@@ -125,25 +124,34 @@ class FoodsFragment : Fragment(), Injectable {
         initSortSpinner()
     }
 
-    @ExperimentalCoroutinesApi
-    private fun setupStore() {
-        foodsStore.populateState.changed(viewLifecycleOwner) {
-            if (it == FoodsStore.PopulateState.Populated) {
-                viewModel.setTypeId(typeId)
-                loadDB()
-            } else {
-                viewModel.enableIsLoading(true)
+    private fun setupObservers() {
+        lifecycleScope.launchWhenStarted {
+            events.dataPopulateState.collect { populateState ->
+                when (populateState) {
+                    PopulateState.POPULATE -> viewModel.enableIsLoading(true)
+                    PopulateState.POPULATED -> {
+                        viewModel.setTypeId(typeId)
+                        loadDB()
+                    }
+                }
             }
         }
 
-        foodsStore.favoritesChanged.changed(viewLifecycleOwner) {
-            if (it.hostClass == HostClass.FAVORITES || it.hostClass == HostClass.SEARCH) {
-                adapter.refreshFavoriteStatus()
+        lifecycleScope.launchWhenStarted {
+            events.favoritesClickedEvent.collectLatest { hostClass ->
+                when (hostClass) {
+                    HostClass.FAVORITES -> adapter.refreshFavoriteStatus()
+                    HostClass.SEARCH -> adapter.refreshFavoriteStatus()
+                }
             }
         }
 
-        foodsStore.showcaseProceeded.changed(viewLifecycleOwner) {
-            showcaseHelper.showTutorialOnce(this@FoodsFragment, binding, typeId)
+        lifecycleScope.launchWhenStarted {
+            events.showcaseState.collect { showcaseState ->
+                if (showcaseState == ShowcaseState.PROCEEDED) {
+                    showcaseHelper.showTutorialOnce(this@FoodsFragment, binding, typeId)
+                }
+            }
         }
     }
 
@@ -154,7 +162,7 @@ class FoodsFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                        requireContext(), favoriteRepository, food, dispatcher, HostClass.FOODS)
+                    requireContext(), favoriteRepository, food, events, HostClass.FOODS)
             }
 
             adapter.run {

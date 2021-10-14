@@ -4,10 +4,9 @@ import androidx.annotation.WorkerThread
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.FavoriteFoods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
-import com.sakurafish.pockettoushituryou.viewmodel.HostClass
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.HostClass
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +20,10 @@ import javax.inject.Singleton
 class FavoriteFoodsRepository @Inject
 internal constructor(
         private val orma: OrmaDatabase,
-        private val dispatcher: Dispatcher) {
+        private val events: Events) {
+
+    // TODO CoroutineScopeはinjectする
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @WorkerThread
     fun isFavorite(foodsId: Int): Boolean {
@@ -36,19 +38,21 @@ internal constructor(
         return foods
     }
 
-    @ExperimentalCoroutinesApi
     @WorkerThread
     fun delete(foods: Foods, hostClass: HostClass) {
         orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
-        dispatcher.launchAndDispatch(Action.FavoritesFoodsUpdated(hostClass))
+        scope.launch {
+            events.invokeFavoritesClickedEvent(hostClass)
+        }
     }
 
-    @ExperimentalCoroutinesApi
     @WorkerThread
     fun save(foods: Foods, hostClass: HostClass) {
         orma.relationOfFavoriteFoods().deleter().foodsEq(foods.id).execute()
         orma.relationOfFavoriteFoods().inserter().execute(FavoriteFoods(foods, Date()))
-        dispatcher.launchAndDispatch(Action.FavoritesFoodsUpdated(hostClass))
+        scope.launch {
+            events.invokeFavoritesClickedEvent(hostClass)
+        }
     }
 
     @WorkerThread

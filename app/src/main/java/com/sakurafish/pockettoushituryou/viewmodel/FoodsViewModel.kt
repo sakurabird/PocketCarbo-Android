@@ -11,19 +11,18 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Kind
 import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion
 import com.sakurafish.pockettoushituryou.repository.FoodRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class FoodsViewModel @Inject constructor(
-        private val foodRepository: FoodRepository,
-        private val kindRepository: KindRepository,
-        private val dispatcher: Dispatcher,
-        private val showcaseHelper: ShowcaseHelper
+    private val foodRepository: FoodRepository,
+    private val kindRepository: KindRepository,
+    private val events: Events,
+    private val showcaseHelper: ShowcaseHelper
 ) : ViewModel() {
 
     private var typeId = 1
@@ -64,8 +63,10 @@ class FoodsViewModel @Inject constructor(
             enableIsLoading(false)
 
             if (!showcaseHelper.isShowcaseMainActivityFinished
-                    && !showcaseHelper.isShowcaseFoodListFragmentFinished)
-                dispatcher.dispatch(Action.ShowcaseReady)
+                && !showcaseHelper.isShowcaseFoodListFragmentFinished
+            ) {
+                events.setShowcaseState(ShowcaseState.READY)
+            }
         }
     }
 

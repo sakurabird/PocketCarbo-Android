@@ -14,7 +14,7 @@ import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.sakurafish.pockettoushituryou.repository.*
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.squareup.moshi.Moshi
 import org.hamcrest.Matchers
 import org.junit.After
@@ -51,7 +51,7 @@ class MainViewModelTest {
         val kindRepository: KindRepository = KindDataSource(appDatabase.kindDao())
         favoriteRepository = FavoriteDataSource(appDatabase.favoriteDao())
 
-        mainViewModel = MainViewModel(app, pref, foodRepository, kindRepository, favoriteRepository, Dispatcher(), orma)
+        mainViewModel = MainViewModel(app, pref, foodRepository, kindRepository, favoriteRepository, Events(), orma)
 
         makeData()
         appDatabase.favoriteDao().deleteAll()

@@ -17,17 +17,14 @@ import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.FoodRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.store.Action
-import com.sakurafish.pockettoushituryou.store.Dispatcher
-import com.sakurafish.pockettoushituryou.store.FoodsStore
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.shared.events.PopulateState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@ExperimentalCoroutinesApi
 @Singleton
 class MainViewModel @Inject constructor(
         private val context: Context,
@@ -35,7 +32,7 @@ class MainViewModel @Inject constructor(
         private val foodRepository: FoodRepository,
         private val kindRepository: KindRepository,
         private val favoriteRepository: FavoriteRepository,
-        private val dispatcher: Dispatcher,
+        private val events: Events,
         private val orma: OrmaDatabase
 ) : ViewModel() {
 
@@ -50,11 +47,11 @@ class MainViewModel @Inject constructor(
                 migrateToRoom(orma, favoriteRepository)
             }
             if (mustPopulate()) {
-                dispatcher.dispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populate))
+                events.setDataPopulateState(PopulateState.POPULATE)
                 populateDB()
-                dispatcher.dispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
+                events.setDataPopulateState(PopulateState.POPULATED)
             } else {
-                dispatcher.dispatch(Action.FoodsLoadingStateChanged(FoodsStore.PopulateState.Populated))
+                events.setDataPopulateState(PopulateState.POPULATED)
             }
         }
     }
