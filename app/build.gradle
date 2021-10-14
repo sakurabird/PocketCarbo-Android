@@ -57,6 +57,7 @@ android {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'META-INF/rxjava.properties'
     }
+
     signingConfigs {
         debug {
             storeFile rootProject.file("debug.keystore")
@@ -142,15 +143,13 @@ dependencies {
     testImplementation "androidx.room:room-testing:$roomVersion"
 
     // Google Services
-    implementation 'com.google.firebase:firebase-core:17.2.3'
-    implementation 'com.google.firebase:firebase-appindexing:19.1.0'
-    implementation "com.google.firebase:firebase-ads:19.0.1"
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:20.4.0'
 
     // dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
