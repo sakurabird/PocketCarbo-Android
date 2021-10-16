@@ -209,7 +209,7 @@ class FoodItemViewModel(
 
         val clipboard = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(context.getString(R.string.carbohydrate_amount), rowString)
-        clipboard.primaryClip = clip
+        clipboard.setPrimaryClip(clip)
 
         Toast.makeText(view.context, context.getString(R.string.text_clipped) + "\n" + rowString, Toast.LENGTH_SHORT).show()
 
