@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,16 @@ import androidx.annotation.WorkerThread
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentAdbannerBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper.Companion.ACTION_BANNER_CLICK
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper.Companion.INTENT_EXTRAS_KEY_CLASS
 import kotlinx.coroutines.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class AdBannerFragment : Fragment(), Injectable {
@@ -27,6 +32,8 @@ class AdBannerFragment : Fragment(), Injectable {
 
     private var _binding: FragmentAdbannerBinding? = null
     private val binding get() = _binding!!
+
+    private var adView: AdView? = null
 
     private lateinit var job: Job
     private var parentActivityName: String? = null
@@ -65,19 +72,63 @@ class AdBannerFragment : Fragment(), Injectable {
     }
 
     private fun setupAdView() {
+
+        adView = AdView(requireContext())
+        binding.adViewContainer.addView(adView)
+        val bannerId: String = getString(R.string.admob_banner_ad_unit_id)
+        adView?.adUnitId = bannerId
+
         if (adsHelper.isIntervalOK) {
-            binding.adView.visibility = View.VISIBLE
-            binding.adView.loadAd(adsHelper.adRequest)
+            binding.adViewContainer.visibility = View.VISIBLE
+            loadBanner()
         } else {
             startInterval(false)
         }
 
-        binding.adView.adListener = object : AdListener() {
-            override fun onAdOpened() {
-                startInterval(true)
+        adView?.let {
+            it.adListener = object : AdListener() {
+                override fun onAdOpened() {
+                    Timber.d("test!!!!!onAdOpened")
+                    startInterval(true)
+                }
             }
         }
+
         setADClickReceiver()
+    }
+
+    private fun loadBanner() {
+        val adSize: AdSize = getAdSize()
+        adView!!.adSize = adSize
+
+        // Start loading the ad in the background.
+        adView!!.loadAd(adsHelper.adRequest)
+    }
+
+    private fun getAdSize(): AdSize {
+
+        // Determine the screen width to use for the ad width.
+        val outMetrics = DisplayMetrics()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val display = activity?.display
+            display?.getRealMetrics(outMetrics)
+        } else {
+            @Suppress("DEPRECATION")
+            val display = activity?.windowManager?.defaultDisplay
+            if (display != null) {
+                @Suppress("DEPRECATION")
+                display.getMetrics(outMetrics)
+            }
+        }
+        val widthPixels = outMetrics.widthPixels.toFloat()
+        val density = outMetrics.density
+
+        // you can also pass your selected width here in dp
+        val adWidth = (widthPixels / density).toInt()
+
+        // return the optimal size depends on your orientation (landscape or portrait)
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(requireContext(), adWidth)
     }
 
     private fun setADClickReceiver() {
@@ -87,7 +138,7 @@ class AdBannerFragment : Fragment(), Injectable {
     }
 
     private fun startInterval(clicked: Boolean) {
-        binding.adView.visibility = View.GONE
+        binding.adViewContainer.visibility = View.GONE
 
         val now = System.currentTimeMillis()
 
@@ -109,8 +160,7 @@ class AdBannerFragment : Fragment(), Injectable {
         withContext(Dispatchers.IO) {
             delay(intervalTimeMillis)
             withContext(Dispatchers.Main) {
-                binding.adView.visibility = View.VISIBLE
-                binding.adView.loadAd(adsHelper.adRequest)
+                setupAdView()
             }
         }
     }
