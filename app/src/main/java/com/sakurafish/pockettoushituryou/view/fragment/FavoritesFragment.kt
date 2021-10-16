@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentFavoritesBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
@@ -35,22 +33,20 @@ class FavoritesFragment : Fragment(), Injectable {
     @Inject
     lateinit var events: Events
 
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: FavoritesViewModel
-    private lateinit var binding: FragmentFavoritesBinding
     private lateinit var adapter: FoodsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = DataBindingUtil.inflate<FragmentFavoritesBinding>(
-        inflater,
-        R.layout.fragment_favorites,
-        container,
-        false
-    ).also {
-        binding = it
-    }.root
+    ): View? {
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -60,6 +56,11 @@ class FavoritesFragment : Fragment(), Injectable {
 
         initView()
         setupViewModel()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initView() {

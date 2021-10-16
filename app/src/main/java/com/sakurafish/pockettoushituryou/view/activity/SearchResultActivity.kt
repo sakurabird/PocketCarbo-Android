@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivitySearchresultBinding
 import com.sakurafish.pockettoushituryou.shared.ext.replaceFragment
@@ -25,7 +24,10 @@ class SearchResultActivity : AppCompatActivity(), HasAndroidInjector {
         super.onCreate(savedInstanceState)
 
         val query = intent.getStringExtra(EXTRA_QUERY)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_searchresult)
+
+        binding = ActivitySearchresultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         initView()
         replaceFragment(SearchResultFragment.newInstance(query), R.id.content_view)
     }

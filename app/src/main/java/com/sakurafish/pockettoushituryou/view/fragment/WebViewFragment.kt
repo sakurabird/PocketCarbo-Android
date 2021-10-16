@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentWebviewBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel
@@ -19,23 +17,21 @@ class WebViewFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private var _binding: FragmentWebviewBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: WebViewViewModel
-    private lateinit var binding: FragmentWebviewBinding
 
     private var url: String = ""
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? = DataBindingUtil.inflate<FragmentWebviewBinding>(
-            inflater,
-            R.layout.fragment_webview,
-            container,
-            false
-    ).also {
-        binding = it
-    }.root
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentWebviewBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -50,6 +46,11 @@ class WebViewFragment : Fragment(), Injectable {
             viewModel.setUrl(url)
             viewModel.enableInitAction(false)
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     fun setUrl(url: String) {

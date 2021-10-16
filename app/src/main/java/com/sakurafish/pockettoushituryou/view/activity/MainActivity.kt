@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
@@ -71,7 +70,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle())
 
         mainViewModel = ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.lifecycleOwner = this@MainActivity
         binding.viewModel = mainViewModel
 

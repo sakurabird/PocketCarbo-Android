@@ -8,13 +8,11 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.browser.browseractions.BrowserActionsIntent.EXTRA_TYPE
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
 import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion.KIND_ALL
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
@@ -52,8 +50,10 @@ class FoodsFragment : Fragment(), Injectable {
     @Inject
     lateinit var events: Events
 
+    private var _binding: FragmentFoodsBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: FoodsViewModel
-    private lateinit var binding: FragmentFoodsBinding
     private lateinit var adapter: FoodsAdapter
     private lateinit var kindSpinnerAdapter: KindSpinnerAdapter
     private var typeId: Int = 0
@@ -64,18 +64,14 @@ class FoodsFragment : Fragment(), Injectable {
     private var sortSpinnerInit: Boolean = true
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? = DataBindingUtil.inflate<FragmentFoodsBinding>(
-            inflater,
-            R.layout.fragment_foods,
-            container,
-            false
-    ).also {
-        binding = it
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentFoodsBinding.inflate(inflater, container, false)
         this.typeId = arguments?.getInt(EXTRA_TYPE)!!
-    }.root
+        return binding.root
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -92,6 +88,11 @@ class FoodsFragment : Fragment(), Injectable {
             this.kindId = savedInstanceState.getInt("kindId")
             this.sortOrder = savedInstanceState.getSerializable("sort") as FoodSortOrder
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

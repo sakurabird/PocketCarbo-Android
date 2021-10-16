@@ -9,11 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.WorkerThread
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.ads.AdListener
-import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentAdbannerBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper
@@ -27,7 +25,9 @@ class AdBannerFragment : Fragment(), Injectable {
     @Inject
     lateinit var adsHelper: AdsHelper
 
-    private lateinit var binding: FragmentAdbannerBinding
+    private var _binding: FragmentAdbannerBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var job: Job
     private var parentActivityName: String? = null
 
@@ -44,23 +44,24 @@ class AdBannerFragment : Fragment(), Injectable {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? = DataBindingUtil.inflate<FragmentAdbannerBinding>(
-            inflater,
-            R.layout.fragment_adbanner,
-            container,
-            false
-    ).also {
-        binding = it
-    }.root
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAdbannerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        parentActivityName = activity!!.javaClass.simpleName
+        parentActivityName = requireActivity().javaClass.simpleName
         setupAdView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupAdView() {

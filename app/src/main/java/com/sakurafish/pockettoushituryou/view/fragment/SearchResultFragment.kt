@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentSearchResultBinding
 import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
@@ -36,24 +34,22 @@ class SearchResultFragment : Fragment(), Injectable {
     @Inject
     lateinit var events: Events
 
+    private var _binding: FragmentSearchResultBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: SearchResultViewModel
-    private lateinit var binding: FragmentSearchResultBinding
     private lateinit var adapter: FoodsAdapter
     private var query: String = ""
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? = DataBindingUtil.inflate<FragmentSearchResultBinding>(
-            inflater,
-            R.layout.fragment_search_result,
-            container,
-            false
-    ).also {
-        binding = it
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
         this.query = arguments?.getString(EXTRA_QUERY)!!
-    }.root
+        return binding.root
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -68,6 +64,11 @@ class SearchResultFragment : Fragment(), Injectable {
             this.query = savedInstanceState?.getString(EXTRA_QUERY) ?: ""
         }
         viewModel.searchFoods(query)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
