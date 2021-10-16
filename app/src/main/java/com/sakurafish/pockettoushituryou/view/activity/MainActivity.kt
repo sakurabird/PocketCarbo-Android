@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
@@ -22,9 +22,9 @@ import com.sakurafish.pockettoushituryou.data.local.TypesData
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.di.ViewModelFactory
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
+import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
-import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.ext.goBrowser
 import com.sakurafish.pockettoushituryou.view.adapter.MainPagerAdapter
 import com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
@@ -211,19 +211,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
     }
 
     private fun initTabs() {
-        val pageChangeListener = TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout)
-        binding.pager.addOnPageChangeListener(pageChangeListener)
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                binding.pager.currentItem = tab.position
-            }
+        val adapter = MainPagerAdapter(this@MainActivity)
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-
-        val adapter = MainPagerAdapter(supportFragmentManager)
         val json: String
         try {
             json = LocalJsonResolver.loadJsonFromAsset(this, "json/type.json")
@@ -232,14 +221,14 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
             for ((id, name) in typesData!!.types) {
                 binding.tabLayout.addTab(binding.tabLayout.newTab().setText(name), false)
-                adapter.addFragment(FoodsFragment.newInstance(id), name)
+                adapter.addFragment(FoodsFragment.newInstance(id))
             }
             binding.pager.adapter = adapter
 
-            val curItem = binding.pager.currentItem
-            if (curItem != binding.tabLayout.selectedTabPosition && curItem < binding.tabLayout.tabCount) {
-                binding.tabLayout.getTabAt(curItem)!!.select()
-            }
+            TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+                tab.text = typesData!!.types[position].name
+            }.attach()
+
         } catch (e: IOException) {
             e.printStackTrace()
         }

@@ -1,29 +1,24 @@
 package com.sakurafish.pockettoushituryou.view.adapter
 
+import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import java.util.*
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class MainPagerAdapter internal constructor(fm: FragmentManager)
-    : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    private val mFragmentList = ArrayList<Fragment>()
-    private val mFragmentTitleList = ArrayList<String>()
+class MainPagerAdapter constructor(@NonNull fragmentActivity: FragmentActivity) :
+    FragmentStateAdapter(fragmentActivity) {
 
-    internal fun addFragment(fragment: Fragment, title: String?) {
-        mFragmentList.add(fragment)
-        mFragmentTitleList.add(title!!)
+    private val fragments = ArrayList<Fragment>()
+
+    override fun createFragment(position: Int): Fragment {
+        return fragments[position]
     }
 
-    override fun getItem(position: Int): Fragment {
-        return mFragmentList[position]
+    override fun getItemCount(): Int {
+        return fragments.size
     }
 
-    override fun getCount(): Int {
-        return mFragmentList.size
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        return mFragmentTitleList[position]
+    fun addFragment(fragment: Fragment) {
+        fragments.add(fragment)
     }
 }
