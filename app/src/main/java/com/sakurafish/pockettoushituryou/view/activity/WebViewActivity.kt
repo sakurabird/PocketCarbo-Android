@@ -32,7 +32,7 @@ class WebViewActivity : AppCompatActivity() {
         val fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.fragment_webview)
         if (fragment is WebViewFragment) {
             // TODO Replace Navigation safe args
-            fragment.setUrl(url)
+            url?.let { fragment.setUrl(it) }
         }
     }
 
