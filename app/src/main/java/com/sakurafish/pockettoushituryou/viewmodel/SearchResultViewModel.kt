@@ -36,7 +36,6 @@ class SearchResultViewModel @Inject constructor(
                 else -> _showEmpty.postValue(false)
             }
             _foods.postValue(foods)
-            Timber.tag(TAG).d("query finished foods size:" + foods.size)
         }
     }
 

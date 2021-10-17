@@ -164,12 +164,12 @@ class FoodItemViewModel(
     private suspend fun updateFavoritesDB(): Boolean {
         val result = viewModelScope.async(Dispatchers.IO) {
 
-            val favorite = favoriteRepository.findByFoodId(food.id)
+            var favorite = favoriteRepository.findByFoodId(food.id)
             if (favorite != null) {
                 favoriteRepository.delete(favorite)
                 return@async false
             } else {
-                val favorite = Favorite(food.id, food, Date().time)
+                favorite = Favorite(food.id, food, Date().time)
                 favoriteRepository.save(favorite)
                 return@async true
             }

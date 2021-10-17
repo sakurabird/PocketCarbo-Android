@@ -1,5 +1,5 @@
 package com.sakurafish.pockettoushituryou.shared.ext
-
+// TODO これはいらないのか？
 /** Thanks
  * This class uses DroidKaigi source code. https://github.com/DroidKaigi/conference-app-2019
  */

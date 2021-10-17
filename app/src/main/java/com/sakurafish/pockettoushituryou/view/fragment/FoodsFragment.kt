@@ -129,6 +129,7 @@ class FoodsFragment : Fragment(), Injectable {
         lifecycleScope.launchWhenStarted {
             events.dataPopulateState.collect { populateState ->
                 when (populateState) {
+                    PopulateState.NONE -> {}
                     PopulateState.POPULATE -> viewModel.enableIsLoading(true)
                     PopulateState.POPULATED -> {
                         viewModel.setTypeId(typeId)
@@ -141,6 +142,7 @@ class FoodsFragment : Fragment(), Injectable {
         lifecycleScope.launchWhenStarted {
             events.favoritesClickedEvent.collectLatest { hostClass ->
                 when (hostClass) {
+                    HostClass.FOODS -> {}
                     HostClass.FAVORITES -> adapter.refreshFavoriteStatus()
                     HostClass.SEARCH -> adapter.refreshFavoriteStatus()
                 }

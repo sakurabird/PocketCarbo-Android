@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
             binding.pager.adapter = adapter
 
             TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
-                tab.text = typesData!!.types[position].name
+                tab.text = typesData.types[position].name
             }.attach()
 
         } catch (e: IOException) {
