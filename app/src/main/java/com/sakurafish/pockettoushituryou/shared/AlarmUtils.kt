@@ -13,7 +13,6 @@ object AlarmUtils {
     fun registerAlarm(context: Context) {
         // Wake Up every day at PM12:00 for app message
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            ?: return
 
         // every day at scheduled time
         val calendar = Calendar.getInstance()
@@ -34,7 +33,6 @@ object AlarmUtils {
     @JvmStatic
     fun unregisterAlarm(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            ?: return
         val pendingIntent = createAlarmIntent(context)
         pendingIntent.cancel()
         alarmManager.cancel(pendingIntent)
@@ -42,9 +40,11 @@ object AlarmUtils {
 
     private fun createAlarmIntent(context: Context): PendingIntent {
         val pendingIntent = NotificationReceiver.createIntent(context)
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+
         return PendingIntent.getBroadcast(
             context, NotificationReceiver.NOTIFICATION_ID,
-            pendingIntent, PendingIntent.FLAG_UPDATE_CURRENT
+            pendingIntent, flags
         )
     }
 }

@@ -40,8 +40,10 @@ class NotificationReceiver : BroadcastReceiver() {
         val text = context.getString(R.string.APP_MESSAGE_TEXT)
         val openIntent = MainActivity.createIntent(context)
         openIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val pendingIntent =
-            PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getActivity(context, 0, openIntent, flags)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 ?: return
