@@ -15,12 +15,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.speech.RecognizerIntent;
-import androidx.annotation.DrawableRes;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -40,6 +35,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 
 import com.sakurafish.pockettoushituryou.R;
 
@@ -482,10 +482,6 @@ public class MaterialSearchView extends FrameLayout {
      * @param view The view to attach the keyboard to.
      */
     private void showKeyboard(View view) {
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1 && view.hasFocus()) {
-            view.clearFocus();
-        }
-
         view.requestFocus();
 
         if (!isHardKeyboardAvailable()) {
@@ -545,13 +541,8 @@ public class MaterialSearchView extends FrameLayout {
         mSearchEditText.requestFocus();
 
         if(mShouldAnimate) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mRoot.setVisibility(View.VISIBLE);
-                AnimationUtils.circleRevealView(mSearchBar);
-            }
-            else {
-                AnimationUtils.fadeInView(mRoot);
-            }
+            mRoot.setVisibility(View.VISIBLE);
+            AnimationUtils.circleRevealView(mSearchBar);
 
         } else {
             mRoot.setVisibility(View.VISIBLE);
@@ -610,12 +601,7 @@ public class MaterialSearchView extends FrameLayout {
                 }
             };
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AnimationUtils.circleHideView(mSearchBar, listenerAdapter);
-            }
-            else {
-                AnimationUtils.fadeOutView(mRoot);
-            }
+            AnimationUtils.circleHideView(mSearchBar, listenerAdapter);
         }
         else {
             // Just hide the view.
@@ -795,13 +781,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     @Override
     public void setBackground(Drawable background) {
-        // Method changed in jelly bean for setting background.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mTintView.setBackground(background);
-        } else {
-            //noinspection deprecation
-            mTintView.setBackgroundDrawable(background);
-        }
+        mTintView.setBackground(background);
     }
 
     /**
