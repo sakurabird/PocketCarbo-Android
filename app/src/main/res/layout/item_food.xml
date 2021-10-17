@@ -151,8 +151,8 @@
                 android:layout_toStartOf="@+id/fav_button"
                 android:contentDescription="@string/food_list_content_description_share_button"
                 android:onClick="@{viewModel::onClickShareButton}"
-                android:tint="@color/grey600"
-                app:srcCompat="@drawable/ic_share_black_24dp" />
+                app:srcCompat="@drawable/ic_share_black_24dp"
+                app:tint="@color/grey600" />
 
             <ImageView
                 android:id="@+id/fav_button"
