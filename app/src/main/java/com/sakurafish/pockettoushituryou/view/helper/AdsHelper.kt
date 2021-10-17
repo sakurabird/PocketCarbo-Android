@@ -20,7 +20,7 @@ class AdsHelper @Inject constructor(private val context: Context, private val pr
             return passedTime >= CLICK_DELAY_MILLIS
         }
 
-    val adRequest: AdRequest= AdRequest.Builder().build()
+    val adRequest: AdRequest = AdRequest.Builder().build()
 
     var lastClickTimeMillis: Long
         get() = pref.getPrefLong(context.getString(R.string.PREF_LAST_AD_CLICK_TIME), 0)
@@ -41,8 +41,10 @@ class AdsHelper @Inject constructor(private val context: Context, private val pr
     companion object {
         // Intent action filter string
         const val ACTION_BANNER_CLICK = "ACTION_BANNER_CLICK"
+
         // Intent extras key string
         const val INTENT_EXTRAS_KEY_CLASS = "INTENT_EXTRAS_KEY_CLASS"
+
         // click interval time millisecond
         const val CLICK_DELAY_MILLIS = (1000 * 60 * 5).toLong() // 5 min
     }

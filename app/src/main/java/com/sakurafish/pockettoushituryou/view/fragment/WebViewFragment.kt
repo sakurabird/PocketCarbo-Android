@@ -38,7 +38,7 @@ class WebViewFragment : Fragment(), Injectable {
 
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel = ViewModelProvider(this@WebViewFragment, viewModelFactory)
-                .get(WebViewViewModel::class.java)
+            .get(WebViewViewModel::class.java)
         binding.viewModel = viewModel
 
         viewModel.initAction.observe(viewLifecycleOwner, Observer {

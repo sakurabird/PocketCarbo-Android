@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
-        private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
 
     var foods = liveData(Dispatchers.IO) {

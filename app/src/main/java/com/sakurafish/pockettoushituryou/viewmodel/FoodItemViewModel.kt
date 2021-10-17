@@ -25,11 +25,11 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class FoodItemViewModel(
-        private val context: Context,
-        private val favoriteRepository: FavoriteRepository,
-        val food: Food,
-        private val events: Events,
-        private val hostClass: HostClass
+    private val context: Context,
+    private val favoriteRepository: FavoriteRepository,
+    val food: Food,
+    private val events: Events,
+    private val hostClass: HostClass
 ) : ViewModel() {
 
     val carboRatedColorResId = liveData {
@@ -69,7 +69,10 @@ class FoodItemViewModel(
 
     val expandedTitle = liveData {
         val title = when {
-            TextUtils.isEmpty(food.weightHint) -> context.getString(R.string.expanded_title, food.weight.toString() + " g")
+            TextUtils.isEmpty(food.weightHint) -> context.getString(
+                R.string.expanded_title,
+                food.weight.toString() + " g"
+            )
             else -> {
                 val str = food.weight.toString() + " g" + "(" + food.weightHint + ")"
                 context.getString(R.string.expanded_title, str)
@@ -196,8 +199,8 @@ class FoodItemViewModel(
         starScaleXAnimator.interpolator = OVERSHOOT_INTERPOLATOR
 
         favAnimatorSet?.playTogether(
-                starScaleYAnimator,
-                starScaleXAnimator
+            starScaleYAnimator,
+            starScaleXAnimator
         )
 
         favAnimatorSet?.start()
@@ -211,7 +214,11 @@ class FoodItemViewModel(
         val clip = ClipData.newPlainText(context.getString(R.string.carbohydrate_amount), rowString)
         clipboard.setPrimaryClip(clip)
 
-        Toast.makeText(view.context, context.getString(R.string.text_clipped) + "\n" + rowString, Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            view.context,
+            context.getString(R.string.text_clipped) + "\n" + rowString,
+            Toast.LENGTH_SHORT
+        ).show()
 
         return true
     }
@@ -257,7 +264,12 @@ class FoodItemViewModel(
         intent.putExtra(Intent.EXTRA_TEXT, createRowString())
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
         intent.type = "text/plain"
-        view.context.startActivity(Intent.createChooser(intent, context.resources.getText(R.string.send_to)))
+        view.context.startActivity(
+            Intent.createChooser(
+                intent,
+                context.resources.getText(R.string.send_to)
+            )
+        )
     }
 
     companion object {

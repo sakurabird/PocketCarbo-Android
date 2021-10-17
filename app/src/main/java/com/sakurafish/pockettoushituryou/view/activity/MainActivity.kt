@@ -40,18 +40,24 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), HasAndroidInjector,
+    NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
     @Inject
     lateinit var moshi: Moshi
+
     @Inject
     lateinit var pref: Pref
+
     @Inject
     lateinit var showcaseHelper: ShowcaseHelper
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var events: Events
 
@@ -69,7 +75,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle())
 
-        mainViewModel = ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
+        mainViewModel =
+            ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -102,7 +109,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
 
     private fun pleaseReview() {
         if (pref.getPrefBool(getString(R.string.PREF_ASK_REVIEW), false)
-                || pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) != 10) {
+            || pref.getPrefInt(getString(R.string.PREF_LAUNCH_COUNT)) != 10
+        ) {
             return
         }
         //10回めの起動でレビュー誘導
@@ -177,7 +185,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         headerView.setOnClickListener { goBrowser("http://www.pockettoushituryou.com") }
 
         val toggle = ActionBarDrawerToggle(
-                this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -189,7 +202,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
         binding.searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (query.replace("　".toRegex(), " ").trim { it <= ' ' }.isEmpty()) {
-                    Toast.makeText(this@MainActivity, getString(R.string.action_search_hint), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.action_search_hint),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return true
                 }
                 startActivity(SearchResultActivity.createIntent(this@MainActivity, query))
@@ -251,8 +268,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, NavigationView.OnN
             }
             R.id.nav_favorite -> startActivity(FavoritesActivity.createIntent(this@MainActivity))
             R.id.nav_setting -> startActivity(SettingsActivity.createIntent(this@MainActivity))
-            R.id.nav_announcement -> startActivity(WebViewActivity.createIntent(this@MainActivity,
-                    "file:///android_asset/www/announcement.html", getString(R.string.announcement)))
+            R.id.nav_announcement -> startActivity(
+                WebViewActivity.createIntent(
+                    this@MainActivity,
+                    "file:///android_asset/www/announcement.html", getString(R.string.announcement)
+                )
+            )
             R.id.nav_share -> {
                 val intent = Intent()
                 intent.action = Intent.ACTION_SEND

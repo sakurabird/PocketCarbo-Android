@@ -46,7 +46,6 @@ class NotificationReceiver : BroadcastReceiver() {
             PendingIntent.getActivity(context, 0, openIntent, flags)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,

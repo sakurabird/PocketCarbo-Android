@@ -30,7 +30,7 @@
             android:name="com.sakurafish.pockettoushituryou.view.fragment.HelpFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:tag="fragment_help"/>
+            android:tag="fragment_help" />
 
     </LinearLayout>
 

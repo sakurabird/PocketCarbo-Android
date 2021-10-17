@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SearchResultViewModel @Inject constructor(
-        private val foodRepository: FoodRepository
+    private val foodRepository: FoodRepository
 ) : ViewModel() {
 
     private val query = MutableLiveData<String>()

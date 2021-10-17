@@ -16,18 +16,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FoodsAdapter(
-        private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val items = ArrayList<FoodItemViewModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
-                DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.item_food,
-                        parent,
-                        false
-                ), lifecycleOwner
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.item_food,
+                parent,
+                false
+            ), lifecycleOwner
         )
     }
 
@@ -77,8 +77,8 @@ class FoodsAdapter(
     }
 
     inner class ViewHolder(
-            val binding: ItemFoodBinding,
-            private val lifecycleOwner: LifecycleOwner
+        val binding: ItemFoodBinding,
+        private val lifecycleOwner: LifecycleOwner
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: FoodItemViewModel) {

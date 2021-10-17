@@ -1,6 +1,7 @@
 package com.sakurafish.pockettoushituryou.view.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.recyclerview.widget.RecyclerView;

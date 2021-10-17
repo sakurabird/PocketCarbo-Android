@@ -12,13 +12,15 @@ interface FoodRepository {
 
     fun deleteAll()
 
-    fun findByType(typeId: Int,
-                   foodSortOrder: FoodSortOrder
+    fun findByType(
+        typeId: Int,
+        foodSortOrder: FoodSortOrder
     ): List<Food>
 
-    fun findByTypeAndKind(typeId: Int,
-                          kindId: Int,
-                          foodSortOrder: FoodSortOrder
+    fun findByTypeAndKind(
+        typeId: Int,
+        kindId: Int,
+        foodSortOrder: FoodSortOrder
     ): List<Food>
 
     fun search(searchQuery: String?): List<Food>

@@ -22,7 +22,7 @@ class FavoriteFoods {
     @Column(value = "createdAt", indexed = true)
     var createdAt: Date? = null
 
-    constructor() {}
+    constructor()
 
     constructor(foods: Foods, createdAt: Date) {
         this.foods = foods

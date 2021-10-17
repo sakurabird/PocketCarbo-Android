@@ -55,7 +55,7 @@ class SearchResultFragment : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this@SearchResultFragment, viewModelFactory)
-                .get(SearchResultViewModel::class.java)
+            .get(SearchResultViewModel::class.java)
 
         initView()
         setupViewModel()
@@ -91,7 +91,8 @@ class SearchResultFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                    requireContext(), favoriteRepository, food, events, HostClass.SEARCH)
+                    requireContext(), favoriteRepository, food, events, HostClass.SEARCH
+                )
             }
 
             adapter.run {

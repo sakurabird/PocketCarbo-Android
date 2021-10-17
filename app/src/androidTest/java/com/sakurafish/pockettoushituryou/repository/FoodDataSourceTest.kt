@@ -29,11 +29,16 @@ class FoodDataSourceTest {
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
-                context, AppDatabase::class.java).build()
+            context, AppDatabase::class.java
+        ).build()
         kindDao = db.kindDao()
         kindDao.insertAll(listOf(kindB, kindC, kindA))
         foodDao = db.foodDao()
-        foodDataSource = FoodDataSource(foodDao, ApplicationProvider.getApplicationContext(), Moshi.Builder().build())
+        foodDataSource = FoodDataSource(
+            foodDao,
+            ApplicationProvider.getApplicationContext(),
+            Moshi.Builder().build()
+        )
         foodDao.insertAll(listOf(foodB, foodC, foodA, foodD))
     }
 
@@ -114,18 +119,26 @@ class FoodDataSourceTest {
     @Test
     fun createSearchQueryString() {
         var string = foodDataSource.createSearchQueryString("たま")
-        Assert.assertThat(string, Matchers.equalTo("SELECT food.* FROM food INNER JOIN kind ON kind.id = food.kind_id" +
-                " WHERE ((food.name LIKE '%たま%' OR food.search_word LIKE '%たま%')" +
-                " OR (kind.name LIKE '%たま%' OR kind.search_word LIKE '%たま%'))" +
-                " ORDER BY food.name ASC"))
+        Assert.assertThat(
+            string, Matchers.equalTo(
+                "SELECT food.* FROM food INNER JOIN kind ON kind.id = food.kind_id" +
+                        " WHERE ((food.name LIKE '%たま%' OR food.search_word LIKE '%たま%')" +
+                        " OR (kind.name LIKE '%たま%' OR kind.search_word LIKE '%たま%'))" +
+                        " ORDER BY food.name ASC"
+            )
+        )
 
         string = foodDataSource.createSearchQueryString(" 　たま 　  d ")
-        Assert.assertThat(string, Matchers.equalTo("SELECT food.* FROM food INNER JOIN kind ON kind.id = food.kind_id" +
-                " WHERE (((food.name LIKE '%たま%' OR food.search_word LIKE '%たま%')" +
-                " OR (kind.name LIKE '%たま%' OR kind.search_word LIKE '%たま%'))" +
-                " AND " +
-                "((food.name LIKE '%d%' OR food.search_word LIKE '%d%')" +
-                " OR (kind.name LIKE '%d%' OR kind.search_word LIKE '%d%')))" +
-                " ORDER BY food.name ASC"))
+        Assert.assertThat(
+            string, Matchers.equalTo(
+                "SELECT food.* FROM food INNER JOIN kind ON kind.id = food.kind_id" +
+                        " WHERE (((food.name LIKE '%たま%' OR food.search_word LIKE '%たま%')" +
+                        " OR (kind.name LIKE '%たま%' OR kind.search_word LIKE '%たま%'))" +
+                        " AND " +
+                        "((food.name LIKE '%d%' OR food.search_word LIKE '%d%')" +
+                        " OR (kind.name LIKE '%d%' OR kind.search_word LIKE '%d%')))" +
+                        " ORDER BY food.name ASC"
+            )
+        )
     }
 }

@@ -77,7 +77,7 @@ class FoodsFragment : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this@FoodsFragment, viewModelFactory)
-                .get(FoodsViewModel::class.java)
+            .get(FoodsViewModel::class.java)
 
         initView()
         setupObservers()
@@ -129,7 +129,8 @@ class FoodsFragment : Fragment(), Injectable {
         lifecycleScope.launchWhenStarted {
             events.dataPopulateState.collect { populateState ->
                 when (populateState) {
-                    PopulateState.NONE -> {}
+                    PopulateState.NONE -> {
+                    }
                     PopulateState.POPULATE -> viewModel.enableIsLoading(true)
                     PopulateState.POPULATED -> {
                         viewModel.setTypeId(typeId)
@@ -142,7 +143,8 @@ class FoodsFragment : Fragment(), Injectable {
         lifecycleScope.launchWhenStarted {
             events.favoritesClickedEvent.collectLatest { hostClass ->
                 when (hostClass) {
-                    HostClass.FOODS -> {}
+                    HostClass.FOODS -> {
+                    }
                     HostClass.FAVORITES -> adapter.refreshFavoriteStatus()
                     HostClass.SEARCH -> adapter.refreshFavoriteStatus()
                 }
@@ -165,7 +167,8 @@ class FoodsFragment : Fragment(), Injectable {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                    requireContext(), favoriteRepository, food, events, HostClass.FOODS)
+                    requireContext(), favoriteRepository, food, events, HostClass.FOODS
+                )
             }
 
             adapter.run {
@@ -187,7 +190,12 @@ class FoodsFragment : Fragment(), Injectable {
         kindSpinnerAdapter = KindSpinnerAdapter(requireContext())
         binding.kindSpinner.adapter = kindSpinnerAdapter
         binding.kindSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (kindSpinnerInit) {
                     kindSpinnerInit = false
                     return
@@ -208,7 +216,12 @@ class FoodsFragment : Fragment(), Injectable {
         val adapter = SortSpinnerAdapter(requireContext())
         binding.sortSpinner.adapter = adapter
         binding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (sortSpinnerInit) {
                     sortSpinnerInit = false
                     return

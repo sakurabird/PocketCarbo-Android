@@ -22,8 +22,10 @@ class SortSpinnerAdapter(private val context: Context) : BaseAdapter() {
         return position.toLong()
     }
 
-    override fun getView(position: Int, convertView: View?,
-                         parent: ViewGroup): View {
+    override fun getView(
+        position: Int, convertView: View?,
+        parent: ViewGroup
+    ): View {
         var view = convertView
         if (view == null) {
             val inflater = LayoutInflater.from(context)
@@ -32,8 +34,10 @@ class SortSpinnerAdapter(private val context: Context) : BaseAdapter() {
         return view!!
     }
 
-    override fun getDropDownView(position: Int,
-                                 convertView: View?, parent: ViewGroup): View {
+    override fun getDropDownView(
+        position: Int,
+        convertView: View?, parent: ViewGroup
+    ): View {
         var view = convertView
         if (view == null) {
             val inflater = LayoutInflater.from(context)

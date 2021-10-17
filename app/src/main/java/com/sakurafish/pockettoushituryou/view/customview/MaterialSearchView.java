@@ -91,7 +91,7 @@ public class MaterialSearchView extends FrameLayout {
     /**
      * The Context that this view appears in.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Whether or not the MaterialSearchView will animate into view or just appear.
@@ -299,7 +299,7 @@ public class MaterialSearchView extends FrameLayout {
         // Initialize the search view.
         initSearchView();
 
-        mAdapter = new CursorSearchAdapter(mContext,getHistoryCursor(),0);
+        mAdapter = new CursorSearchAdapter(mContext, getHistoryCursor(), 0);
         mAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence constraint) {
@@ -307,8 +307,7 @@ public class MaterialSearchView extends FrameLayout {
 
                 if (filter.isEmpty()) {
                     return getHistoryCursor();
-                }
-                else {
+                } else {
                     return mContext.getContentResolver().query(
                             HistoryContract.HistoryEntry.CONTENT_URI,
                             null,
@@ -334,26 +333,27 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Initializes the style of this view.
-     * @param attributeSet The attributes to apply to the view.
+     *
+     * @param attributeSet      The attributes to apply to the view.
      * @param defStyleAttribute An attribute to the style theme applied to this view.
      */
     private void initStyle(AttributeSet attributeSet, int defStyleAttribute) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         TypedArray typedArray = mContext.obtainStyledAttributes(attributeSet, R.styleable.MaterialSearchView, defStyleAttribute, 0);
 
-        if(typedArray != null) {
-            if(typedArray.hasValue(R.styleable.MaterialSearchView_searchBackground)) {
+        if (typedArray != null) {
+            if (typedArray.hasValue(R.styleable.MaterialSearchView_searchBackground)) {
                 setBackground(typedArray.getDrawable(R.styleable.MaterialSearchView_searchBackground));
             }
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_android_textColor)) {
                 setTextColor(typedArray.getColor(R.styleable.MaterialSearchView_android_textColor,
-                        ContextCompat.getColor(mContext,R.color.black)));
+                        ContextCompat.getColor(mContext, R.color.black)));
             }
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_android_textColorHint)) {
                 setHintTextColor(typedArray.getColor(R.styleable.MaterialSearchView_android_textColorHint,
-                        ContextCompat.getColor(mContext,R.color.gray_50)));
+                        ContextCompat.getColor(mContext, R.color.gray_50)));
             }
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_android_hint)) {
@@ -389,23 +389,23 @@ public class MaterialSearchView extends FrameLayout {
             }
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_historyIcon) && mAdapter instanceof CursorSearchAdapter) {
-                ((CursorSearchAdapter)mAdapter).setHistoryIcon(typedArray.getResourceId(
+                ((CursorSearchAdapter) mAdapter).setHistoryIcon(typedArray.getResourceId(
                         R.styleable.MaterialSearchView_historyIcon,
                         R.drawable.ic_history_white));
             }
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_suggestionIcon) && mAdapter instanceof CursorSearchAdapter) {
-                ((CursorSearchAdapter)mAdapter).setSuggestionIcon(typedArray.getResourceId(
+                ((CursorSearchAdapter) mAdapter).setSuggestionIcon(typedArray.getResourceId(
                         R.styleable.MaterialSearchView_suggestionIcon,
                         R.drawable.ic_action_search_white));
             }
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_listTextColor) && mAdapter instanceof CursorSearchAdapter) {
-                ((CursorSearchAdapter)mAdapter).setTextColor(typedArray.getColor(R.styleable.MaterialSearchView_listTextColor,
-                        ContextCompat.getColor(mContext,R.color.white)));
+                ((CursorSearchAdapter) mAdapter).setTextColor(typedArray.getColor(R.styleable.MaterialSearchView_listTextColor,
+                        ContextCompat.getColor(mContext, R.color.white)));
             }
 
-            if(typedArray.hasValue(R.styleable.MaterialSearchView_android_inputType)) {
+            if (typedArray.hasValue(R.styleable.MaterialSearchView_android_inputType)) {
                 setInputType(typedArray.getInteger(
                         R.styleable.MaterialSearchView_android_inputType,
                         InputType.TYPE_CLASS_TEXT)
@@ -420,8 +420,7 @@ public class MaterialSearchView extends FrameLayout {
 
             if (typedArray.hasValue(R.styleable.MaterialSearchView_voiceHintPrompt)) {
                 setVoiceHintPrompt(typedArray.getString(R.styleable.MaterialSearchView_voiceHintPrompt));
-            }
-            else {
+            } else {
                 setVoiceHintPrompt(mContext.getString(R.string.hint_prompt));
             }
 
@@ -460,7 +459,8 @@ public class MaterialSearchView extends FrameLayout {
             }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         mSearchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -477,8 +477,10 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region Show Methods
+
     /**
      * Displays the keyboard with a focus on the Search EditText.
+     *
      * @param view The view to attach the keyboard to.
      */
     private void showKeyboard(View view) {
@@ -501,11 +503,12 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Changes the visibility of the voice button to VISIBLE or GONE.
+     *
      * @param display True to display the voice button, false to hide it.
      */
     private void displayVoiceButton(boolean display) {
         // Only display voice if we pass in true, and it's available
-        if(display && isVoiceAvailable()) {
+        if (display && isVoiceAvailable()) {
             mVoice.setVisibility(View.VISIBLE);
         } else {
             mVoice.setVisibility(View.GONE);
@@ -514,6 +517,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Changes the visibility of the clear button to VISIBLE or GONE.
+     *
      * @param display True to display the clear button, false to hide it.
      */
     private void displayClearButton(boolean display) {
@@ -532,7 +536,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     public void openSearch() {
         // If search is already open, just return.
-        if(mOpen) {
+        if (mOpen) {
             return;
         }
 
@@ -540,7 +544,7 @@ public class MaterialSearchView extends FrameLayout {
         mSearchEditText.setText("");
         mSearchEditText.requestFocus();
 
-        if(mShouldAnimate) {
+        if (mShouldAnimate) {
             mRoot.setVisibility(View.VISIBLE);
             AnimationUtils.circleRevealView(mSearchBar);
 
@@ -548,7 +552,7 @@ public class MaterialSearchView extends FrameLayout {
             mRoot.setVisibility(View.VISIBLE);
         }
 
-        if(mSearchViewListener != null) {
+        if (mSearchViewListener != null) {
             mSearchViewListener.onSearchViewOpened();
         }
 
@@ -557,6 +561,7 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region Hide Methods
+
     /**
      * Hides the suggestion list.
      */
@@ -566,6 +571,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Hides the keyboard displayed for the SearchEditText.
+     *
      * @param view The view to detach the keyboard from.
      */
     private void hideKeyboard(View view) {
@@ -580,7 +586,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     public void closeSearch() {
         // If we're already closed, just return.
-        if(!mOpen) {
+        if (!mOpen) {
             return;
         }
 
@@ -602,15 +608,14 @@ public class MaterialSearchView extends FrameLayout {
             };
 
             AnimationUtils.circleHideView(mSearchBar, listenerAdapter);
-        }
-        else {
+        } else {
             // Just hide the view.
             mRoot.setVisibility(View.GONE);
         }
 
 
         // Call listener if we have one
-        if(mSearchViewListener != null) {
+        if (mSearchViewListener != null) {
             mSearchViewListener.onSearchViewClosed();
         }
 
@@ -619,8 +624,10 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region Interface Methods
+
     /**
      * Filters and updates the buttons when text is changed.
+     *
      * @param newText The new text.
      */
     private void onTextChanged(CharSequence newText) {
@@ -637,7 +644,7 @@ public class MaterialSearchView extends FrameLayout {
 //        }
 
         // If we have a query listener and the text has changed, call it.
-        if(mOnQueryTextListener != null) {
+        if (mOnQueryTextListener != null) {
             mOnQueryTextListener.onQueryTextChange(newText.toString());
         }
 
@@ -652,14 +659,14 @@ public class MaterialSearchView extends FrameLayout {
         CharSequence query = mSearchEditText.getText();
 
         // If the query is not null and it has some text, submit it.
-        if(query != null && TextUtils.getTrimmedLength(query) > 0) {
+        if (query != null && TextUtils.getTrimmedLength(query) > 0) {
 
             // If we don't have a listener, or if the search view handled the query, close it.
             // TODO - Improve.
-            if(mOnQueryTextListener == null || !mOnQueryTextListener.onQueryTextSubmit(query.toString())) {
+            if (mOnQueryTextListener == null || !mOnQueryTextListener.onQueryTextSubmit(query.toString())) {
 
                 if (mShouldKeepHistory) {
-                    saveQueryToDb(query.toString(),System.currentTimeMillis());
+                    saveQueryToDb(query.toString(), System.currentTimeMillis());
                 }
 
                 // Refresh the cursor on the adapter,
@@ -678,7 +685,7 @@ public class MaterialSearchView extends FrameLayout {
     private void onVoiceClicked() {
         // If the user has their own OnVoiceClickedListener defined, call that. Otherwise, use
         // the library default.
-        if(mOnVoiceClickedListener != null) {
+        if (mOnVoiceClickedListener != null) {
             mOnVoiceClickedListener.onVoiceClicked();
         } else {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -686,7 +693,7 @@ public class MaterialSearchView extends FrameLayout {
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, MAX_RESULTS); // Quantity of results we want to receive
 
-            if(mContext instanceof Activity) {
+            if (mContext instanceof Activity) {
                 ((Activity) mContext).startActivityForResult(intent, REQUEST_VOICE);
             }
         }
@@ -759,7 +766,7 @@ public class MaterialSearchView extends FrameLayout {
     /**
      * Set the query to search view. If submit is set to true, it'll submit the query.
      *
-     * @param query - The Query value.
+     * @param query  - The Query value.
      * @param submit - Whether to submit or not the query or not.
      */
     public void setQuery(CharSequence query, boolean submit) {
@@ -777,6 +784,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the background of the SearchView.
+     *
      * @param background The drawable to use as a background.
      */
     @Override
@@ -810,6 +818,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the alpha value of the background tint.
+     *
      * @param alpha The alpha value, from 0 to 255.
      */
     public void setTintAlpha(int alpha) {
@@ -840,7 +849,7 @@ public class MaterialSearchView extends FrameLayout {
             ColorDrawable cd = (ColorDrawable) d;
             int color = cd.getColor();
 
-            color = adjustAlpha(color,factor);
+            color = adjustAlpha(color, factor);
 
             mTintView.setBackgroundColor(color);
         }
@@ -849,7 +858,7 @@ public class MaterialSearchView extends FrameLayout {
     /**
      * Adjust the alpha of a color based on a percent factor.
      *
-     * @param color - The color you want to change the alpha value.
+     * @param color  - The color you want to change the alpha value.
      * @param factor - The factor of the alpha, from 0% to 100%.
      * @return The color with the adjusted alpha value.
      */
@@ -858,11 +867,12 @@ public class MaterialSearchView extends FrameLayout {
 
         int alpha = Math.round(Color.alpha(color) * factor);
 
-        return Color.argb(alpha,Color.red(color),Color.green(color),Color.blue(color));
+        return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color));
     }
 
     /**
      * Sets the text color of the EditText.
+     *
      * @param color The color to use for the EditText.
      */
     public void setTextColor(int color) {
@@ -871,6 +881,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the text color of the search hint.
+     *
      * @param color The color to be used for the hint text.
      */
     public void setHintTextColor(int color) {
@@ -879,6 +890,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the hint to be used for the search EditText.
+     *
      * @param hint The hint to be displayed in the search EditText.
      */
     public void setHint(CharSequence hint) {
@@ -887,6 +899,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the icon for the voice action.
+     *
      * @param resourceId The drawable to represent the voice action.
      */
     public void setVoiceIcon(int resourceId) {
@@ -895,6 +908,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the icon for the clear action.
+     *
      * @param resourceId The resource ID of drawable that will represent the clear action.
      */
     public void setClearIcon(int resourceId) {
@@ -903,6 +917,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Sets the icon for the back action.
+     *
      * @param resourceId The resource Id of the drawable that will represent the back action.
      */
     public void setBackIcon(int resourceId) {
@@ -928,7 +943,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     public void setHistoryIcon(@DrawableRes int resourceId) {
         if (mAdapter instanceof CursorSearchAdapter) {
-            ((CursorSearchAdapter)mAdapter).setHistoryIcon(resourceId);
+            ((CursorSearchAdapter) mAdapter).setHistoryIcon(resourceId);
         }
     }
 
@@ -939,7 +954,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     public void setSuggestionIcon(@DrawableRes int resourceId) {
         if (mAdapter instanceof CursorSearchAdapter) {
-            ((CursorSearchAdapter)mAdapter).setSuggestionIcon(resourceId);
+            ((CursorSearchAdapter) mAdapter).setSuggestionIcon(resourceId);
         }
     }
 
@@ -950,7 +965,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     public void setListTextColor(int color) {
         if (mAdapter instanceof CursorSearchAdapter) {
-            ((CursorSearchAdapter)mAdapter).setTextColor(color);
+            ((CursorSearchAdapter) mAdapter).setTextColor(color);
         }
     }
 
@@ -983,8 +998,7 @@ public class MaterialSearchView extends FrameLayout {
     public void setVoiceHintPrompt(final String hintPrompt) {
         if (!TextUtils.isEmpty(hintPrompt)) {
             mHintPrompt = hintPrompt;
-        }
-        else {
+        } else {
             mHintPrompt = mContext.getString(R.string.hint_prompt);
         }
     }
@@ -994,7 +1008,7 @@ public class MaterialSearchView extends FrameLayout {
      *
      * @return The value of the actual actionbar height in pixels
      */
-    private int getAppCompatActionBarHeight(){
+    private int getAppCompatActionBarHeight() {
         TypedValue tv = new TypedValue();
         getContext().getTheme().resolveAttribute(R.attr.actionBarSize, tv, true);
         return getResources().getDimensionPixelSize(tv.resourceId);
@@ -1004,13 +1018,15 @@ public class MaterialSearchView extends FrameLayout {
      * Retrieves the adapter.
      */
     public CursorAdapter getAdapter() {
-        return mAdapter ;
+        return mAdapter;
     }
     //endregion
 
     //region Accessors
+
     /**
      * Determines if the search view is opened or closed.
+     *
      * @return True if the search view is open, false if it is closed.
      */
     public boolean isOpen() {
@@ -1019,6 +1035,7 @@ public class MaterialSearchView extends FrameLayout {
 
     /**
      * Gets the current text on the SearchView, if any. Returns an empty String if no text is available.
+     *
      * @return The current query, or an empty String if there's no query.
      */
     public String getCurrentQuery() {
@@ -1028,7 +1045,9 @@ public class MaterialSearchView extends FrameLayout {
         return "";
     }
 
-    /** Determines if the user's voice is available
+    /**
+     * Determines if the user's voice is available
+     *
      * @return True if we can collect the user's voice, false otherwise.
      */
     private boolean isVoiceAvailable() {
@@ -1049,7 +1068,7 @@ public class MaterialSearchView extends FrameLayout {
      */
     public String getSuggestionAtPosition(int position) {
         // If position is out of range just return empty string.
-        if(position < 0 || position >= mAdapter.getCount()) {
+        if (position < 0 || position >= mAdapter.getCount()) {
             return "";
         } else {
             return mAdapter.getItem(position).toString();
@@ -1058,6 +1077,7 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region View Methods
+
     /**
      * Handles any cleanup when focus is cleared from the view.
      */
@@ -1091,11 +1111,12 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region Database Methods
+
     /**
      * Save a query to the local database.
      *
      * @param query - The query to be saved. Can't be empty or null.
-     * @param ms - The insert date, in millis. As a suggestion, use System.currentTimeMillis();
+     * @param ms    - The insert date, in millis. As a suggestion, use System.currentTimeMillis();
      **/
     public synchronized void saveQueryToDb(String query, long ms) {
         if (!TextUtils.isEmpty(query) && ms > 0) {
@@ -1103,14 +1124,15 @@ public class MaterialSearchView extends FrameLayout {
 
             values.put(HistoryContract.HistoryEntry.COLUMN_QUERY, query);
             values.put(HistoryContract.HistoryEntry.COLUMN_INSERT_DATE, ms);
-            values.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY,1); // Saving as history.
+            values.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY, 1); // Saving as history.
 
-            mContext.getContentResolver().insert(HistoryContract.HistoryEntry.CONTENT_URI,values);
+            mContext.getContentResolver().insert(HistoryContract.HistoryEntry.CONTENT_URI, values);
         }
     }
 
     /**
      * Add a single suggestion item to the suggestion list.
+     *
      * @param suggestion - The suggestion to be inserted on the database.
      */
     public synchronized void addSuggestion(String suggestion) {
@@ -1118,7 +1140,7 @@ public class MaterialSearchView extends FrameLayout {
             ContentValues value = new ContentValues();
             value.put(HistoryContract.HistoryEntry.COLUMN_QUERY, suggestion);
             value.put(HistoryContract.HistoryEntry.COLUMN_INSERT_DATE, System.currentTimeMillis());
-            value.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY,0); // Saving as suggestion.
+            value.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY, 0); // Saving as suggestion.
 
 
             mContext.getContentResolver().insert(
@@ -1131,6 +1153,7 @@ public class MaterialSearchView extends FrameLayout {
     /**
      * Removes a single suggestion from the list. <br/>
      * Disclaimer, this doesn't remove a single search history item, only suggestions.
+     *
      * @param suggestion - The suggestion to be removed.
      */
     public synchronized void removeSuggestion(String suggestion) {
@@ -1146,7 +1169,7 @@ public class MaterialSearchView extends FrameLayout {
                             HistoryContract.HistoryEntry.COLUMN_IS_HISTORY +
                             " = ?"
                     ,
-                    new String[]{suggestion,String.valueOf(0)}
+                    new String[]{suggestion, String.valueOf(0)}
             );
         }
     }
@@ -1157,7 +1180,7 @@ public class MaterialSearchView extends FrameLayout {
             ContentValues value = new ContentValues();
             value.put(HistoryContract.HistoryEntry.COLUMN_QUERY, str);
             value.put(HistoryContract.HistoryEntry.COLUMN_INSERT_DATE, System.currentTimeMillis());
-            value.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY,0); // Saving as suggestion.
+            value.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY, 0); // Saving as suggestion.
 
             toSave.add(value);
         }
@@ -1216,6 +1239,7 @@ public class MaterialSearchView extends FrameLayout {
     //endregion
 
     //region Interfaces
+
     /**
      * Interface that handles the submission and change of search queries.
      */

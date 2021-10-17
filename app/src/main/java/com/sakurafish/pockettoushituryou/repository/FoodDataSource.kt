@@ -16,9 +16,10 @@ import javax.inject.Inject
 
 @WorkerThread
 class FoodDataSource @Inject
-constructor(private val foodDao: FoodDao,
-            private val app: Application,
-            private val moshi: Moshi
+constructor(
+    private val foodDao: FoodDao,
+    private val app: Application,
+    private val moshi: Moshi
 ) : FoodRepository {
 
     override fun count(): Int {
@@ -47,7 +48,11 @@ constructor(private val foodDao: FoodDao,
         return foodDao.findByTypeAndKind(simpleSQLiteQuery)
     }
 
-    override fun findByTypeAndKind(typeId: Int, kindId: Int, foodSortOrder: FoodSortOrder): List<Food> {
+    override fun findByTypeAndKind(
+        typeId: Int,
+        kindId: Int,
+        foodSortOrder: FoodSortOrder
+    ): List<Food> {
         var queryString = ""
 
         queryString += "SELECT * FROM food WHERE type_id = "
@@ -72,10 +77,10 @@ constructor(private val foodDao: FoodDao,
     @VisibleForTesting
     fun createSearchQueryString(searchQuery: String): String {
         val word = searchQuery.trim()
-                .replace("\\s+".toRegex(), " ")
-                .split(" ")
-                .dropLastWhile { it.isEmpty() }
-                .toTypedArray()
+            .replace("\\s+".toRegex(), " ")
+            .split(" ")
+            .dropLastWhile { it.isEmpty() }
+            .toTypedArray()
 
         var queryString = ""
         queryString += "SELECT food.* FROM food INNER JOIN kind ON kind.id = food.kind_id"

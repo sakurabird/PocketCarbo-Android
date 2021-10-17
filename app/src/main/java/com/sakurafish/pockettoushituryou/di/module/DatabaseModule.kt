@@ -15,7 +15,8 @@ import javax.inject.Singleton
 @Module
 class DatabaseModule(app: Application) {
 
-    private val appDatabase: AppDatabase = Room.databaseBuilder(app, AppDatabase::class.java, "pocketcarbo_room.db")
+    private val appDatabase: AppDatabase =
+        Room.databaseBuilder(app, AppDatabase::class.java, "pocketcarbo_room.db")
             .build()
 
     @Singleton

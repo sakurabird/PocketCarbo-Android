@@ -36,7 +36,8 @@ class SearchResultActivity : AppCompatActivity(), HasAndroidInjector {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = getString(R.string.search_result_title) + " (" + intent.getStringExtra(EXTRA_QUERY) + ")"
+        supportActionBar?.title =
+            getString(R.string.search_result_title) + " (" + intent.getStringExtra(EXTRA_QUERY) + ")"
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 

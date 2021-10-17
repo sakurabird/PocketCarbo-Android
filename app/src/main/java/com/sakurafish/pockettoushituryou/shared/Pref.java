@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class Pref {
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     @Inject
     public Pref(SharedPreferences preferences) {

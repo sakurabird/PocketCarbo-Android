@@ -27,13 +27,13 @@ import javax.inject.Singleton
 
 @Singleton
 class MainViewModel @Inject constructor(
-        private val context: Context,
-        private val pref: Pref,
-        private val foodRepository: FoodRepository,
-        private val kindRepository: KindRepository,
-        private val favoriteRepository: FavoriteRepository,
-        private val events: Events,
-        private val orma: OrmaDatabase
+    private val context: Context,
+    private val pref: Pref,
+    private val foodRepository: FoodRepository,
+    private val kindRepository: KindRepository,
+    private val favoriteRepository: FavoriteRepository,
+    private val events: Events,
+    private val orma: OrmaDatabase
 ) : ViewModel() {
 
     private val _preventClick = MutableLiveData<Boolean>().apply {
@@ -90,8 +90,12 @@ class MainViewModel @Inject constructor(
     @VisibleForTesting
     fun mustMigrateToRoom(orma: OrmaDatabase): Boolean {
         val oldFavorites = orma.relationOfFavoriteFoods().selector().toList()
-        if (oldFavorites.size == 0) pref.setPref(context.getString(R.string.PREF_FINISH_MIGRATE_ROOM), true)
-        val finishMigrate = pref.getPrefBool(context.getString(R.string.PREF_FINISH_MIGRATE_ROOM), false)
+        if (oldFavorites.size == 0) pref.setPref(
+            context.getString(R.string.PREF_FINISH_MIGRATE_ROOM),
+            true
+        )
+        val finishMigrate =
+            pref.getPrefBool(context.getString(R.string.PREF_FINISH_MIGRATE_ROOM), false)
         return !finishMigrate
     }
 

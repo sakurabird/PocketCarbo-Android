@@ -41,8 +41,9 @@ class AdBannerFragment : Fragment(), Injectable {
     private val receiverADClick = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == null
-                    || intent.action != ACTION_BANNER_CLICK
-                    || intent.getStringExtra(INTENT_EXTRAS_KEY_CLASS) == parentActivityName) {
+                || intent.action != ACTION_BANNER_CLICK
+                || intent.getStringExtra(INTENT_EXTRAS_KEY_CLASS) == parentActivityName
+            ) {
                 return
             }
             finishInterval()
@@ -134,7 +135,8 @@ class AdBannerFragment : Fragment(), Injectable {
     private fun setADClickReceiver() {
         val filter = IntentFilter()
         filter.addAction(ACTION_BANNER_CLICK)
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiverADClick, filter)
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(receiverADClick, filter)
     }
 
     private fun startInterval(clicked: Boolean) {

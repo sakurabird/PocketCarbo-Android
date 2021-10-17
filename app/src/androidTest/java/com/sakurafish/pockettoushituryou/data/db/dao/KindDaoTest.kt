@@ -25,7 +25,8 @@ class KindDaoTest {
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
-                context, AppDatabase::class.java).build()
+            context, AppDatabase::class.java
+        ).build()
         kindDao = db.kindDao()
         kindDao.insertAll(listOf(kindB, kindC, kindA))
     }

@@ -39,7 +39,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun showPrivacyPolicy() {
-        startActivity(WebViewActivity.createIntent(requireContext(), "file:///android_asset/www/privacy_policy.html", getString(R.string.setting_privacy_policy)))
+        startActivity(
+            WebViewActivity.createIntent(
+                requireContext(),
+                "file:///android_asset/www/privacy_policy.html",
+                getString(R.string.setting_privacy_policy)
+            )
+        )
     }
 
     private fun showCreditDialog() {
@@ -56,7 +62,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             "$manufacturer $model"
         }
         val osVersion = android.os.Build.VERSION.SDK_INT
-        val mailBody = requireContext().getString(R.string.setting_mail_to_dev_body, appVersion, device, osVersion)
+        val mailBody = requireContext().getString(
+            R.string.setting_mail_to_dev_body,
+            appVersion,
+            device,
+            osVersion
+        )
 
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:") // only email apps should handle this

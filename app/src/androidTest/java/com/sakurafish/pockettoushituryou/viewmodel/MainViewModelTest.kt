@@ -42,16 +42,25 @@ class MainViewModelTest {
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         val app = InstrumentationRegistry.getInstrumentation().targetContext
-                .applicationContext as Application
+            .applicationContext as Application
 
         pref = Pref(PreferenceManager.getDefaultSharedPreferences(app))
         orma = OrmaDatabase.builder(app).name("orma-test.db").trace(true).build()
         appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        val foodRepository: FoodRepository = FoodDataSource(appDatabase.foodDao(), app, Moshi.Builder().build())
+        val foodRepository: FoodRepository =
+            FoodDataSource(appDatabase.foodDao(), app, Moshi.Builder().build())
         val kindRepository: KindRepository = KindDataSource(appDatabase.kindDao())
         favoriteRepository = FavoriteDataSource(appDatabase.favoriteDao())
 
-        mainViewModel = MainViewModel(app, pref, foodRepository, kindRepository, favoriteRepository, Events(), orma)
+        mainViewModel = MainViewModel(
+            app,
+            pref,
+            foodRepository,
+            kindRepository,
+            favoriteRepository,
+            Events(),
+            orma
+        )
 
         makeData()
         appDatabase.favoriteDao().deleteAll()

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class KindSpinnerAdapter extends BaseAdapter {
 
-    private Context context;
+    private final Context context;
     private List<Kind> kinds;
 
     public KindSpinnerAdapter(Context context) {
@@ -71,7 +71,7 @@ public class KindSpinnerAdapter extends BaseAdapter {
     }
 
     private void setNameString(@NonNull View convertView, int position) {
-        TextView tv = (TextView) convertView.findViewById(R.id.name);
+        TextView tv = convertView.findViewById(R.id.name);
         if (tv == null) return;
         if (position == 0) {
             tv.setText(context.getString(R.string.kind_all));

@@ -37,7 +37,7 @@ class HelpFragment : Fragment(), Injectable {
 
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel = ViewModelProvider(this@HelpFragment, viewModelFactory)
-                .get(HelpViewModel::class.java)
+            .get(HelpViewModel::class.java)
         binding.viewModel = viewModel
     }
 
