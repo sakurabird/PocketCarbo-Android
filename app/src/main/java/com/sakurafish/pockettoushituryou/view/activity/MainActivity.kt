@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         supportActionBar!!.setTitle(R.string.list_title)
 
         val headerView = binding.navView.getHeaderView(0)
-        headerView.setOnClickListener { goBrowser("http://www.pockettoushituryou.com") }
+        headerView.setOnClickListener { goBrowser(getString(R.string.app_url)) }
 
         val toggle = ActionBarDrawerToggle(
             this,
