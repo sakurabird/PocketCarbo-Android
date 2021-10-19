@@ -26,6 +26,8 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+        // For MaterialShowcaseView
+        maven { url "https://jitpack.io" }
     }
 }
 
