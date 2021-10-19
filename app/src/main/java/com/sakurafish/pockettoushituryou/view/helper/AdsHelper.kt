@@ -4,11 +4,15 @@ import android.content.Context
 import com.google.android.gms.ads.AdRequest
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.shared.Pref
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AdsHelper @Inject constructor(private val context: Context, private val pref: Pref) {
+class AdsHelper @Inject constructor(
+    @ApplicationContext private val appContext: Context,
+    private val pref: Pref
+) {
 
     // Need 5 minutes Interval
     val isIntervalOK: Boolean
@@ -23,8 +27,8 @@ class AdsHelper @Inject constructor(private val context: Context, private val pr
     val adRequest: AdRequest = AdRequest.Builder().build()
 
     var lastClickTimeMillis: Long
-        get() = pref.getPrefLong(context.getString(R.string.PREF_LAST_AD_CLICK_TIME), 0)
-        set(date) = pref.setPrefLong(context.getString(R.string.PREF_LAST_AD_CLICK_TIME), date)
+        get() = pref.getPrefLong(appContext.getString(R.string.PREF_LAST_AD_CLICK_TIME), 0)
+        set(date) = pref.setPrefLong(appContext.getString(R.string.PREF_LAST_AD_CLICK_TIME), date)
 
     fun getIntervalTimeMillis(now: Long, lastClickTimeMillis: Long): Long {
         var intervalTimeMillis = CLICK_DELAY_MILLIS
