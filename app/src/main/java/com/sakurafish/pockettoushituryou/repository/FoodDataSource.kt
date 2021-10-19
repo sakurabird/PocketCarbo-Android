@@ -1,6 +1,6 @@
 package com.sakurafish.pockettoushituryou.repository
 
-import android.app.Application
+import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -11,14 +11,14 @@ import com.sakurafish.pockettoushituryou.data.local.FoodsAndKinds
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-
 
 @WorkerThread
 class FoodDataSource @Inject
 constructor(
     private val foodDao: FoodDao,
-    private val app: Application,
+    @ApplicationContext private val appContext: Context,
     private val moshi: Moshi
 ) : FoodRepository {
 
@@ -116,7 +116,7 @@ constructor(
     }
 
     override fun parseJsonToFoodsData(): FoodsAndKinds? {
-        val json = LocalJsonResolver.loadJsonFromAsset(app, "json/foods_and_kinds.json")
+        val json = LocalJsonResolver.loadJsonFromAsset(appContext, "json/foods_and_kinds.json")
         val adapter: JsonAdapter<FoodsAndKinds> = moshi.adapter(FoodsAndKinds::class.java)
         return adapter.fromJson(json)
     }
