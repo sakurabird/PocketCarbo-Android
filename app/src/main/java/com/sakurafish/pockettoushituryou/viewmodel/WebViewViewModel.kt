@@ -10,10 +10,15 @@ import android.webkit.WebViewClient
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.net.URISyntaxException
 import javax.inject.Inject
 
-class WebViewViewModel @Inject constructor(private val context: Context) : ViewModel() {
+@HiltViewModel
+class WebViewViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context,
+) : ViewModel() {
 
     private val _initAction = MutableLiveData<Boolean>().apply {
         value = true
@@ -44,13 +49,13 @@ class WebViewViewModel @Inject constructor(private val context: Context) : ViewM
 
             if (url.startsWith("tel:")) {
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
-                context.applicationContext.startActivity(intent)
+                appContext.startActivity(intent)
                 return true
             }
             if (url.startsWith("mailto:")) {
                 try {
                     val intent = Intent.parseUri(url, 0)
-                    context.applicationContext.startActivity(intent)
+                    appContext.startActivity(intent)
                     return true
                 } catch (e: URISyntaxException) {
                     // Intent schemeが不正.
@@ -63,7 +68,7 @@ class WebViewViewModel @Inject constructor(private val context: Context) : ViewM
             if (url.startsWith("intent:")) {
                 try {
                     val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-                    context.applicationContext.startActivity(intent)
+                    appContext.startActivity(intent)
                     return true
                 } catch (e: URISyntaxException) {
                     // Intent schemeが不正.

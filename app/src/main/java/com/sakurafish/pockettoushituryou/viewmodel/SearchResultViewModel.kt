@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakurafish.pockettoushituryou.data.db.entity.Food
 import com.sakurafish.pockettoushituryou.repository.FoodRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class SearchResultViewModel @Inject constructor(
     private val foodRepository: FoodRepository
 ) : ViewModel() {

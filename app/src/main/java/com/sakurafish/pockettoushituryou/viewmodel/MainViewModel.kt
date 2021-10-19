@@ -19,15 +19,16 @@ import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.PopulateState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@HiltViewModel
 class MainViewModel @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val appContext: Context,
     private val pref: Pref,
     private val foodRepository: FoodRepository,
     private val kindRepository: KindRepository,
@@ -58,8 +59,8 @@ class MainViewModel @Inject constructor(
 
     @WorkerThread
     private fun mustPopulate(): Boolean {
-        val latestDataVersion = context.resources.getInteger(R.integer.data_version)
-        val savedDataVersion = pref.getPrefInt(context.getString(R.string.PREF_DATA_VERSION))
+        val latestDataVersion = appContext.resources.getInteger(R.integer.data_version)
+        val savedDataVersion = pref.getPrefInt(appContext.getString(R.string.PREF_DATA_VERSION))
         Timber.tag(TAG).d("DB is maintained latest version:%d", latestDataVersion)
         return foodRepository.count() == 0
                 || kindRepository.count() == 0
@@ -82,7 +83,7 @@ class MainViewModel @Inject constructor(
             }
             foodRepository.insertAll(it.foods)
 
-            pref.setPref(context.getString(R.string.PREF_DATA_VERSION), it.dataVersion)
+            pref.setPref(appContext.getString(R.string.PREF_DATA_VERSION), it.dataVersion)
         }
     }
 
@@ -91,11 +92,11 @@ class MainViewModel @Inject constructor(
     fun mustMigrateToRoom(orma: OrmaDatabase): Boolean {
         val oldFavorites = orma.relationOfFavoriteFoods().selector().toList()
         if (oldFavorites.size == 0) pref.setPref(
-            context.getString(R.string.PREF_FINISH_MIGRATE_ROOM),
+            appContext.getString(R.string.PREF_FINISH_MIGRATE_ROOM),
             true
         )
         val finishMigrate =
-            pref.getPrefBool(context.getString(R.string.PREF_FINISH_MIGRATE_ROOM), false)
+            pref.getPrefBool(appContext.getString(R.string.PREF_FINISH_MIGRATE_ROOM), false)
         return !finishMigrate
     }
 
@@ -110,7 +111,7 @@ class MainViewModel @Inject constructor(
             val favorite = Favorite(it.foods.id, food, createdAt)
             favoriteRepository.save(favorite)
         }
-        pref.setPref(context.getString(R.string.PREF_FINISH_MIGRATE_ROOM), true)
+        pref.setPref(appContext.getString(R.string.PREF_FINISH_MIGRATE_ROOM), true)
     }
 
     @VisibleForTesting
