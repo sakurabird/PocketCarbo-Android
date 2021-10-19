@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 
 import com.sakurafish.pockettoushituryou.databinding.FragmentHelpBinding
-import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.viewmodel.HelpViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-import javax.inject.Inject
-
-class HelpFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class HelpFragment : Fragment() {
 
     private var _binding: FragmentHelpBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: HelpViewModel
+    private val viewModel: HelpViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +32,6 @@ class HelpFragment : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel = ViewModelProvider(this@HelpFragment, viewModelFactory)
-            .get(HelpViewModel::class.java)
         binding.viewModel = viewModel
     }
 

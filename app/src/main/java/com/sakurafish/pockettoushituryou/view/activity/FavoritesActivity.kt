@@ -6,15 +6,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivityFavoritesBinding
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class FavoritesActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class FavoritesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFavoritesBinding
 
@@ -34,8 +29,6 @@ class FavoritesActivity : AppCompatActivity(), HasAndroidInjector {
         supportActionBar!!.title = getString(R.string.favorite)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     companion object {
         fun createIntent(context: Context): Intent {

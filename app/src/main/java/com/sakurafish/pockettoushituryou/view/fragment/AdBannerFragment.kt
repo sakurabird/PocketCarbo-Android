@@ -17,15 +17,16 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentAdbannerBinding
-import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper.Companion.ACTION_BANNER_CLICK
 import com.sakurafish.pockettoushituryou.view.helper.AdsHelper.Companion.INTENT_EXTRAS_KEY_CLASS
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class AdBannerFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class AdBannerFragment : Fragment() {
 
     @Inject
     lateinit var adsHelper: AdsHelper

@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.databinding.FragmentFavoritesBinding
-import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.shared.events.Events
@@ -17,12 +16,11 @@ import com.sakurafish.pockettoushituryou.shared.events.HostClass
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FavoritesViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class FavoritesFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class FavoritesFragment : Fragment() {
 
     @Inject
     lateinit var kindRepository: KindRepository
@@ -36,7 +34,7 @@ class FavoritesFragment : Fragment(), Injectable {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: FavoritesViewModel
+    private val viewModel: FavoritesViewModel by viewModels()
     private lateinit var adapter: FoodsAdapter
 
     override fun onCreateView(
@@ -50,9 +48,6 @@ class FavoritesFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this@FavoritesFragment, viewModelFactory)
-            .get(FavoritesViewModel::class.java)
 
         initView()
         setupViewModel()

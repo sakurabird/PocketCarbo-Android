@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.databinding.FragmentSearchResultBinding
-import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.shared.events.Events
@@ -18,12 +17,11 @@ import com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity.Comp
 import com.sakurafish.pockettoushituryou.view.adapter.FoodsAdapter
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.SearchResultViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class SearchResultFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class SearchResultFragment : Fragment() {
 
     @Inject
     lateinit var kindRepository: KindRepository
@@ -37,7 +35,7 @@ class SearchResultFragment : Fragment(), Injectable {
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: SearchResultViewModel
+    private val viewModel: SearchResultViewModel by viewModels()
     private lateinit var adapter: FoodsAdapter
     private var query: String = ""
 
@@ -53,9 +51,6 @@ class SearchResultFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this@SearchResultFragment, viewModelFactory)
-            .get(SearchResultViewModel::class.java)
 
         initView()
         setupViewModel()

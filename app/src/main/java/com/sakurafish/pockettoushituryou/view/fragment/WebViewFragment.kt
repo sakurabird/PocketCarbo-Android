@@ -5,22 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.sakurafish.pockettoushituryou.databinding.FragmentWebviewBinding
-import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class WebViewFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class WebViewFragment : Fragment() {
 
     private var _binding: FragmentWebviewBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: WebViewViewModel
+    private val viewModel: WebViewViewModel by viewModels()
 
     private var url: String = ""
 
@@ -37,8 +34,6 @@ class WebViewFragment : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel = ViewModelProvider(this@WebViewFragment, viewModelFactory)
-            .get(WebViewViewModel::class.java)
         binding.viewModel = viewModel
 
         viewModel.initAction.observe(viewLifecycleOwner, Observer {

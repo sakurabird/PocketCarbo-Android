@@ -8,15 +8,10 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivitySearchresultBinding
 import com.sakurafish.pockettoushituryou.shared.ext.replaceFragment
 import com.sakurafish.pockettoushituryou.view.fragment.SearchResultFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class SearchResultActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class SearchResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchresultBinding
 
@@ -40,8 +35,6 @@ class SearchResultActivity : AppCompatActivity(), HasAndroidInjector {
             getString(R.string.search_result_title) + " (" + intent.getStringExtra(EXTRA_QUERY) + ")"
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     companion object {
         const val EXTRA_QUERY = "query"

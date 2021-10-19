@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.navigation.NavigationView
@@ -20,7 +20,6 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.local.LocalJsonResolver
 import com.sakurafish.pockettoushituryou.data.local.TypesData
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
-import com.sakurafish.pockettoushituryou.di.ViewModelFactory
 import com.sakurafish.pockettoushituryou.shared.AlarmUtils
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.events.Events
@@ -32,19 +31,14 @@ import com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import com.sakurafish.pockettoushituryou.viewmodel.MainViewModel
 import com.squareup.moshi.Moshi
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector,
-    NavigationView.OnNavigationItemSelectedListener {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var moshi: Moshi
@@ -56,13 +50,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var showcaseHelper: ShowcaseHelper
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    @Inject
     lateinit var events: Events
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     val currentPagerPosition: Int
@@ -75,8 +66,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle())
 
-        mainViewModel =
-            ViewModelProvider(this@MainActivity, viewModelFactory).get(MainViewModel::class.java)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -287,8 +276,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return false
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName

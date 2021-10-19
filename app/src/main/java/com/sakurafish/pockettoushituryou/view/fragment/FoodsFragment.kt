@@ -9,14 +9,13 @@ import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.browser.browseractions.BrowserActionsIntent.EXTRA_TYPE
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
 import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion.KIND_ALL
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
-import com.sakurafish.pockettoushituryou.di.Injectable
 import com.sakurafish.pockettoushituryou.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.repository.KindRepository
 import com.sakurafish.pockettoushituryou.shared.events.Events
@@ -29,14 +28,13 @@ import com.sakurafish.pockettoushituryou.view.adapter.SortSpinnerAdapter
 import com.sakurafish.pockettoushituryou.view.helper.ShowcaseHelper
 import com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel
 import com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
-class FoodsFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class FoodsFragment : Fragment() {
 
     @Inject
     lateinit var kindRepository: KindRepository
@@ -53,7 +51,7 @@ class FoodsFragment : Fragment(), Injectable {
     private var _binding: FragmentFoodsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: FoodsViewModel
+    private val viewModel: FoodsViewModel by viewModels()
     private lateinit var adapter: FoodsAdapter
     private lateinit var kindSpinnerAdapter: KindSpinnerAdapter
     private var typeId: Int = 0
@@ -75,9 +73,6 @@ class FoodsFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this@FoodsFragment, viewModelFactory)
-            .get(FoodsViewModel::class.java)
 
         initView()
         setupObservers()
