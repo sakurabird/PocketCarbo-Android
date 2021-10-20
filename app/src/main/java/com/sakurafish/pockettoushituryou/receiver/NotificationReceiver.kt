@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.sakurafish.pockettoushituryou.R
-import com.sakurafish.pockettoushituryou.view.activity.MainActivity
+import com.sakurafish.pockettoushituryou.ui.main.MainActivity
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

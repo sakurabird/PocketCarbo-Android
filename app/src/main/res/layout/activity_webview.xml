@@ -27,7 +27,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_webview"
-            android:name="com.sakurafish.pockettoushituryou.view.fragment.WebViewFragment"
+            android:name="com.sakurafish.pockettoushituryou.ui.shared.web.WebViewFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:tag="fragment_webview" />

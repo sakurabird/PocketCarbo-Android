@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.sakurafish.pockettoushituryou.viewmodel.FavoritesViewModel" />
+            type="com.sakurafish.pockettoushituryou.ui.favorites.FavoritesViewModel" />
 
     </data>
 

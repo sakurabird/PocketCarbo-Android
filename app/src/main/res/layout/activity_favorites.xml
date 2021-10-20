@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/fragment_adBanner"
             android:fitsSystemWindows="true"
-            tools:context="com.sakurafish.pockettoushituryou.view.activity.MainActivity">
+            tools:context="com.sakurafish.pockettoushituryou.ui.main.MainActivity">
 
             <!-- header -->
 
@@ -37,7 +37,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_favorites"
-                android:name="com.sakurafish.pockettoushituryou.view.fragment.FavoritesFragment"
+                android:name="com.sakurafish.pockettoushituryou.ui.favorites.FavoritesFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/space_12dp"
@@ -48,7 +48,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_adBanner"
-            android:name="com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment"
+            android:name="com.sakurafish.pockettoushituryou.ui.ads.AdBannerFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

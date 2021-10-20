@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.MainActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.main.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="true"
             android:theme="@style/AppTheme.Launcher">
@@ -42,27 +42,27 @@
         </activity>
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.search.SearchResultActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.FavoritesActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.favorites.FavoritesActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.SettingsActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.settings.SettingsActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.HelpActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.help.HelpActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.WebViewActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.shared.web.WebViewActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 

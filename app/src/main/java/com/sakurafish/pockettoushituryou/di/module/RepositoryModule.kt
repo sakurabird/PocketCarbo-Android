@@ -1,6 +1,6 @@
 package com.sakurafish.pockettoushituryou.di.module
 
-import com.sakurafish.pockettoushituryou.repository.*
+import com.sakurafish.pockettoushituryou.data.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

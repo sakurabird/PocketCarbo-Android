@@ -12,9 +12,10 @@ import com.sakurafish.pockettoushituryou.data.db.entity.orma.FavoriteFoods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
-import com.sakurafish.pockettoushituryou.repository.*
+import com.sakurafish.pockettoushituryou.data.repository.*
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.ui.main.MainViewModel
 import com.squareup.moshi.Moshi
 import org.hamcrest.Matchers
 import org.junit.After

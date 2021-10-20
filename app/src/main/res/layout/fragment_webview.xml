@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.sakurafish.pockettoushituryou.viewmodel.WebViewViewModel" />
+            type="com.sakurafish.pockettoushituryou.ui.shared.web.WebViewViewModel" />
     </data>
 
     <WebView
