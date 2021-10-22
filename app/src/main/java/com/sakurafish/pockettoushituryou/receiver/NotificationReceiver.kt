@@ -71,7 +71,6 @@ class NotificationReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setPriority(Notification.PRIORITY_DEFAULT)
             .setWhen(System.currentTimeMillis())
             .build()
         notificationManager.notify(NOTIFICATION_ID, mNotification)
