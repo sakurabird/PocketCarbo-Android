@@ -5,16 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.sakurafish.pockettoushituryou.data.repository.FavoriteRepository
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
     private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
 
-    var foods = liveData(Dispatchers.IO) {
+    var foods = liveData(ioDispatcher) {
         val favorites = favoriteRepository.findAll()
         _showEmpty.postValue(favorites.isEmpty())
         emit(favorites)

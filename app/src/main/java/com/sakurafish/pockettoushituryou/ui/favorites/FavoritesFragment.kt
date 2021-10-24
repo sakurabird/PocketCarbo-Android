@@ -8,14 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sakurafish.pockettoushituryou.databinding.FragmentFavoritesBinding
 import com.sakurafish.pockettoushituryou.data.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.data.repository.KindRepository
+import com.sakurafish.pockettoushituryou.databinding.FragmentFavoritesBinding
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
+import com.sakurafish.pockettoushituryou.di.module.MainDispatcher
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.HostClass
-import com.sakurafish.pockettoushituryou.ui.foods.FoodsAdapter
 import com.sakurafish.pockettoushituryou.ui.foods.FoodItemViewModel
+import com.sakurafish.pockettoushituryou.ui.foods.FoodsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +32,14 @@ class FavoritesFragment : Fragment() {
 
     @Inject
     lateinit var events: Events
+
+    @Inject
+    @IoDispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
+
+    @Inject
+    @MainDispatcher
+    lateinit var mainDispatcher: CoroutineDispatcher
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
@@ -59,7 +70,7 @@ class FavoritesFragment : Fragment() {
 
     private fun initView() {
         binding.lifecycleOwner = viewLifecycleOwner
-        adapter = FoodsAdapter(viewLifecycleOwner)
+        adapter = FoodsAdapter(ioDispatcher, mainDispatcher, viewLifecycleOwner)
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -72,7 +83,12 @@ class FavoritesFragment : Fragment() {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                    requireContext(), favoriteRepository, food, events, HostClass.FAVORITES
+                    ioDispatcher,
+                    requireContext(),
+                    favoriteRepository,
+                    food,
+                    events,
+                    HostClass.FAVORITES
                 )
             }
 

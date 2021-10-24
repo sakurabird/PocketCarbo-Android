@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakurafish.pockettoushituryou.data.db.entity.Food
 import com.sakurafish.pockettoushituryou.data.repository.FoodRepository
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
     private val foodRepository: FoodRepository
 ) : ViewModel() {
 
@@ -30,7 +33,7 @@ class SearchResultViewModel @Inject constructor(
             _showEmpty.value = true
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             val foods = foodRepository.search(queryString)
             when (foods.size) {
                 0 -> _showEmpty.postValue(true)

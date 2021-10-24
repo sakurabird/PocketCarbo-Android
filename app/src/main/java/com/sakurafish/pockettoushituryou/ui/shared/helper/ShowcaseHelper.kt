@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ActivityMainBinding
 import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
+import com.sakurafish.pockettoushituryou.di.module.IoScope
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.shared.Pref
@@ -23,12 +24,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class ShowcaseHelper @Inject constructor(
+    @IoScope private val ioScope: CoroutineScope,
     private val pref: Pref,
     private val events: Events
 ) {
-    // TODO CoroutineScopeはinjectする
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-
     // true: 表示済みをあらわす
     val isShowcaseMainActivityFinished: Boolean
         get() = pref.getPrefBool(PREF_KEY_SHOWCASE_MAINACTIVITY_FINISHED, false)
@@ -88,7 +87,7 @@ class ShowcaseHelper @Inject constructor(
 
                     override fun onShowcaseDismissed(materialShowcaseView: MaterialShowcaseView) {
                         setPrefShowcaseMainactivityFinished(true)
-                        scope.launch {
+                        ioScope.launch {
                             events.setShowcaseState(ShowcaseState.PROCEEDED)
                         }
                     }

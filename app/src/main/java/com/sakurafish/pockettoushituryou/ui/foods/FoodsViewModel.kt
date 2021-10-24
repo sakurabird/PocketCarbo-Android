@@ -11,16 +11,19 @@ import com.sakurafish.pockettoushituryou.data.db.entity.Kind
 import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion
 import com.sakurafish.pockettoushituryou.data.repository.FoodRepository
 import com.sakurafish.pockettoushituryou.data.repository.KindRepository
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.ui.shared.helper.ShowcaseHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FoodsViewModel @Inject constructor(
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
     private val foodRepository: FoodRepository,
     private val kindRepository: KindRepository,
     private val events: Events,
@@ -45,14 +48,14 @@ class FoodsViewModel @Inject constructor(
     }
 
     fun findKinds() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             val kinds = kindRepository.findByTypeId(typeId)
             _kinds.postValue(kinds)
         }
     }
 
     fun findFoods(kindId: Int, sortOrder: FoodSortOrder) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             enableIsLoading(true)
 
             if (kindId == KindCompanion.KIND_ALL) {

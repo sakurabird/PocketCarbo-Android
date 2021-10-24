@@ -16,19 +16,23 @@ import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
 import com.sakurafish.pockettoushituryou.data.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.data.repository.FoodRepository
 import com.sakurafish.pockettoushituryou.data.repository.KindRepository
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
 import com.sakurafish.pockettoushituryou.shared.Pref
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.PopulateState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    @ApplicationContext
+    private val appContext: Context,
     private val pref: Pref,
     private val foodRepository: FoodRepository,
     private val kindRepository: KindRepository,
@@ -43,7 +47,7 @@ class MainViewModel @Inject constructor(
     val preventClick: LiveData<Boolean> = _preventClick
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             if (mustMigrateToRoom(orma)) {
                 migrateToRoom(orma, favoriteRepository)
             }

@@ -15,15 +15,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sakurafish.pockettoushituryou.data.db.entity.FoodSortOrder
 import com.sakurafish.pockettoushituryou.data.db.entity.KindCompanion.KIND_ALL
-import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
 import com.sakurafish.pockettoushituryou.data.repository.FavoriteRepository
 import com.sakurafish.pockettoushituryou.data.repository.KindRepository
+import com.sakurafish.pockettoushituryou.databinding.FragmentFoodsBinding
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
+import com.sakurafish.pockettoushituryou.di.module.MainDispatcher
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.HostClass
 import com.sakurafish.pockettoushituryou.shared.events.PopulateState
 import com.sakurafish.pockettoushituryou.shared.events.ShowcaseState
 import com.sakurafish.pockettoushituryou.ui.shared.helper.ShowcaseHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
@@ -42,6 +45,14 @@ class FoodsFragment : Fragment() {
 
     @Inject
     lateinit var events: Events
+
+    @Inject
+    @IoDispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
+
+    @Inject
+    @MainDispatcher
+    lateinit var mainDispatcher: CoroutineDispatcher
 
     private var _binding: FragmentFoodsBinding? = null
     private val binding get() = _binding!!
@@ -106,7 +117,7 @@ class FoodsFragment : Fragment() {
         sortSpinnerInit = true
 
         binding.lifecycleOwner = viewLifecycleOwner
-        adapter = FoodsAdapter(viewLifecycleOwner)
+        adapter = FoodsAdapter(ioDispatcher, mainDispatcher, viewLifecycleOwner)
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -157,7 +168,12 @@ class FoodsFragment : Fragment() {
             val adapterItems = ArrayList<FoodItemViewModel>()
             it.forEach { food ->
                 adapterItems += FoodItemViewModel(
-                    requireContext(), favoriteRepository, food, events, HostClass.FOODS
+                    ioDispatcher,
+                    requireContext(),
+                    favoriteRepository,
+                    food,
+                    events,
+                    HostClass.FOODS
                 )
             }
 

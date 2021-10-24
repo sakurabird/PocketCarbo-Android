@@ -17,6 +17,8 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.FragmentAdbannerBinding
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
+import com.sakurafish.pockettoushituryou.di.module.MainDispatcher
 import com.sakurafish.pockettoushituryou.ui.ads.AdsHelper.Companion.ACTION_BANNER_CLICK
 import com.sakurafish.pockettoushituryou.ui.ads.AdsHelper.Companion.INTENT_EXTRAS_KEY_CLASS
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +31,14 @@ class AdBannerFragment : Fragment() {
 
     @Inject
     lateinit var adsHelper: AdsHelper
+
+    @Inject
+    @IoDispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
+
+    @Inject
+    @MainDispatcher
+    lateinit var mainDispatcher: CoroutineDispatcher
 
     private var _binding: FragmentAdbannerBinding? = null
     private val binding get() = _binding!!
@@ -159,9 +169,9 @@ class AdBannerFragment : Fragment() {
 
     @WorkerThread
     suspend fun waitInterval(intervalTimeMillis: Long) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             delay(intervalTimeMillis)
-            withContext(Dispatchers.Main) {
+            withContext(mainDispatcher) {
                 setupAdView()
             }
         }

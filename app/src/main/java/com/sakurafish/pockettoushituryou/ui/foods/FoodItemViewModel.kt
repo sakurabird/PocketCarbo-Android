@@ -17,14 +17,17 @@ import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.data.db.entity.Favorite
 import com.sakurafish.pockettoushituryou.data.db.entity.Food
 import com.sakurafish.pockettoushituryou.data.repository.FavoriteRepository
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
 import com.sakurafish.pockettoushituryou.shared.events.Events
 import com.sakurafish.pockettoushituryou.shared.events.HostClass
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 
 class FoodItemViewModel(
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
     private val context: Context,
     private val favoriteRepository: FavoriteRepository,
     val food: Food,
@@ -150,7 +153,7 @@ class FoodItemViewModel(
     }
 
     fun refreshFavoriteStatus() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             _isFavState.postValue(favoriteRepository.isFavorite(food.id))
         }
     }
@@ -165,7 +168,7 @@ class FoodItemViewModel(
 
     @WorkerThread
     private suspend fun updateFavoritesDB(): Boolean {
-        val result = viewModelScope.async(Dispatchers.IO) {
+        val result = viewModelScope.async(ioDispatcher) {
 
             var favorite = favoriteRepository.findByFoodId(food.id)
             if (favorite != null) {

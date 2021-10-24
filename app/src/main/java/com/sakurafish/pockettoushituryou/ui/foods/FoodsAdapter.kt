@@ -9,12 +9,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.sakurafish.pockettoushituryou.R
 import com.sakurafish.pockettoushituryou.databinding.ItemFoodBinding
-import kotlinx.coroutines.Dispatchers
+import com.sakurafish.pockettoushituryou.di.module.IoDispatcher
+import com.sakurafish.pockettoushituryou.di.module.MainDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FoodsAdapter(
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
     private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val items = ArrayList<FoodItemViewModel>()
@@ -67,9 +73,9 @@ class FoodsAdapter(
 
     @WorkerThread
     suspend fun updateFavoritesView() {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             items.forEach(FoodItemViewModel::refreshFavoriteStatus)
-            withContext(Dispatchers.Main) {
+            withContext(mainDispatcher) {
                 notifyDataSetChanged()
             }
         }
