@@ -76,7 +76,7 @@ class FoodsAdapter(
         withContext(ioDispatcher) {
             items.forEach(FoodItemViewModel::refreshFavoriteStatus)
             withContext(mainDispatcher) {
-                notifyDataSetChanged()
+                notifyItemRangeChanged(0, itemCount)
             }
         }
     }
