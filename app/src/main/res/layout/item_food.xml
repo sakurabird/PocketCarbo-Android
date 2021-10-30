@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.sakurafish.pockettoushituryou.viewmodel.FoodItemViewModel" />
+            type="com.sakurafish.pockettoushituryou.ui.foods.FoodItemViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -151,8 +151,8 @@
                 android:layout_toStartOf="@+id/fav_button"
                 android:contentDescription="@string/food_list_content_description_share_button"
                 android:onClick="@{viewModel::onClickShareButton}"
-                android:tint="@color/grey600"
-                app:srcCompat="@drawable/ic_share_black_24dp" />
+                app:srcCompat="@drawable/ic_share_black_24dp"
+                app:tint="@color/grey600" />
 
             <ImageView
                 android:id="@+id/fav_button"

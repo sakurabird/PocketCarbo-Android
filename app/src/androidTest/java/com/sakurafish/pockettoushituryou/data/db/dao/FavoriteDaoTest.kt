@@ -26,7 +26,8 @@ class FavoriteDaoTest {
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
-                context, AppDatabase::class.java).build()
+            context, AppDatabase::class.java
+        ).build()
         favoriteDao = db.favoriteDao()
         favoriteDao.insertAll(listOf(favoriteA, favoriteB, favoriteC, favoriteD))
     }
@@ -76,22 +77,23 @@ class FavoriteDaoTest {
     @Test
     fun save() {
         val food = Food(
-                5,
-                "E",
-                154,
-                "1個",
-                49.8f,
-                47.8f,
-                371f,
-                11f,
-                16.4f,
-                10.3f,
-                1.1f,
-                "たまちゃん",
-                "備考1",
-                2,
-                1,
-                kindA)
+            5,
+            "E",
+            154,
+            "1個",
+            49.8f,
+            47.8f,
+            371f,
+            11f,
+            16.4f,
+            10.3f,
+            1.1f,
+            "たまちゃん",
+            "備考1",
+            2,
+            1,
+            kindA
+        )
 
         val favorite = Favorite(5, food, 30)
 

@@ -12,9 +12,10 @@ import com.sakurafish.pockettoushituryou.data.db.entity.orma.FavoriteFoods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Foods
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.Kinds
 import com.sakurafish.pockettoushituryou.data.db.entity.orma.OrmaDatabase
-import com.sakurafish.pockettoushituryou.repository.*
+import com.sakurafish.pockettoushituryou.data.repository.*
 import com.sakurafish.pockettoushituryou.shared.Pref
-import com.sakurafish.pockettoushituryou.store.Dispatcher
+import com.sakurafish.pockettoushituryou.shared.events.Events
+import com.sakurafish.pockettoushituryou.ui.main.MainViewModel
 import com.squareup.moshi.Moshi
 import org.hamcrest.Matchers
 import org.junit.After
@@ -42,16 +43,25 @@ class MainViewModelTest {
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         val app = InstrumentationRegistry.getInstrumentation().targetContext
-                .applicationContext as Application
+            .applicationContext as Application
 
         pref = Pref(PreferenceManager.getDefaultSharedPreferences(app))
         orma = OrmaDatabase.builder(app).name("orma-test.db").trace(true).build()
         appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        val foodRepository: FoodRepository = FoodDataSource(appDatabase.foodDao(), app, Moshi.Builder().build())
+        val foodRepository: FoodRepository =
+            FoodDataSource(appDatabase.foodDao(), app, Moshi.Builder().build())
         val kindRepository: KindRepository = KindDataSource(appDatabase.kindDao())
         favoriteRepository = FavoriteDataSource(appDatabase.favoriteDao())
 
-        mainViewModel = MainViewModel(app, pref, foodRepository, kindRepository, favoriteRepository, Dispatcher(), orma)
+        mainViewModel = MainViewModel(
+            app,
+            pref,
+            foodRepository,
+            kindRepository,
+            favoriteRepository,
+            Events(),
+            orma
+        )
 
         makeData()
         appDatabase.favoriteDao().deleteAll()

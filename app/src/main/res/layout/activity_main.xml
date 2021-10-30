@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.sakurafish.pockettoushituryou.viewmodel.MainViewModel" />
+            type="com.sakurafish.pockettoushituryou.ui.main.MainViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/fragment_adBanner"
                 android:fitsSystemWindows="true"
-                tools:context="com.sakurafish.pockettoushituryou.view.activity.MainActivity">
+                tools:context="com.sakurafish.pockettoushituryou.ui.main.MainActivity">
 
                 <!-- header -->
 
@@ -65,10 +65,10 @@
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <!-- contents -->
-                <androidx.viewpager.widget.ViewPager
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -97,7 +97,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_adBanner"
-                android:name="com.sakurafish.pockettoushituryou.view.fragment.AdBannerFragment"
+                android:name="com.sakurafish.pockettoushituryou.ui.ads.AdBannerFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -107,7 +107,7 @@
         </RelativeLayout>
 
         <!-- Search View (show if toolbar menu clicked) -->
-        <com.sakurafish.pockettoushituryou.view.customview.MaterialSearchView
+        <com.sakurafish.pockettoushituryou.ui.search.customview.MaterialSearchView
             android:id="@+id/search_view"
             style="@style/MaterialSearchViewStyle"
             android:layout_width="match_parent"

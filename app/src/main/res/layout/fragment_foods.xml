@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.sakurafish.pockettoushituryou.viewmodel.FoodsViewModel" />
+            type="com.sakurafish.pockettoushituryou.ui.foods.FoodsViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.sakurafish.pockettoushituryou.view.fragment.FoodsFragment">
+        tools:context="com.sakurafish.pockettoushituryou.ui.foods.FoodsFragment">
 
         <LinearLayout
             android:id="@+id/spinner_area"

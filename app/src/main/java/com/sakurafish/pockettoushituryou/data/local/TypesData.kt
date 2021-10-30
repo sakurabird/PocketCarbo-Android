@@ -4,10 +4,10 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class TypesData(
-        val types: List<Type>
+    val types: List<Type>
 )
 
 data class Type(
-        val id: Int,
-        val name: String?
+    val id: Int,
+    val name: String?
 )

@@ -38,8 +38,7 @@ captures/
 !.idea/codeStyleSettings.xml
 
 # Google Services (e.g. APIs or Firebase)
-app/google-services.json
-app/fabric.properties
+google-services.json
 
 # Keystore files
 *.jks

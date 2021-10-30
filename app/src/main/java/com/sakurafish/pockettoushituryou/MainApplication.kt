@@ -1,44 +1,33 @@
 package com.sakurafish.pockettoushituryou
 
-import com.crashlytics.android.Crashlytics
+import android.app.Application
+import androidx.databinding.ktx.BuildConfig
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import com.sakurafish.pockettoushituryou.di.ApplicationModule
-import com.sakurafish.pockettoushituryou.di.DaggerApplicationComponent
-import com.sakurafish.pockettoushituryou.di.applyAutoInjector
-import com.sakurafish.pockettoushituryou.di.module.DatabaseModule
-import dagger.android.support.DaggerApplication
-import io.fabric.sdk.android.Fabric
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
+import java.util.*
 
-class MainApplication : DaggerApplication() {
+@HiltAndroidApp
+class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        applyAutoInjector()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
 
-        Fabric.with(this, Crashlytics())
-
         initAdMob()
     }
 
     private fun initAdMob() {
-        MobileAds.initialize(this, getString(R.string.admob_app_id))
-        val testDeviceIds = resources.getStringArray(R.array.admob_test_device).toList()
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        MobileAds.initialize(this) {}
+        val ids = ArrayList(
+            resources.getStringArray(R.array.admob_test_device)
+                .toMutableList()
+        )
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(ids).build()
         MobileAds.setRequestConfiguration(configuration)
     }
-
-    override fun applicationInjector() = DaggerApplicationComponent
-            .builder()
-            .application(this)
-            .context(this.applicationContext)
-            .applicationModule(ApplicationModule(this))
-            .databaseModule(DatabaseModule(this))
-            .build()
 }

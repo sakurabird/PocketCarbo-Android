@@ -10,8 +10,8 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class FoodsAndKinds(
-        @Json(name = "data_version")
-        var dataVersion: Int = 0,
-        var kinds: List<Kind>? = null,
-        var foods: List<Food>? = null
+    @Json(name = "data_version")
+    var dataVersion: Int = 0,
+    var kinds: List<Kind>? = null,
+    var foods: List<Food>? = null
 )

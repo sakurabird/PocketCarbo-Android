@@ -17,8 +17,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.MainActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.main.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:exported="true"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,33 +42,34 @@
         </activity>
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.SearchResultActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.search.SearchResultActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.FavoritesActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.favorites.FavoritesActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.SettingsActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.settings.SettingsActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.HelpActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.help.HelpActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <activity
-            android:name="com.sakurafish.pockettoushituryou.view.activity.WebViewActivity"
+            android:name="com.sakurafish.pockettoushituryou.ui.shared.web.WebViewActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="false" />
 
         <receiver
             android:name=".receiver.BootReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -78,7 +80,8 @@
 
         <receiver
             android:name=".receiver.PackageReplacedReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
@@ -96,9 +99,6 @@
             android:syncable="true" />
 
         <!-- meta data -->
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="5d6fabbcde793289c1e4057daced02012118e520" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />

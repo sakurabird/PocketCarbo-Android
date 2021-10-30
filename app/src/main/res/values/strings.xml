@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">ポケット糖質量</string>
     <string name="app_url">http://play.google.com/store/apps/details?id=com.sakurafish.pockettoushituryou</string>
-    <string name="app_website">http://www.pockettoushituryou.com/</string>
 
     <string name="cancel">キャンセル</string>
 
@@ -59,7 +58,7 @@
     <string name="tutorial_sort_text">右側はソートボタンです。\n\nデフォルトでは食品名順に並んでいますが糖質量順や脂質量順に並び替えが出来ます。</string>
     <string name="tutorial_food_list_text">リストの行をクリックすると詳細情報が表示されます。\nシェアやお気に入り登録も出来ますよ。長押しでテキストコピーできます。</string>
     <string name="tutorial_clear_text1">読んでくれてありがとうございました！\n\nなお食品は糖質量率によって色分けしています。</string>
-    <string name="tutorial_clear_text2">青：糖質量が少ないい</string>
+    <string name="tutorial_clear_text2">青：糖質量が少ない</string>
     <string name="tutorial_clear_text3">緑：糖質量がやや多い</string>
     <string name="tutorial_clear_text4">赤：糖質量が多い</string>
     <string name="tutorial_clear_text5">紫：糖質量が非常に多い</string>
