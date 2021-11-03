@@ -180,7 +180,7 @@ class FoodsFragment : Fragment() {
             adapter.run {
                 items.clear()
                 items.addAll(adapterItems)
-                notifyItemRangeInserted(0, adapter.itemCount)
+                notifyDataSetChanged()
             }
         })
 
